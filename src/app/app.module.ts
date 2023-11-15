@@ -14,7 +14,6 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { AppCommonModule } from './common/app-common.module';
-import { MaterialModule } from './material.module';
 import { AuthService } from '@core/services';
 import { CoreModule } from '@core/core.module';
 
@@ -41,9 +40,10 @@ import { CoreModule } from '@core/core.module';
       logOnly: environment.production,
     }),
 
+    // Custom
+    AppRoutingModule,
     AppCommonModule,
-    CoreModule,
-
+    CoreModule
   ],
   providers: [{ provide: PERSISTENCE, useValue: 'session' }, AuthService],
   bootstrap: [AppComponent]
