@@ -13,9 +13,8 @@ import { addDoc, collection, CollectionReference, DocumentData, Firestore } from
         <mat-card-header fxLayoutAlign="center">
           <mat-card-title>Enter Daily Logs</mat-card-title>
         </mat-card-header>
-        <img alt="daily" mat-card-image src="./../assets/images/daily-logs.jpg" />
         <mat-card-actions fxLayoutAlign="center">
-          <button type="button" mat-button routerLink="/daily-logs">OPEN</button>
+          <button type="button" mat-button routerLink="/overview">OPEN</button>
         </mat-card-actions>
       </mat-card>
 
@@ -23,7 +22,7 @@ import { addDoc, collection, CollectionReference, DocumentData, Firestore } from
         <mat-card-header fxLayoutAlign="center">
           <mat-card-title>Reports</mat-card-title>
         </mat-card-header>
-        <img alt="daily" mat-card-image src="./../assets/images/reports.jpg" />
+        <img mat-card-image src="./../assets/images/reports.jpg" />
         <mat-card-actions fxLayoutAlign="center">
           <button type="button" mat-button routerLink="/reports">OPEN</button>
         </mat-card-actions>

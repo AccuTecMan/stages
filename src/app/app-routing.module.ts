@@ -30,7 +30,6 @@ const routes: Routes = [
     component: ErrorContainer,
     data: { allowAnonymous: true },
   },
-
   {
     path: '**',
     redirectTo: '',
