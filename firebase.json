@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "stages",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
