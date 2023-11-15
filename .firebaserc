@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "stages-dev-c0a0e": {
+      "hosting": {
+        "stages": [
+          "stages-dev-c0a0e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "stages-dev-c0a0e"
+  }
+}
