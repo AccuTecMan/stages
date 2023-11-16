@@ -8,36 +8,39 @@ import { AuthService } from '@core/services';
 @Component({
   selector: 'app-login-component',
   template: `
-    <section fxLayout="row wrap" fxLayoutAlign="center center">
-      <mat-card appearance="outlined" fxFlex="500px" fxFlex.xs="100%" class="mat-elevation-z8">
-        <mat-card-title fxLayoutAlign="center center -fxLayoutAlign"> Enter your credentials </mat-card-title>
-        <form [formGroup]="loginForm">
-          <mat-card-content fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <section fxLayout="row" fxLayoutAlign="space-around center">
+      <mat-card appearance="outlined" class="mat-elevation-z8">
+        <mat-card-title>
+          Enter your credentials
+        </mat-card-title>
+        <mat-card-content>
+          <form [formGroup]="loginForm" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="100px">
+
             <mat-form-field>
               <input type="email" matInput placeholder="Your email" required formControlName="email" />
               <mat-hint align="end">Please enter a valid email.</mat-hint>
               <!-- <mat-error *ngIf="email?.invalid">Invalid or missing email.</mat-error> -->
             </mat-form-field>
+
+
             <mat-form-field>
               <input type="password" matInput placeholder="Your password" formControlName="password" />
               <mat-hint align="end">Please enter your password.</mat-hint>
             </mat-form-field>
-            <ng-container *ngIf="loginForm.statusChanges | async as status">
-              <mat-error *ngIf="!loginForm.pristine && (loginForm.invalid || email.invalid || password.invalid)" align="start"
-                >Invalid email or password
-              </mat-error>
-            </ng-container>
-          </mat-card-content>
-          <mat-card-actions fxLayoutAlign="center center -fxLayoutAlign">
+
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
             <button mat-raised-button type="submit" color="primary">Submit</button>
-          </mat-card-actions>
-        </form>
+        </mat-card-actions>
       </mat-card>
     </section>
+
   `,
   styles: [
     `
       .mat-mdc-form-field {
+        display: block;
         width: 300px;
       }
 
