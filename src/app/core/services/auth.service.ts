@@ -14,7 +14,9 @@ export class AuthService {
 
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
+      console.log("user", user)
       if (user) {
+
         const storage = getStorage();
         const imageUrl = await getDownloadURL(ref(storage, `profiles/${user.uid}.jpg`)).then((url) => url);
         const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
@@ -27,7 +29,7 @@ export class AuthService {
             photoURL: imageUrl,
           })
         );
-        this.router.navigate(['/overview']);
+        this.router.navigate(['/cuttingSheets']);
       } else {
         this.store.dispatch(fromRoot.AuthenticationActions.setUnauthenticated());
         this.router.navigate(['/login']);
