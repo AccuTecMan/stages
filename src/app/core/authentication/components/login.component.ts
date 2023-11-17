@@ -14,7 +14,8 @@ import { AuthService } from '@core/services';
           Enter your credentials
         </mat-card-title>
         <mat-card-content>
-          <form [formGroup]="loginForm" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="100px">
+          <form [formGroup]="loginForm" fxLayout="row wrap"
+            fxLayoutAlign="center center" fxLayoutGap="100px" (ngSubmit)="validateCredentials()">
 
             <mat-form-field>
               <input type="email" matInput placeholder="Your email" required formControlName="email" />
@@ -89,11 +90,14 @@ export class LoginComponent implements OnInit {
   }
 
   validateCredentials(): AsyncValidatorFn {
+    console.log("submiteado")
     return (form): Observable<ValidationErrors | null> => {
       const authData: AuthData = {
         email: form.value.email,
         password: form.value.password,
       };
+
+      console.log("authData", authData)
 
       return this.authService.login(authData).pipe(
         map(() => null),
