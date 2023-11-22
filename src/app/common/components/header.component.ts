@@ -8,32 +8,31 @@ import * as fromCore from '@core/store';
 @Component({
   selector: 'app-header',
   template: `
-    <mat-toolbar color="primary">
-      <button *ngIf="isAuth$ | async" mat-icon-button class="example-icon" type="button" (click)="onToggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>AccuTec</span>
+    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+      <span>
+        <button *ngIf="isAuth$ | async" mat-button class="example-icon"
+              type="button" (click)="onToggleSidenav()">
+          <mat-icon>menu</mat-icon>
+          AccuTec
+        </button>
 
-      <span class="user" fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap=".8rem" [matMenuTriggerFor]="menu">
-        <span fxShow fxHide.lt-sm class="displayName">{{ displayName$ | async }}</span>
       </span>
 
-      <mat-menu #menu="matMenu" fxLayoutAlign="flex-end">
-        <button type="button" mat-menu-item (click)="onLogout()">
-          <mat-icon>logout</mat-icon>
+      <div fxLayout="row" fxShow="true">
+        <button mat-button *ngIf="isAuth$ | async" (click)="onLogout()">
+          <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
-      </mat-menu>
+      </div>
     </mat-toolbar>
   `,
   styles: [
     `
-      .mat-toolbar {
-        padding: 0px;
+      .example-icon {
+        font-size: 1.5rem;
       }
 
-      .mat-mdc-icon-button {
-        margin-top: 0.35rem;
+      mat-toolbar {
         padding: 0px;
       }
 
@@ -41,18 +40,6 @@ import * as fromCore from '@core/store';
         padding: 1rem;
       }
 
-      .user {
-        cursor: pointer;
-      }
-
-      .displayName {
-        margin: 7px 1rem 0px 0px;
-      }
-
-      img {
-        border-radius: 50%;
-        width: 40px;
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
