@@ -3,14 +3,16 @@ import { Auth, signInWithEmailAndPassword, signOut, authState, User } from '@ang
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { from } from 'rxjs';
+import { Observable, catchError, from, throwError } from 'rxjs';
 
 import { AuthData } from '@core/models';
 import * as fromRoot from '@core/store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private store: Store, private router: Router, private afAuth: Auth) {}
+  constructor(private store: Store,
+              private router: Router,
+              private afAuth: Auth) {}
 
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
@@ -18,7 +20,6 @@ export class AuthService {
       if (user) {
 
         const storage = getStorage();
-        const imageUrl = await getDownloadURL(ref(storage, `profiles/${user.uid}.jpg`)).then((url) => url);
         const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
           return !!res.claims['role'] && res.claims['role'] === 'admin';
         });
@@ -26,7 +27,6 @@ export class AuthService {
           fromRoot.AuthenticationActions.setAuthenticated({
             isAdmin: isAdmin,
             displayName: user.displayName,
-            photoURL: imageUrl,
           })
         );
         this.router.navigate(['/cuttingSheets']);
@@ -48,4 +48,32 @@ export class AuthService {
   getUser(): User | null {
     return this.afAuth.currentUser;
   }
+
+  signIn(params: AuthData): Observable<any> {
+    return from(signInWithEmailAndPassword(this.afAuth, params.email, params.password)).pipe(
+      catchError((error: FirebaseError) =>
+        throwError(() => new Error(this.translateFirebaseErrorMessage(error)))
+      )
+    );
+  }
+
+  private translateFirebaseErrorMessage({code, message}: FirebaseError) {
+    if (code === "auth/invalid-login-credentials") {
+      return "Invalid user or password.";
+    }
+    if (code === "auth/user-not-found") {
+      return "User not found.";
+    }
+    if (code === "auth/wrong-password") {
+      return "User not found.";
+    }
+    return message;
+  }
+
+
 }
+
+type FirebaseError = {
+  code: string;
+  message: string
+};

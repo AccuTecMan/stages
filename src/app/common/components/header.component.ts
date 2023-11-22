@@ -15,7 +15,6 @@ import * as fromCore from '@core/store';
       <span>AccuTec</span>
 
       <span class="user" fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap=".8rem" [matMenuTriggerFor]="menu">
-        <img alt="" [src]="photoURL$ | async" />
         <span fxShow fxHide.lt-sm class="displayName">{{ displayName$ | async }}</span>
       </span>
 
@@ -62,7 +61,6 @@ export class HeaderComponent {
   @Output() sidenavToggle = new EventEmitter<void>();
   public isAuth$: Observable<boolean> = this.store.select(fromCore.selectIsAuth);
   public displayName$: Observable<string | null> = this.store.select(fromCore.selectDisplayName);
-  public photoURL$: Observable<string | null> = this.store.select(fromCore.selectPhotoURL);
 
   constructor(private store: Store, private authService: AuthService) {}
 

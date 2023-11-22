@@ -7,7 +7,6 @@ export interface CoreState {
   isAuthenticated: boolean;
   isAdmin: boolean;
   displayName: string | null;
-  photoURL: string | null;
   status: EntityLoadStatus;
 }
 
@@ -15,7 +14,6 @@ const initialState: CoreState = {
   isAuthenticated: false,
   isAdmin: false,
   displayName: null,
-  photoURL: null,
   status: EntityLoadStatus.INITIAL,
 };
 
@@ -23,12 +21,11 @@ const internalReducer = createReducer(
   initialState,
   on(
     AuthenticationActions.setAuthenticated,
-    (state, { isAdmin, displayName, photoURL }): CoreState => ({
+    (state, { isAdmin, displayName }): CoreState => ({
       ...state,
       isAuthenticated: true,
       isAdmin: isAdmin,
       displayName: displayName,
-      photoURL: photoURL,
       status: EntityLoadStatus.SUCCESS,
     })
   ),
@@ -40,7 +37,6 @@ const internalReducer = createReducer(
       isAuthenticated: false,
       isAdmin: false,
       displayName: '',
-      photoURL: '',
       status: EntityLoadStatus.SUCCESS,
     })
   )
