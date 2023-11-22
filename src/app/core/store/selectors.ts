@@ -9,5 +9,3 @@ export const selectIsAuth = createSelector(selectCoreState, (state: CoreState) =
 export const selectIsAdmin = createSelector(selectCoreState, (state: CoreState) => state.isAdmin);
 
 export const selectDisplayName = createSelector(selectCoreState, (state: CoreState) => state.displayName);
-
-export const selectPhotoURL = createSelector(selectCoreState, (state: CoreState) => state.photoURL);

@@ -6,7 +6,6 @@ export const AuthenticationActions = createActionGroup({
     'Set Authenticated': props<{
       isAdmin: boolean;
       displayName: string | null;
-      photoURL: string | null;
     }>(),
     'Set Unauthenticated': emptyProps(),
   },

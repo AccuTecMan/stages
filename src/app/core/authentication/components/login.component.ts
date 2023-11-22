@@ -1,48 +1,57 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { AsyncValidatorFn, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { catchError, map, Observable, of } from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { AuthData } from '@core/models';
 import { AuthService } from '@core/services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-component',
   template: `
-    <section fxLayout="row" fxLayoutAlign="space-around center">
-      <mat-card appearance="outlined" class="mat-elevation-z8">
-        <mat-card-title>
-          Enter your credentials
-        </mat-card-title>
-        <mat-card-content>
-          <form [formGroup]="loginForm" fxLayout="row wrap"
-            fxLayoutAlign="center center" fxLayoutGap="100px" (ngSubmit)="validateCredentials()">
+    <main class="content">
+    <mat-card fxFlex>
+      <mat-card-header>
+        <mat-card-title>Enter with your account</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="form" fxLayout="column" fxLayoutAlign="center center">
 
-            <mat-form-field>
-              <input type="email" matInput placeholder="Your email" required formControlName="email" />
-              <mat-hint align="end">Please enter a valid email.</mat-hint>
-              <!-- <mat-error *ngIf="email?.invalid">Invalid or missing email.</mat-error> -->
-            </mat-form-field>
-
-
-            <mat-form-field>
-              <input type="password" matInput placeholder="Your password" formControlName="password" />
-              <mat-hint align="end">Please enter your password.</mat-hint>
-            </mat-form-field>
-
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button type="submit" color="primary">Submit</button>
-        </mat-card-actions>
+          <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input type="email" matInput placeholder="Ex: pat@example.com" formControlName="email">
+              <mat-error *ngIf="form.get('email')!.hasError('required')">
+                  Email is required
+              </mat-error>
+              <mat-error *ngIf="form.get('email')!.hasError('email')">
+                  Email is invalid
+              </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input type="password" matInput placeholder="Password" formControlName="password">
+              <mat-error *ngIf="form.get('password')!.hasError('required')">
+                  Password is required
+              </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
+              test-id="login-button">
+              LOGIN
+          </button>
+      </form>
       </mat-card>
-    </section>
-
+    </main>
   `,
   styles: [
     `
+      .content {
+        margin : 20px;
+      }
+
       .mat-mdc-form-field {
-        display: block;
         width: 300px;
+      }
+
+      .mat-mdc-form-field-error {
+        color: red;
       }
 
       .mat-mdc-card {
@@ -54,55 +63,43 @@ import { AuthService } from '@core/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  loginForm: UntypedFormGroup;
+  form: UntypedFormGroup;
+  public isLoggingIn = false;
 
-  constructor(private fb: UntypedFormBuilder, private authService: AuthService) {}
+  constructor(private fb: UntypedFormBuilder,
+              private authService: AuthService,
+              private router: Router,
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder,) {}
 
   get email() {
-    return this.loginForm.controls['email'];
+    return this.form.controls['email'];
   }
 
   get password() {
-    return this.loginForm.controls['password'];
+    return this.form.controls['password'];
   }
 
   ngOnInit() {
-    this.loginForm = this.fb.group(
-      {
-        email: [
-          '',
-          {
-            validators: [Validators.required, Validators.email],
-          },
-        ],
-        password: [
-          '',
-          {
-            validators: [Validators.required, Validators.minLength(7)],
-          },
-        ],
-      },
-      {
-        asyncValidators: [this.validateCredentials()],
-        updateOn: 'submit',
-      }
-    );
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
   }
 
-  validateCredentials(): AsyncValidatorFn {
-    console.log("submiteado")
-    return (form): Observable<ValidationErrors | null> => {
-      const authData: AuthData = {
-        email: form.value.email,
-        password: form.value.password,
-      };
-
-      console.log("authData", authData)
-
-      return this.authService.login(authData).pipe(
-        map(() => null),
-        catchError(() => of({ wrongPassword: true }))
-      );
-    };
+  login() {
+    this.isLoggingIn = true;
+    this.authService.signIn({
+      email: this.form.value.email,
+      password: this.form.value.password
+    }).subscribe({
+      next: () => this.router.navigate(['cuttingSheets']),
+      error: error => {
+        this.isLoggingIn = false;
+        this.snackBar.open(error.message, "OK", {
+          duration: 5000
+        })
+      }
+    });
   }
 }

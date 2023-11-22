@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from '@core/services';
@@ -6,20 +6,36 @@ import { AuthService } from '@core/services';
 @Component({
   selector: 'app-root',
   template: `
-    <app-header></app-header>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav role="navigation" [class.mat-elevation-z4]="true">
+        <app-sidenav-list (closeSidenav)="sidenav.close()"></app-sidenav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <main>
+          <router-outlet></router-outlet>
+        </main>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   `,
-  styles: [`
-  `]
+  styles: [
+    `
+      mat-sidenav-container,
+      mat-sidenav-content,
+      mat-sidenav {
+        height: 100%;
+        background-color: #ffe9d6;
+      }
+
+      mat-sidenav {
+        width: 250px;
+      }
+    `,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor(private authService: AuthService,
-              private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer) {
-    this.matIconRegistry.addSvgIcon('recycle', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/recycling-icon.svg'));
-  }
+  constructor(private authService: AuthService) {  }
 
   ngOnInit() {
     this.authService.initAuthListener();
