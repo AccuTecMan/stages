@@ -29,7 +29,7 @@ import * as fromCore from '@core/store';
 
       <mat-divider></mat-divider>
 
-      <a mat-list-item tabindex="0" routerLink="/login" (click)="onLogout()">
+      <a mat-list-item routerLink="/login" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
         <span class="nav-caption">Logout</span>
       </a>
@@ -38,49 +38,23 @@ import * as fromCore from '@core/store';
   styles: [
     `
       .list-title {
-        font-size: 1rem !important;
+        font-size: 1.1rem;
         font-weight: bold !important;
         margin-left: 0.5rem;
-        margin-top: -1rem;
       }
 
-      .mdc-list {
-        margin-left: 0.6rem;
-      }
-
-      .mat-icon {
-        /* padding-top: 0.5rem; */
+      mat-icon {
       }
 
       .nav-caption {
-        display: inline-block;
-        padding-left: 10px;
+        padding-left: 0.5rem;
       }
 
-      .mat-divider {
+      mat-divider {
         border-top-width: 2px;
         border-top-style: dashed;
       }
 
-      .mat-mdc-list-item {
-        font-size: 14px;
-        padding: 0px;
-      }
-
-      .brand-icon {
-        display: inline-block;
-        fill: currentColor;
-        height: 42px;
-        width: 42px;
-      }
-
-      .displayed-name {
-        padding-left: 58px;
-        margin-top: -10px;
-        margin-bottom: 10px;
-        font-size: 0.8em;
-        opacity: 0.5;
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
