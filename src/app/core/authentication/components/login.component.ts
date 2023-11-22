@@ -8,13 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-login-component',
   template: `
-    <main class="content">
-    <mat-card fxFlex>
-      <mat-card-header>
-        <mat-card-title>Enter with your account</mat-card-title>
-      </mat-card-header>
-      <form [formGroup]="form" fxLayout="column" fxLayoutAlign="center center">
-
+    <main>
+      <mat-card>
+        <form [formGroup]="form">
+          <h2>Enter with your account</h2>
           <mat-form-field>
               <mat-label>Email</mat-label>
               <input type="email" matInput placeholder="Ex: pat@example.com" formControlName="email">
@@ -32,31 +29,28 @@ import { MatSnackBar } from '@angular/material/snack-bar';
                   Password is required
               </mat-error>
           </mat-form-field>
+          <div fxLayoutAlign="center center">
           <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
               test-id="login-button">
               LOGIN
           </button>
-      </form>
+          </div>
+        </form>
       </mat-card>
     </main>
   `,
   styles: [
     `
-      .content {
-        margin : 20px;
-      }
-
-      .mat-mdc-form-field {
-        width: 300px;
-      }
-
-      .mat-mdc-form-field-error {
-        color: red;
-      }
-
-      .mat-mdc-card {
-        margin: 1rem;
+    mat-card {
+        max-width: 400px;
+        margin: 2em auto;
+        padding: 1rem;
+        text-align: center;
         background-color: #ffe9d6;
+      }
+
+      mat-form-field {
+        display: block;
       }
     `,
   ],
