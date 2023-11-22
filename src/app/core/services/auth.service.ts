@@ -16,9 +16,7 @@ export class AuthService {
 
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
-      console.log("user", user)
       if (user) {
-
         const storage = getStorage();
         const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
           return !!res.claims['role'] && res.claims['role'] === 'admin';
