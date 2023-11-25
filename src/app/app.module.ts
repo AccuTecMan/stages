@@ -38,7 +38,7 @@ import { CoreModule } from '@core/core.module';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
-    }),
+    connectInZone: true}),
 
     // Custom
     AppRoutingModule,
