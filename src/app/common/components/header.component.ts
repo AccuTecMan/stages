@@ -9,27 +9,32 @@ import * as fromCore from '@core/store';
   selector: 'app-header',
   template: `
     <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
-      <span>
-        <button *ngIf="isAuth$ | async" mat-button class="example-icon"
-              type="button" (click)="onToggleSidenav()">
-          <mat-icon>menu</mat-icon>
-          AccuTec
-        </button>
-
-      </span>
-
-      <div fxLayout="row" fxShow="true">
-        <button mat-button *ngIf="isAuth$ | async" (click)="onLogout()">
+      @if (isAuth$ | async) {
+        <span>
+          <button *ngIf="isAuth$ | async" mat-button
+                type="button" (click)="onToggleSidenav()">
+            <mat-icon>menu</mat-icon>
+            <span class="brand-title">AccuTec</span>
+          </button>
+        </span>
+        <button mat-button *ngIf="isAuth$ | async" (click)="onLogout()" >
           <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
-      </div>
+      } @else {
+        <span class="brand-title-no-auth">AccuTec</span>
+      }
     </mat-toolbar>
   `,
   styles: [
     `
-      .example-icon {
+      .brand-title {
         font-size: 1.5rem;
+      }
+
+      .brand-title-no-auth {
+        font-size: 1.5rem;
+        margin-left: 1rem;
       }
 
       mat-toolbar {
