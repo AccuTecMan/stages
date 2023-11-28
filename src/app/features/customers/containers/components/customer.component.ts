@@ -76,7 +76,6 @@ export class CustomerComponent {
   }
 
   set term(value: string) {
-    console.log(value);
     this._term = value;
     this.onSearchTermChange(this._term);
   }
