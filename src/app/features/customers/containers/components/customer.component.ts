@@ -6,15 +6,20 @@ import { Customer } from '../../models';
 @Component({
   selector: 'app-customer-component',
   template: `
-    <header class="content">
+    <header class="content-header">
       <h1>Customers</h1>
-      <mat-form-field class="example-full-width">
-        <span matPrefix> </span>
-        <input type="text" matInput placeholder="Search" [(ngModel)]="term">
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="space-between start">
+        <mat-form-field>
+          <input matInput placeholder="Search" [(ngModel)]="term">
+        </mat-form-field>
+        <button mat-fab extended color="primary" class="add-button">
+          <mat-icon>add</mat-icon>
+          Add New
+        </button>
+      </div>
     </header>
 
-    <section class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+    <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers">
         <mat-card  class="mat-elevation-z16">
           <mat-card-header>
@@ -37,13 +42,22 @@ import { Customer } from '../../models';
       padding: 0px;
     }
 
-    .content {
-      margin: 1.3rem 1rem 0rem 2rem !Important;
+    .content-header {
+      margin: 1.3rem 1rem 0rem 1rem !Important;
       max-width: 850px;
     }
 
-    .mat-form-field {
-      width: auto;
+    .add-button {
+      margin-right: .5rem;
+    }
+
+    .content-records {
+      margin: .5rem 1rem 4rem 1rem !Important;
+      max-width: 850px;
+    }
+
+    .mat-mdc-form-field {
+      width: 150px;
     }
 
     .content > mat-card {
