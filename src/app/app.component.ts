@@ -24,7 +24,7 @@ import { AuthService } from '@core/services';
       mat-sidenav-content,
       mat-sidenav {
         height: 100%;
-        background-color: #ffe9d6;
+        background-color: #e8e8f7;
       }
 
       mat-sidenav {
