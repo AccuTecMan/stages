@@ -10,7 +10,7 @@ import { Customer } from '../../models';
       <h1>Customers</h1>
       <mat-form-field class="example-full-width">
         <span matPrefix> </span>
-        <input type="tel" matInput placeholder="Search" [(ngModel)]="term">
+        <input type="text" matInput placeholder="Search" [(ngModel)]="term">
       </mat-form-field>
     </header>
 

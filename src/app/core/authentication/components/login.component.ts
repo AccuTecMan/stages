@@ -46,7 +46,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         margin: 2em auto;
         padding: 1rem;
         text-align: center;
-        background-color: #ffe9d6;
       }
 
       mat-form-field {
