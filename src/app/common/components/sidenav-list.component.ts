@@ -43,9 +43,6 @@ import * as fromCore from '@core/store';
         margin-left: 0.5rem;
       }
 
-      mat-icon {
-      }
-
       .nav-caption {
         padding-left: 0.5rem;
       }

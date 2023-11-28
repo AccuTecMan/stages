@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BaseModule } from '@base/base.module';
@@ -31,7 +31,8 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     AppCommonModule,
-    BaseModule
+    BaseModule,
+    FormsModule
   ],
 })
 export class CustomersModule {}
