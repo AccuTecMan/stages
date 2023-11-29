@@ -21,19 +21,19 @@ export class CustomerService {
     }) as Observable<Customer[]>;
   }
 
-  get(id: string) {
+  get(id: string): Observable<Customer> {
     const customerReference = doc(this.firestore, `customers/${id}`);
-    return docData(customerReference, { idField: 'id' });
+    return docData(customerReference, { idField: 'id' }) as Observable<Customer>;
   }
 
   create(customer: Customer) {
     return addDoc(this.customerCollection, customer);
   }
 
-  update(customer: Customer) {
+  update(customer: Customer, id: string) {
     const customerReference = doc(
       this.firestore,
-      `customers/${customer.id}`
+      `customers/${id}`
     );
     return updateDoc(customerReference, { ...customer });
   }

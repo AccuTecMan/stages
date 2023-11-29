@@ -12,7 +12,7 @@ import { Customer } from '../../models';
         <mat-form-field>
           <input matInput placeholder="Search" [(ngModel)]="term">
         </mat-form-field>
-        <button mat-fab extended color="primary" class="add-button">
+        <button mat-fab extended color="primary" class="add-button" routerLink="/customers/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
@@ -29,7 +29,7 @@ import { Customer } from '../../models';
             <mat-chip>
               {{ customer.active ? "Active" : "Inactive" }}
             </mat-chip>
-            <button mat-button color="primary">UPDATE</button>
+            <button mat-button color="primary" [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
           </mat-card-actions>
         </mat-card>
       </div>
