@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService } from '../../services';
 import { Customer } from '../../models';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -16,7 +15,7 @@ import { Observable } from 'rxjs';
     </section>
     <header class="content-header">
       @if (isEditing) {
-        <h1>Edit Customer</h1>
+        <h1>Update Customer</h1>
       } @else {
         <h1>Add Customer</h1>
       }
@@ -130,8 +129,6 @@ export class AddEditComponent {
     } else {
       this.service.create(customer);
     }
-
     this.router.navigate(['/', 'customers']);
   }
-
 }

@@ -17,7 +17,7 @@ import * as fromCore from '@core/store';
             <span class="brand-title">AccuTec</span>
           </button>
         </span>
-        <button mat-button *ngIf="isAuth$ | async" (click)="onLogout()" >
+        <button class='logout' mat-button *ngIf="isAuth$ | async" (click)="onLogout()" >
           <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
@@ -43,6 +43,7 @@ import * as fromCore from '@core/store';
 
       .logout {
         padding: 1rem;
+        margin-right: .5rem;
       }
 
     `,

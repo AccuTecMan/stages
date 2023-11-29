@@ -1,13 +1,12 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { addDoc, collection, CollectionReference, DocumentData, Firestore } from '@angular/fire/firestore';
 import { Customer } from '../../models';
-
 
 @Component({
   selector: 'app-customer-component',
   template: `
     <header class="content-header">
       <h1>Customers</h1>
+      <mat-divider></mat-divider>
       <div fxLayout="row" fxLayoutAlign="space-between start">
         <mat-form-field>
           <input matInput placeholder="Search" [(ngModel)]="term">
@@ -36,15 +35,19 @@ import { Customer } from '../../models';
     </section>
   `,
   styles: [`
-
     h1 {
       font-size: 2rem;
       padding: 0px;
+      margin: 0;
     }
 
     .content-header {
       margin: 1.3rem 1rem 0rem 1rem !Important;
       max-width: 850px;
+    }
+
+    mat-divider {
+      margin-bottom: 1rem;
     }
 
     .add-button {
@@ -70,11 +73,6 @@ import { Customer } from '../../models';
 
     .mat-mdc-button {
       background-color: #e3e2f4;
-    }
-
-    .mat-mdc-standard-chip {
-      background-color: #fee4ee;
-      color: #fff;
     }
 
     @media (max-width: 600px) {
