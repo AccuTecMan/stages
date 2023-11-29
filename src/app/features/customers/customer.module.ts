@@ -11,18 +11,34 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as customersStore from './store';
 import { CustomersGuard } from './guards';
+import { AddEditComponent } from './containers/components/add-edit.component';
 
 const routes: Routes = [
   {
     path: '',
     canActivate: [CustomersGuard],
-    component: CustomerContainer
-  }];
+    children: [
+      {
+        path: '',
+        component: CustomerContainer
+      },
+      {
+        path: 'add',
+        component: AddEditComponent
+      },
+      {
+        path: 'edit/:id',
+        component: AddEditComponent
+      }
+    ]
+  }
+];
 
 @NgModule({
   declarations: [
     CustomerContainer,
-    CustomerComponent
+    CustomerComponent,
+    AddEditComponent
   ],
   imports: [
     StoreModule.forFeature('customers', customersStore.reducer),
