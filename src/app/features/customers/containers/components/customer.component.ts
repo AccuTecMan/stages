@@ -26,9 +26,9 @@ import { Customer } from '../../models';
             <mat-card-title>{{ customer.name }}</mat-card-title>
           </mat-card-header>
           <mat-card-actions fxLayoutAlign="space-between center">
-            <mat-chip-listbox aria-label="Fish selection">
-              <mat-chip-option color="accent">{{ customer.active ? "Active" : "Inactive" }}</mat-chip-option>
-            </mat-chip-listbox>
+            <mat-chip>
+              {{ customer.active ? "Active" : "Inactive" }}
+            </mat-chip>
             <button mat-button color="primary">UPDATE</button>
           </mat-card-actions>
         </mat-card>
@@ -48,7 +48,7 @@ import { Customer } from '../../models';
     }
 
     .add-button {
-      margin-right: .5rem;
+      margin-right: 1.5rem;
     }
 
     .content-records {
@@ -60,8 +60,12 @@ import { Customer } from '../../models';
       width: 150px;
     }
 
-    .content > mat-card {
-      width: 350px;
+    mat-card {
+      width: 400px;
+    }
+
+    .mat-mdc-card-header {
+      padding: .3rem 1rem;
     }
 
     .mat-mdc-button {
