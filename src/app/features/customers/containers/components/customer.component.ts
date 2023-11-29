@@ -76,6 +76,16 @@ import { Customer } from '../../models';
       background-color: #fee4ee;
       color: #fff;
     }
+
+    @media (max-width: 600px) {
+      mat-card {
+        width: 100%;
+      }
+
+      .add-button {
+        margin-right: 1rem;
+      }
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
