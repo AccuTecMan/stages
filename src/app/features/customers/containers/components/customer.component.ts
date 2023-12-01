@@ -21,13 +21,13 @@ import { Customer } from '../../models';
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers">
         <mat-card  class="mat-elevation-z16">
-          <mat-card-header>
+          <mat-card-header fxLayout="row wrap" fxLayoutAlign="space-between center">
             <mat-card-title>{{ customer.name }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-actions fxLayoutAlign="space-between center">
             <mat-chip>
               {{ customer.active ? "Active" : "Inactive" }}
             </mat-chip>
+          </mat-card-header>
+          <mat-card-actions fxLayoutAlign="space-between center">
             <button mat-button color="primary" [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
           </mat-card-actions>
         </mat-card>
