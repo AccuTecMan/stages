@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthService } from '@core/services';
 
+import { environment } from './../environments/environment';
+
 @Component({
   selector: 'app-root',
   template: `
-    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+    <app-header [ngClass]="{ 'grit': isDev}" (sidenavToggle)="sidenav.toggle()"></app-header>
     <mat-sidenav-container>
       <mat-sidenav #sidenav role="navigation" [class.mat-elevation-z4]="true">
         <app-sidenav-list (closeSidenav)="sidenav.close()"></app-sidenav-list>
@@ -18,6 +20,11 @@ import { AuthService } from '@core/services';
   `,
   styles: [
     `
+      .grit {
+        -webkit-mask-image: url("../assets/grit.png");
+        mask-image: url("../assets/grit.png");
+      }
+
       mat-sidenav-container,
       mat-sidenav-content,
       mat-sidenav {
@@ -33,7 +40,13 @@ import { AuthService } from '@core/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {  }
+  public isDev = !environment.production;
+
+  // [ngClass]="{ 'grit': isDev}"
+
+  constructor(private authService: AuthService) {
+    console.log('Dev?', this.isDev);
+  }
 
   ngOnInit() {
     this.authService.initAuthListener();
