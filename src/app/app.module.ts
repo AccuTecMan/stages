@@ -27,7 +27,7 @@ import { CoreModule } from '@core/core.module';
     BrowserAnimationsModule,
 
     // Firebase
-    provideFirebaseApp(() => initializeApp({"projectId":"stages-dev-c0a0e","appId":"1:559899214828:web:0d187dbb9b3f334a8ab6c9","storageBucket":"stages-dev-c0a0e.appspot.com","apiKey":"AIzaSyCSNkj4ScNvxrxq8pmRdcsYptzbWHU8a3g","authDomain":"stages-dev-c0a0e.firebaseapp.com","messagingSenderId":"559899214828"})),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
 

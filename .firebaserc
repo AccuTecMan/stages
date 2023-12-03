@@ -1,15 +1,17 @@
 {
+  "projects": {
+    "default": "stages-dev-c0a0e"
+  },
   "targets": {
     "stages-dev-c0a0e": {
       "hosting": {
-        "stages": [
+        "dev": [
           "stages-dev-c0a0e"
+        ],
+        "prod": [
+          "accutecstages"
         ]
       }
     }
-  },
-  "projects": {
-    "dev": "stages-dev-c0a0e",
-    "default": "stages-dev-c0a0e"
   }
 }
