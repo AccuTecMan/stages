@@ -1,2 +1,3 @@
 export * from './feature.selectors';
-export * from './type.selectors';
+export * from './job-types.selectors';
+export * from './type-stages.selectors';
