@@ -21,7 +21,6 @@ import { environment } from './../environments/environment';
   styles: [
     `
       .grit {
-        -webkit-mask-image: url("../assets/grit.png");
         mask-image: url("../assets/grit.png");
       }
 
@@ -42,11 +41,7 @@ import { environment } from './../environments/environment';
 export class AppComponent {
   public isDev = !environment.production;
 
-  // [ngClass]="{ 'grit': isDev}"
-
-  constructor(private authService: AuthService) {
-    console.log('Dev?', this.isDev);
-  }
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.authService.initAuthListener();
