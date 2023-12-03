@@ -8,14 +8,14 @@ import { loadEntity } from '../../../core';
 import * as fromFeature from '../store';
 
 @Injectable({ providedIn: 'root' })
-export class TypesGuard {
+export class TypeStagesGuard {
   constructor(
     private store: Store
   ) {}
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.store
-      .select(fromFeature.selectTypesLoadedStatus)
-      .pipe(loadEntity(() => this.store.dispatch(fromFeature.TypesGuardActions.loadAll()), undefined, false));
+      .select(fromFeature.selectTypeStagesLoadedStatus)
+      .pipe(loadEntity(() => this.store.dispatch(fromFeature.TypeStagesGuardActions.loadAll()), undefined, false));
   }
 }

@@ -36,7 +36,6 @@ export class CustomerContainer {
 
   public onChangeSearchTerm(term: string) {
     const a = term.toLocaleLowerCase();
-    console.log(a);
     if (a.length === 0) {
       this.filteredCustomers$ = this.customers$;
     } else {

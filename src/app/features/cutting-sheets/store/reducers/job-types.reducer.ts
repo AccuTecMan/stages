@@ -1,4 +1,3 @@
-import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { Type } from '../../models';
@@ -12,7 +11,6 @@ export interface TypeState extends LoadStatus {
 export const typesInitialState: TypeState = {
   status: EntityLoadStatus.INITIAL,
   types: undefined,
-
 };
 
 export const typesReducer = createReducer(
