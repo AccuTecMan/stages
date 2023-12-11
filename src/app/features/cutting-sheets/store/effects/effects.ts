@@ -15,7 +15,7 @@ export class CuttingSheetsEffects {
   loadJobTypes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TypesGuardActions.loadAll),
-      switchMap((action) =>
+      switchMap(() =>
         this.jobTypeService.getAll().pipe(
           map((types) => TypesApiActions.loadAllSuccess({ types: types })),
           catchError(() => of(TypesApiActions.loadAllFailure()))
@@ -27,7 +27,7 @@ export class CuttingSheetsEffects {
   loadTypeStages$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TypeStagesGuardActions.loadAll),
-      switchMap((action) =>
+      switchMap(() =>
         this.typeStagesService.getAll().pipe(
           map((typeStages) => TypeStagesApiActions.loadAllSuccess({ typeStages: typeStages })),
           catchError(() => of(TypeStagesApiActions.loadAllFailure()))
