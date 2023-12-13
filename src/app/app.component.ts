@@ -6,7 +6,7 @@ import { environment } from './../environments/environment';
 @Component({
   selector: 'app-root',
   template: `
-    <app-header [ngClass]="{ 'grit': isDev}" (sidenavToggle)="sidenav.toggle()"></app-header>
+    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
     <mat-sidenav-container>
       <mat-sidenav #sidenav role="navigation" [class.mat-elevation-z4]="true">
         <app-sidenav-list (closeSidenav)="sidenav.close()"></app-sidenav-list>
@@ -20,10 +20,6 @@ import { environment } from './../environments/environment';
   `,
   styles: [
     `
-      .grit {
-        mask-image: url("../assets/grit.png");
-      }
-
       mat-sidenav-container,
       mat-sidenav-content,
       mat-sidenav {
@@ -39,8 +35,6 @@ import { environment } from './../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  public isDev = !environment.production;
-
   constructor(private authService: AuthService) {}
 
   ngOnInit() {

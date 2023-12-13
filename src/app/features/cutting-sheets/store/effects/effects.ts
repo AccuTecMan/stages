@@ -3,14 +3,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 
 import { JobTypesService } from '../../services';
-import { TypesGuardActions, TypesApiActions, TypeStagesGuardActions, TypeStagesApiActions } from '../actions';
-import { TypeStagesService } from '../../services/type-stages.service';
+import { TypesGuardActions, TypesApiActions, StageTemplatesGuardActions, StageTemplatesApiActions } from '../actions';
+import { StageTemplatesService } from '../../services/stage-templates.service';
 
 @Injectable()
 export class CuttingSheetsEffects {
   constructor(private actions$: Actions,
               private jobTypeService: JobTypesService,
-              private typeStagesService: TypeStagesService) {}
+              private stageTemplatesService: StageTemplatesService) {}
 
   loadJobTypes$ = createEffect(() => {
     return this.actions$.pipe(
@@ -26,11 +26,11 @@ export class CuttingSheetsEffects {
 
   loadTypeStages$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(TypeStagesGuardActions.loadAll),
+      ofType(StageTemplatesGuardActions.loadAll),
       switchMap(() =>
-        this.typeStagesService.getAll().pipe(
-          map((typeStages) => TypeStagesApiActions.loadAllSuccess({ typeStages: typeStages })),
-          catchError(() => of(TypeStagesApiActions.loadAllFailure()))
+        this.stageTemplatesService.getAll().pipe(
+          map((stageTemplates) => StageTemplatesApiActions.loadAllSuccess({ stageTemplates: stageTemplates })),
+          catchError(() => of(StageTemplatesApiActions.loadAllFailure()))
         )
       )
     );

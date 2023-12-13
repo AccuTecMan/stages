@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from '@core/services';
 import * as fromCore from '@core/store';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
   template: `
-    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-toolbar [ngClass]="{ 'dev-background': isDev}" color="primary" fxLayout="row"
+            fxLayoutAlign="space-between center">
       @if (isAuth$ | async) {
         <span>
           <button *ngIf="isAuth$ | async" mat-button
@@ -28,6 +30,10 @@ import * as fromCore from '@core/store';
   `,
   styles: [
     `
+      .dev-background {
+        background-color: lightblue;
+      }
+
       .brand-title {
         font-size: 1.5rem;
       }
@@ -54,6 +60,8 @@ export class HeaderComponent {
   @Output() sidenavToggle = new EventEmitter<void>();
   public isAuth$: Observable<boolean> = this.store.select(fromCore.selectIsAuth);
   public displayName$: Observable<string | null> = this.store.select(fromCore.selectDisplayName);
+
+  public isDev = !environment.production;
 
   constructor(private store: Store, private authService: AuthService) {}
 

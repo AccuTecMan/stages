@@ -1,1 +1,1 @@
-export * from './effects';
+export { CuttingSheetsEffects } from './effects';

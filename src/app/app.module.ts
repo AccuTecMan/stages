@@ -14,7 +14,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { AppCommonModule } from './common/app-common.module';
 import { CoreModule } from '@core/core.module';
-import { reducers } from './store';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,7 @@ import { reducers } from './store';
     provideFirestore(() => getFirestore()),
 
     // Store
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({

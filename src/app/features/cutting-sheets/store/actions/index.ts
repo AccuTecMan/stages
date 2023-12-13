@@ -1,2 +1,2 @@
-export * from './job-types.actions';
-export * from './type-stages.actions';
+export { TypesApiActions, TypesGuardActions } from './job-types.actions';
+export { StageTemplatesApiActions, StageTemplatesGuardActions } from './stage-templates.actions';
