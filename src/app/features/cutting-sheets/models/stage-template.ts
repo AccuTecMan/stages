@@ -1,19 +1,23 @@
 import { Type } from "./type";
 
-export interface TypeStage {
+export interface StageTemplate {
   id: string;
-  jobType: any;
+  jobType: string;
   name: string;
   order: number;
+  date: Date;
+  notes: string;
   canGoBack: boolean;
   canGoForward: boolean;
 }
 
-export interface TypeStageServer {
+export interface StageTemplateServer {
   id: string;
-  jobType: any;
+  jobType: string;
   name: string;
   order: number;
+  date: Date;
+  notes: string;
   canGoBack: boolean;
   canGoForward: boolean;
 }

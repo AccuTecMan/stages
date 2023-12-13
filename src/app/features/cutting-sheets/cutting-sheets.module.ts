@@ -11,12 +11,12 @@ import { AppCommonModule } from '@common/app-common.module';
 import { CuttingSheetsContainer } from './containers/cutting-sheets.container';
 import { CuttingSheetsComponent } from './containers/components/cutting-sheets.component';
 import { reducer, featureName, CuttingSheetsEffects } from './store';
-import { JobTypesGuard, TypeStagesGuard } from './guards';
+import { JobTypesGuard, StageTemplatesGuard } from './guards';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [JobTypesGuard, TypeStagesGuard],
+    canActivate: [JobTypesGuard, StageTemplatesGuard],
     children: [
       {
         path: '',
