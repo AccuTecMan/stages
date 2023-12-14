@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
-import { JobTypesService } from '../../services';
-import { TypesGuardActions, TypesApiActions, StageTemplatesGuardActions, StageTemplatesApiActions } from '../actions';
-import { StageTemplatesService } from '../../services/stage-templates.service';
+import { TypesGuardActions, TypesApiActions, StageTemplatesGuardActions, StageTemplatesApiActions } from '../../store/actions';
+import { StageTemplatesService, JobTypesService } from '../../services';
 
 @Injectable()
 export class CuttingSheetsEffects {

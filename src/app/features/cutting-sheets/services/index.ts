@@ -1,4 +1,4 @@
 
 export { CuttingSheetsService } from './cutting-sheets.service';
-export { JobTypesService } from './job-types.service';
-export { StageTemplatesService } from './stage-templates.service';
+export { JobTypesService } from '../../../base/services/job-types.service';
+export { StageTemplatesService } from '../../../base/services/stage-templates.service';

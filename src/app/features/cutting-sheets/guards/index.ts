@@ -1,2 +1,2 @@
-export * from './job-types.guard';
-export * from './stage-templates.guard';
+export * from '../../../base/guards/job-types.guard';
+export * from '../../../base/guards/stage-templates.guard';

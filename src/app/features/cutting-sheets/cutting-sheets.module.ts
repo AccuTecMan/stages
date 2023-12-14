@@ -10,7 +10,7 @@ import { AppCommonModule } from '@common/app-common.module';
 
 import { CuttingSheetsContainer } from './containers/cutting-sheets.container';
 import { CuttingSheetsComponent } from './containers/components/cutting-sheets.component';
-import { reducer, featureName, CuttingSheetsEffects } from './store';
+
 import { JobTypesGuard, StageTemplatesGuard } from './guards';
 
 const routes: Routes = [
@@ -32,11 +32,13 @@ const routes: Routes = [
     CuttingSheetsComponent
   ],
   imports: [
-    StoreModule.forFeature(featureName, reducer),
-    EffectsModule.forFeature([CuttingSheetsEffects]),
+    // StoreModule.forFeature(featureName, reducer),
+    // EffectsModule.forFeature([CuttingSheetsEffects]),
     RouterModule.forChild(routes),
 
-    CommonModule, ReactiveFormsModule,
-    AppCommonModule, BaseModule]
+    CommonModule,
+    ReactiveFormsModule,
+    AppCommonModule,
+    BaseModule]
 })
 export class CuttingSheetsModule {}

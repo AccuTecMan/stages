@@ -2,7 +2,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import { TypeState, typesInitialState, typesReducer } from './job-types.reducer';
 import { StageTemplatesState, stageTemplatesInitialState, sTemplatesReducer } from './stage-templates.reducer';
 
-export const featureName = 'cuttingSheets';
+export const featureName = 'base';
 
 export interface CuttingSheetsState {
   jobTypes: TypeState;
