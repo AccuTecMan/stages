@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { Type } from '../../models';
+import { Type } from '../../../features/cutting-sheets/models';
 
 export const TypesGuardActions = createActionGroup({
   source: 'Types Guard',

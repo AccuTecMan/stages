@@ -1,1 +1,0 @@
-export { CuttingSheetsEffects } from './effects';

@@ -3,7 +3,7 @@ import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Type } from '../models';
+import { Type } from '../../features/cutting-sheets/models';
 
 @Injectable({
   providedIn: 'root',
