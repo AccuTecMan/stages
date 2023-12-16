@@ -5,30 +5,30 @@ import { Customer } from '../../models';
   selector: 'app-customer-component',
   template: `
     <header class="content-header">
-      <h1>Customers</h1>
-      <mat-divider></mat-divider>
-      <div fxLayout="row" fxLayoutAlign="space-between start">
-        <mat-form-field>
-          <input matInput placeholder="Search" [(ngModel)]="term">
-        </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Customers</h1>
         <button mat-fab extended color="primary" class="add-button" routerLink="/customers/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
       </div>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <input matInput placeholder="Search" [(ngModel)]="term">
+      </mat-form-field>
     </header>
 
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers; trackBy: trackByCustomerGuid">
         <mat-card  class="mat-elevation-z16">
-          <mat-card-header fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <mat-card-header>
             <mat-card-title>{{ customer.name }}</mat-card-title>
-            <mat-chip>
-              {{ customer.active ? "Active" : "Inactive" }}
-            </mat-chip>
           </mat-card-header>
           <mat-card-actions fxLayoutAlign="space-between center">
             <button mat-button color="primary" [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
+            <mat-chip>
+              {{ customer.active ? "Active" : "Inactive" }}
+            </mat-chip>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -47,7 +47,15 @@ import { Customer } from '../../models';
     }
 
     mat-divider {
-      margin-bottom: 1rem;
+      margin: .5rem 0rem 1rem 0rem;
+    }
+
+    .mat-mdc-fab.mat-primary {
+      margin-right: 0px;
+    }
+
+    .mdc-fab--extended {
+      height: 40px;
     }
 
     .add-button {
@@ -65,6 +73,12 @@ import { Customer } from '../../models';
 
     mat-card {
       width: 400px;
+    }
+
+    mat-card-title {
+      color: #386195;
+      margin: 0rem 0rem -.6rem 0rem;
+      padding: 0px;
     }
 
     .mat-mdc-card-header {

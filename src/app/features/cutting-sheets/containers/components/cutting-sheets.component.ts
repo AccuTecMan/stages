@@ -5,37 +5,43 @@ import { CuttingSheet } from '../../models';
   selector: 'app-cutting-sheets-component',
   template: `
     <header class="content-header">
-      <h1>Cutting Sheets</h1>
-      <mat-divider></mat-divider>
-      <div fxLayout="row" fxLayoutAlign="space-between start">
-        <mat-form-field>
-          <input matInput placeholder="Job Name" [(ngModel)]="term">
-        </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Cutting Sheets</h1>
         <button mat-fab extended color="primary" class="add-button" routerLink="/customers/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
       </div>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <input matInput placeholder="Job Name" [(ngModel)]="term">
+      </mat-form-field>
     </header>
 
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-      <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let sheet of cuttingSheets; trackBy: trackByCustomerGuid">
+      <div fxFlex="50%" fxFlex.lt-sm="100%"
+            *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
         <mat-card  class="mat-elevation-z16">
           <mat-card-header>
+            <mat-card-title>{{ sheet.jobName }}</mat-card-title>
             <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
             <dl>
               <dt>Job Type</dt>
-              <dd>{{sheet.jobType.name}}</dd>
+              <dd>{{ sheet.jobType.name }}</dd>
             </dl>
             <dl>
               <dt>Color</dt>
-              <dd>{{sheet.color}}</dd>
+              <dd>{{ sheet.color }}</dd>
             </dl>
             <dl>
               <dt>Customer</dt>
-              <dd>{{sheet.customer.name}}</dd>
+              <dd>{{ sheet.customer.name }}</dd>
+            </dl>
+            <dl>
+              <dt>Ready By</dt>
+              <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
             </dl>
           </mat-card-content>
           <mat-card-actions fxLayoutAlign="space-between center">
@@ -57,18 +63,26 @@ import { CuttingSheet } from '../../models';
       max-width: 850px;
     }
 
+    .mat-mdc-fab.mat-primary {
+      margin-right: 0px;
+    }
+
+    .mdc-fab--extended {
+      height: 40px;
+    }
+
     mat-card-title {
-      color: #4171ae;
+      color: #386195;
       margin: 0rem 0rem -.6rem 0rem;
       padding: 0px;
     }
 
     mat-card-subtitle {
-      color: #4171ae;
+      color: #5f8bc3;
     }
 
     dl {
-      margin: .1rem 0rem 0rem 1rem;
+      margin: .5rem 0rem 0rem 1rem;
     }
 
     dt {
@@ -82,7 +96,7 @@ import { CuttingSheet } from '../../models';
     }
 
     mat-divider {
-      margin-bottom: 1rem;
+      margin: .5rem 0rem 1rem 0rem;
     }
 
     .add-button {
@@ -141,7 +155,7 @@ export class CuttingSheetsComponent {
     this.onSearchTermChange(this._term);
   }
 
-  public trackByCustomerGuid(index: number, cuttingSheet: CuttingSheet) {
+  public trackByCuttingSheetGuid(index: number, cuttingSheet: CuttingSheet) {
     return cuttingSheet.id;
   }
 
