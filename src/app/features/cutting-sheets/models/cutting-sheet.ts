@@ -8,4 +8,5 @@ export interface CuttingSheet {
   customer: Customer;
   jobType: JobType;
   color: string;
+  readyBy: any;
 }
