@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { Type } from '../../models';
+import { JobType } from '../../models';
 import { TypesGuardActions, TypesApiActions } from '../actions';
 import { EntityLoadStatus, LoadStatus } from '@core/models';
 
 export interface TypeState extends LoadStatus {
-  types: Type[] | undefined;
+  types: JobType[] | undefined;
 }
 
 export const typesInitialState: TypeState = {
