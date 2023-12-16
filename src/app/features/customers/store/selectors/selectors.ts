@@ -11,7 +11,7 @@ export const selectIsLoading = createSelector(selectCustomersState, (state) => s
 
 export const customersSelectors = customerAdapter.getSelectors(selectCustomersState);
 
-export const selectCus = createSelector(customersSelectors.selectAll, (cus) => cus);
+export const selectCustomers = createSelector(customersSelectors.selectAll, (cus) => cus);
 
 export const selectCustomersAllUnsorted = createSelector(
   selectCustomersState,

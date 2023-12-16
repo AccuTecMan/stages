@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -36,9 +36,12 @@ const routes: Routes = [
     EffectsModule.forFeature([CuttingSheetsEffects]),
     RouterModule.forChild(routes),
 
+    ReactiveFormsModule,
     CommonModule,
     ReactiveFormsModule,
     AppCommonModule,
-    BaseModule]
+    BaseModule,
+    FormsModule
+  ]
 })
 export class CuttingSheetsModule {}

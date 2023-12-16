@@ -19,7 +19,7 @@ import { Customer } from '../../models';
     </header>
 
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-      <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers">
+      <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers; trackBy: trackByCustomerGuid">
         <mat-card  class="mat-elevation-z16">
           <mat-card-header fxLayout="row wrap" fxLayoutAlign="space-between center">
             <mat-card-title>{{ customer.name }}</mat-card-title>
@@ -105,5 +105,10 @@ export class CustomerComponent {
     this._term = value;
     this.onSearchTermChange(this._term);
   }
+
+  public trackByCustomerGuid(index: number, customer: Customer) {
+    return customer.id;
+  }
+
 
 }
