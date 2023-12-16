@@ -10,13 +10,13 @@ import { AppCommonModule } from '@common/app-common.module';
 
 import { CuttingSheetsContainer } from './containers/cutting-sheets.container';
 import { CuttingSheetsComponent } from './containers/components/cutting-sheets.component';
-
-import { JobTypesGuard, StageTemplatesGuard } from './guards';
+import { CuttingSheetsEffects, featureName, reducer } from './store';
+import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [JobTypesGuard, StageTemplatesGuard],
+    canActivate: [CuttingSheetsGuard],
     children: [
       {
         path: '',
@@ -32,8 +32,8 @@ const routes: Routes = [
     CuttingSheetsComponent
   ],
   imports: [
-    // StoreModule.forFeature(featureName, reducer),
-    // EffectsModule.forFeature([CuttingSheetsEffects]),
+    StoreModule.forFeature(featureName, reducer),
+    EffectsModule.forFeature([CuttingSheetsEffects]),
     RouterModule.forChild(routes),
 
     CommonModule,

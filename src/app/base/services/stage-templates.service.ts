@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { DocumentReference, Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
-import { Observable, map } from 'rxjs';
-import { StageTemplate, StageTemplateServer } from '../models/stage-template';
+import { Observable } from 'rxjs';
+import { StageTemplate } from '../models/stage-template';
 
 @Injectable({
   providedIn: 'root',

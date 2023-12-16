@@ -3,7 +3,7 @@ import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Type } from '../../features/cutting-sheets/models';
+import { JobType } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +18,11 @@ export class JobTypesService {
   public getAll() {
     return collectionData(this.typesCollection, {
       idField: 'id',
-    }) as Observable<Type[]>;
+    }) as Observable<JobType[]>;
   }
 
-  public get(id: string): Observable<Type> {
+  public get(id: string): Observable<JobType> {
     const typesReference = doc(this.firestore, `jobTypes/${id}`);
-    return docData(typesReference, { idField: 'id' }) as Observable<Type>;
+    return docData(typesReference, { idField: 'id' }) as Observable<JobType>;
   }
 }

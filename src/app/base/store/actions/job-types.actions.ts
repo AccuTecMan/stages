@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { Type } from '../../../features/cutting-sheets/models';
+import { JobType } from '../../models';
 
 export const TypesGuardActions = createActionGroup({
   source: 'Types Guard',
@@ -12,7 +12,7 @@ export const TypesGuardActions = createActionGroup({
 export const TypesApiActions = createActionGroup({
   source: 'Types API',
   events: {
-    'Load All Success': props<{ types: Type[] }>(),
+    'Load All Success': props<{ types: JobType[] }>(),
     'Load All Failure': emptyProps(),
   },
 });

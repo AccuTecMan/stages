@@ -1,2 +1,2 @@
-export { StageTemplate, StageTemplateServer } from './stage-template';
-export { Type } from './type';
+export { JobType } from './job-type';
+export { StageTemplate } from './stage-template';
