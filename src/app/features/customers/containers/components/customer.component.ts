@@ -13,9 +13,25 @@ import { Customer } from '../../models';
         </button>
       </div>
       <mat-divider></mat-divider>
-      <mat-form-field>
-        <input matInput placeholder="Search" [(ngModel)]="term">
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="14px">
+        <mat-form-field>
+          <input matInput placeholder="Search" [(ngModel)]="term">
+        </mat-form-field>
+        <button mat-fab extended color="normal"
+              [ngClass]="{ 'inactive-background': isInactiveDisplayed}"
+              (click)="displayInactive()">
+          @if (isInactiveDisplayed) {
+            <mat-icon>done</mat-icon>
+          } @else {
+            <mat-icon>close</mat-icon>
+          }
+          @if (isInactiveDisplayed) {
+            <span>Hide Inactive</span>
+          } @else {
+            <span>Show Inactive</span>
+          }
+        </button>
+      </div>
     </header>
 
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
@@ -76,7 +92,7 @@ import { Customer } from '../../models';
     }
 
     mat-card-title {
-      color: #386195;
+      color: #607ec9;
       margin: 0rem 0rem -.6rem 0rem;
       padding: 0px;
     }
@@ -86,7 +102,12 @@ import { Customer } from '../../models';
     }
 
     .mat-mdc-button {
-      background-color: #e3e2f4;
+      background-color: #607ec9;
+      color: white;
+    }
+
+    .inactive-background {
+      background-color: #607ec9;
     }
 
     @media (max-width: 600px) {
@@ -95,15 +116,17 @@ import { Customer } from '../../models';
       }
 
       .add-button {
-        margin-right: 1rem;
+        margin: 1rem;
       }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerComponent {
+  public isInactiveDisplayed: boolean = false;
   @Input() customers!: Customer[] | null;
   @Output() public changeSearchTerm = new EventEmitter<string>();
+  @Output() public showInactive = new EventEmitter<boolean>();
 
   private _term: string;
 
@@ -124,5 +147,9 @@ export class CustomerComponent {
     return customer.id;
   }
 
+  public displayInactive(): void {
+    this.isInactiveDisplayed = !this.isInactiveDisplayed;
+    this.showInactive.emit(this.isInactiveDisplayed);
+  }
 
 }
