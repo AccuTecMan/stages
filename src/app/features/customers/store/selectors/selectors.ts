@@ -11,16 +11,7 @@ export const selectIsLoading = createSelector(selectCustomersState, (state) => s
 
 export const customersSelectors = customerAdapter.getSelectors(selectCustomersState);
 
-export const selectCustomers = (isInactiveDisplayed: boolean) =>createSelector(
-  customersSelectors.selectAll,
-  (customers: Customer[]) => {
-    if (isInactiveDisplayed) {
-      return customers;
-    } else {
-      return customers.filter(c => c.active)
-    }
-  }
-);
+export const selectCustomers = createSelector(customersSelectors.selectAll, (cus) => cus);
 
 export const selectCustomersAllUnsorted = createSelector(
   selectCustomersState,

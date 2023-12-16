@@ -26,28 +26,42 @@ import { Customer } from '../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
-
-  public customers$ = this.store.select(fromStore.selectCustomers(false));
+  public customers$ = this.store.select(fromStore.selectCustomers);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
   public filteredCustomers$: Observable<Customer[]>;
+  private isInactiveDisplayed: boolean = false;
+  private searchTerm: string = "";
 
   constructor(private store: Store) {
-    this.filteredCustomers$ = this.customers$;
+    this.filteredCustomers$ = this.customers$.pipe(
+      map(x => x.filter(c => c.active))
+    );
   }
 
   public onChangeSearchTerm(term: string) {
-    const a = term.toLocaleLowerCase();
+    this.searchTerm = term;
+    this.searchCustomers();
+  }
+
+  public onShowInactive(showInactive: boolean) {
+    this.isInactiveDisplayed = showInactive;
+    this.searchCustomers();
+  }
+
+  searchCustomers(): void {
+    const a = this.searchTerm.toLocaleLowerCase();
     if (a.length === 0) {
-      this.filteredCustomers$ = this.customers$;
+      this.filteredCustomers$ = this.customers$.pipe(
+        map((c: any) => c.filter((x: any) => x.active == (this.isInactiveDisplayed ? x.active : true)))
+      )
     } else {
-      this.filteredCustomers$= this.customers$.pipe(
-        map(c => c.filter(x => x.name.toLocaleLowerCase().indexOf(a) > -1))
+      console.log('this.isInactiveDisplayed', this.isInactiveDisplayed)
+      this.filteredCustomers$ = this.customers$.pipe(
+        map((c: any) => c.filter((x:any) => x.name.toLocaleLowerCase().indexOf(a) > -1
+                    && x.active == (this.isInactiveDisplayed ? x.active : true)))
       );
     }
   }
 
-  public onShowInactive(showInactive: boolean) {
-    this.filteredCustomers$ = this.store.select(fromStore.selectCustomers(showInactive));
-  }
 
 }

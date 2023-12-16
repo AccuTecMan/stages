@@ -7,7 +7,7 @@ import { CuttingSheet } from '../../models';
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Cutting Sheets</h1>
-        <button mat-fab extended color="primary" class="add-button" routerLink="/customers/add">
+        <button mat-fab extended routerLink="/customers/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
@@ -45,7 +45,7 @@ import { CuttingSheet } from '../../models';
             </dl>
           </mat-card-content>
           <mat-card-actions fxLayoutAlign="space-between center">
-            <button mat-button color="primary" [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
+            <button mat-button [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -97,10 +97,6 @@ import { CuttingSheet } from '../../models';
 
     mat-divider {
       margin: .5rem 0rem 1rem 0rem;
-    }
-
-    .add-button {
-      margin-right: 1.5rem;
     }
 
     .content-records {

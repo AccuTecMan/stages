@@ -7,7 +7,7 @@ import { Customer } from '../../models';
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Customers</h1>
-        <button mat-fab extended color="primary" class="add-button" routerLink="/customers/add">
+        <button mat-fab extended routerLink="/customers/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
@@ -15,7 +15,8 @@ import { Customer } from '../../models';
       <mat-divider></mat-divider>
       <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="14px">
         <mat-form-field>
-          <input matInput placeholder="Search" [(ngModel)]="term">
+          <mat-label>Customer name</mat-label>
+          <input matInput [(ngModel)]="term">
         </mat-form-field>
         <button mat-fab extended color="normal"
               [ngClass]="{ 'inactive-background': isInactiveDisplayed}"
@@ -41,7 +42,7 @@ import { Customer } from '../../models';
             <mat-card-title>{{ customer.name }}</mat-card-title>
           </mat-card-header>
           <mat-card-actions fxLayoutAlign="space-between center">
-            <button mat-button color="primary" [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
+            <button mat-button [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
             <mat-chip>
               {{ customer.active ? "Active" : "Inactive" }}
             </mat-chip>
@@ -62,6 +63,10 @@ import { Customer } from '../../models';
       max-width: 850px;
     }
 
+    .my-form-field .mat-form-field-wrapper {
+      margin-bottom: -1.25em;
+    }
+
     mat-divider {
       margin: .5rem 0rem 1rem 0rem;
     }
@@ -71,11 +76,8 @@ import { Customer } from '../../models';
     }
 
     .mdc-fab--extended {
+      margin-top: .4rem;
       height: 40px;
-    }
-
-    .add-button {
-      margin-right: 1.5rem;
     }
 
     .content-records {
@@ -123,12 +125,12 @@ import { Customer } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerComponent {
-  public isInactiveDisplayed: boolean = false;
   @Input() customers!: Customer[] | null;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public showInactive = new EventEmitter<boolean>();
 
   private _term: string;
+  public isInactiveDisplayed: boolean = false;
 
   public onSearchTermChange(term: string) {
     this.changeSearchTerm.emit(term);
