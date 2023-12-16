@@ -29,8 +29,8 @@ $my-app-theme:   mat.define-light-theme((
   typography: $my-typography,
 ));
 
-@include mat.all-component-themes($my-app-theme);
 
+@include mat.all-component-themes($my-app-theme);
 
 html, body {
   height: 100%;
@@ -63,6 +63,8 @@ a:hover,
 a:active {
   color: lightgray;
 }
+
+
 
 /******************************************
 // CARDS

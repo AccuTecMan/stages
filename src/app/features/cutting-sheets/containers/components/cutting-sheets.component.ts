@@ -72,7 +72,7 @@ import { CuttingSheet } from '../../models';
     }
 
     mat-card-title {
-      color: #386195;
+      color: #607ec9;
       margin: 0rem 0rem -.6rem 0rem;
       padding: 0px;
     }
@@ -121,7 +121,8 @@ import { CuttingSheet } from '../../models';
     }
 
     .mat-mdc-button {
-      background-color: #e3e2f4;
+      background-color: #607ec9;
+      color: white;
     }
 
     @media (max-width: 600px) {

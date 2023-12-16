@@ -14,6 +14,7 @@ import { Customer } from '../models';
       <app-customer-component
         [customers]="filteredCustomers$ | async"
         (changeSearchTerm)="onChangeSearchTerm($event)"
+        (showInactive)="onShowInactive($event)"
       />
     }
   `,
@@ -25,9 +26,9 @@ import { Customer } from '../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
-  public customers$ = this.store.select(fromStore.selectCustomers);
-  public isLoading$ = this.store.select(fromStore.selectIsLoading);
 
+  public customers$ = this.store.select(fromStore.selectCustomers(false));
+  public isLoading$ = this.store.select(fromStore.selectIsLoading);
   public filteredCustomers$: Observable<Customer[]>;
 
   constructor(private store: Store) {
@@ -43,6 +44,10 @@ export class CustomerContainer {
         map(c => c.filter(x => x.name.toLocaleLowerCase().indexOf(a) > -1))
       );
     }
+  }
+
+  public onShowInactive(showInactive: boolean) {
+    this.filteredCustomers$ = this.store.select(fromStore.selectCustomers(showInactive));
   }
 
 }
