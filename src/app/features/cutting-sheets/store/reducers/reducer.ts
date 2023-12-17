@@ -21,7 +21,10 @@ export const cuttingSheetsAdapter = createEntityAdapter<CuttingSheet>(SummaryAda
 
 const initialState: CuttingSheetsState = {
   summary: cuttingSheetsAdapter.getInitialState(),
-  searchCriteria: undefined,
+  searchCriteria: {
+    customerId: 'mRibz0dPo7NNaWYu6oW6',
+    readyByOption: 0
+  },
   status: EntityLoadStatus.INITIAL
 };
 
