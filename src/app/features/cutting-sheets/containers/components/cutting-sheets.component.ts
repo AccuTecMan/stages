@@ -13,10 +13,20 @@ import { CuttingSheet } from '../../models';
         </button>
       </div>
       <mat-divider></mat-divider>
-      <mat-form-field>
-        <input matInput placeholder="Job Name" [(ngModel)]="term">
-      </mat-form-field>
-    </header>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <mat-form-field>
+          <input matInput placeholder="Job Name" [(ngModel)]="term">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ready by</mat-label>
+          <mat-select [(value)]="readyBySelected">
+            @for (readyBy of readyByOptions; track readyBy) {
+              <mat-option [value]="readyBy.value">{{readyBy.view}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      </header>
 
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%"
@@ -134,12 +144,22 @@ import { CuttingSheet } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CuttingSheetsComponent {
-  @Input() cuttingSheets!: CuttingSheet[] | null;
+  @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Output() public changeSearchTerm = new EventEmitter<string>();
 
+  public readyByOptions = [
+    {value: 0, view: 'Today'},
+    {value: 1, view: 'Yesterday'},
+    {value: 2, view: 'This week'},
+    {value: 3, view: 'Last 7 days'},
+    {value: 4, view: 'Last 15 days'},
+    {value: 5, view: 'Last 30 days'},
+    {value: 6, view: 'Custom'},
+  ]
+  public readyBySelected = 0;
   private _term: string;
 
-  public onSearchTermChange(term: string) {
+   public onSearchTermChange(term: string) {
     this.changeSearchTerm.emit(term);
   }
 
