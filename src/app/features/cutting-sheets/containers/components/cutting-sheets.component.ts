@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CuttingSheet } from '../../models';
+import { CuttingSheet, SearchCriteria } from '../../models';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-cutting-sheets-component',
@@ -19,15 +20,19 @@ import { CuttingSheet } from '../../models';
         </mat-form-field>
         <mat-form-field>
           <mat-label>Ready by</mat-label>
-          <mat-select [(value)]="readyBySelected">
+          <mat-select [(value)]="readyBySelected" (selectionChange)="selectBy(readyBySelected)">
             @for (readyBy of readyByOptions; track readyBy) {
               <mat-option [value]="readyBy.value">{{readyBy.view}}</mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
-      </header>
+    </header>
 
+    @if (isLoading) {
+      <mat-spinner fxLayout="row" fxLayoutAlign="start start" diameter="60" strokeWidth="5">
+      </mat-spinner>
+    } @else {
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%"
             *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
@@ -60,6 +65,7 @@ import { CuttingSheet } from '../../models';
         </mat-card>
       </div>
     </section>
+    }
   `,
   styles: [`
     h1 {
@@ -145,7 +151,9 @@ import { CuttingSheet } from '../../models';
 })
 export class CuttingSheetsComponent {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
+  @Input() isLoading: boolean | null;
   @Output() public changeSearchTerm = new EventEmitter<string>();
+  @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
   public readyByOptions = [
     {value: 0, view: 'Today'},
@@ -154,7 +162,7 @@ export class CuttingSheetsComponent {
     {value: 3, view: 'Last 7 days'},
     {value: 4, view: 'Last 15 days'},
     {value: 5, view: 'Last 30 days'},
-    {value: 6, view: 'Custom'},
+    {value: 6, view: 'All'},
   ]
   public readyBySelected = 0;
   private _term: string;
@@ -174,6 +182,14 @@ export class CuttingSheetsComponent {
 
   public trackByCuttingSheetGuid(index: number, cuttingSheet: CuttingSheet) {
     return cuttingSheet.id;
+  }
+
+  public selectBy(option: any) {
+    const criteria: SearchCriteria = {
+      customerId: undefined,
+      readyByOption: option
+    }
+    this.changeSearchCriteria.emit(criteria);
   }
 
 }
