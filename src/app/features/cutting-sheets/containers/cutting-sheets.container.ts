@@ -2,20 +2,18 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
-import { CuttingSheet } from '../models';
+import { CuttingSheet, SearchCriteria } from '../models';
 import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-cutting-sheets-container',
   template: `
-    @if (isLoading$ | async) {
-      <mat-spinner fxLayoutAlign="center top" fxFill diameter="80" strokeWidth="5"></mat-spinner>
-    } @else {
-      <app-cutting-sheets-component
-        [cuttingSheets]="filteredCuttingSheets$ | async"
-        (changeSearchTerm)="onChangeSearchTerm($event)"
-      />
-    }
+    <app-cutting-sheets-component
+      [cuttingSheets]="filteredCuttingSheets$ | async"
+      [isLoading]="isLoading$ | async"
+      (changeSearchTerm)="onChangeSearchTerm($event)"
+      (changeSearchCriteria)="onChangeSearchCriteria($event)"
+    />
   `,
   styles:[`
     mat-spinner {
@@ -43,5 +41,10 @@ export class CuttingSheetsContainer {
         map(c => c.filter(x => x.jobName.toLocaleLowerCase().indexOf(a) > -1))
       );
     }
+  }
+
+  public onChangeSearchCriteria(criteria: SearchCriteria) {
+    this.store.dispatch(fromStore.SearchCriteriaActions.set({ searchCriteria: criteria }))
+    this.store.dispatch(fromStore.CuttingSheetsGuardActions.loadAll());
   }
 }

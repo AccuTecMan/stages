@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { CuttingSheet } from '../../models';
+import { CuttingSheet, SearchCriteria } from '../../models';
 
 export const CuttingSheetsGuardActions = createActionGroup({
   source: 'Cutting Sheets Guard',
@@ -14,5 +14,12 @@ export const CuttingSheetsApiActions = createActionGroup({
   events: {
     'Load All Success': props<{ cuttingSheets: CuttingSheet[] }>(),
     'Load All Failure': emptyProps(),
+  },
+});
+
+export const SearchCriteriaActions = createActionGroup({
+  source: 'Search Criteria',
+  events: {
+    'Set': props<{ searchCriteria: SearchCriteria }>(),
   },
 });

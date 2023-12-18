@@ -5,6 +5,7 @@ import { CuttingSheetsGuardActions, CuttingSheetsApiActions } from '..';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { CuttingSheet } from '../../models';
 import { SearchCriteria } from '../../models/search-criteria';
+import { SearchCriteriaActions } from '../actions/cutting-sheets.actions';
 
 export const featureName = 'cuttingSheets';
 
@@ -22,7 +23,7 @@ export const cuttingSheetsAdapter = createEntityAdapter<CuttingSheet>(SummaryAda
 const initialState: CuttingSheetsState = {
   summary: cuttingSheetsAdapter.getInitialState(),
   searchCriteria: {
-    customerId: 'mRibz0dPo7NNaWYu6oW6',
+    customerId: undefined,
     readyByOption: 0
   },
   status: EntityLoadStatus.INITIAL
@@ -49,6 +50,14 @@ export const internalReducer = createReducer(
     CuttingSheetsApiActions.loadAllFailure,
     (state): CuttingSheetsState => ({
       ...state,
+      status: EntityLoadStatus.FAILURE,
+    })
+  ),
+  on(
+    SearchCriteriaActions.set,
+    (state, { searchCriteria }): CuttingSheetsState => ({
+      ...state,
+      searchCriteria,
       status: EntityLoadStatus.FAILURE,
     })
   ),
