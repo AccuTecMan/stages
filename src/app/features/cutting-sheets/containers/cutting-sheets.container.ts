@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
+import * as fromBase from '@app/base/store';
 import { CuttingSheet, SearchCriteria } from '../models';
 import { Observable, map } from 'rxjs';
 
@@ -11,6 +12,7 @@ import { Observable, map } from 'rxjs';
     <app-cutting-sheets-component
       [cuttingSheets]="filteredCuttingSheets$ | async"
       [isLoading]="isLoading$ | async"
+      [customers]="customers$ | async"
       (changeSearchTerm)="onChangeSearchTerm($event)"
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
     />
@@ -24,6 +26,7 @@ import { Observable, map } from 'rxjs';
 })
 export class CuttingSheetsContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
+  public customers$ = this.store.select(fromBase.selectAllCustomers);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
 
   public filteredCuttingSheets$: Observable<CuttingSheet[]>;

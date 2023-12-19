@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService } from '../../services';
-import { Customer } from '../../models';
+import { CustomerService } from '../../../../base/services';
+import { Customer } from '../../../../base/models';
 
 
 @Component({
@@ -106,7 +106,7 @@ export class AddEditComponent {
         this.isEditing = !!this.customerId && this.customerId.length > 0
 
         if (this.isEditing) {
-          this.service.get(this.customerId).subscribe(x => {
+          this.service.get(this.customerId).subscribe((x: any) => {
             this.form.controls['name'].setValue(x.name);
             this.form.controls['isActive'].setValue(x.active);
           });

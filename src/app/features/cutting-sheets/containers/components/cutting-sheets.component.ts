@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CuttingSheet, SearchCriteria } from '../../models';
-import { Store } from '@ngrx/store';
+import { Customer } from '@app/base/models';
 
 @Component({
   selector: 'app-cutting-sheets-component',
@@ -20,9 +20,17 @@ import { Store } from '@ngrx/store';
         </mat-form-field>
         <mat-form-field>
           <mat-label>Ready by</mat-label>
-          <mat-select [(value)]="readyBySelected" (selectionChange)="selectBy(readyBySelected)">
+          <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
             @for (readyBy of readyByOptions; track readyBy) {
               <mat-option [value]="readyBy.value">{{readyBy.view}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Customer</mat-label>
+          <mat-select [(value)]="selectedCustomer" (selectionChange)="changeCriteria()">
+            @for (customer of customers; track customer) {
+              <mat-option [value]="customer.id">{{customer.name}}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -152,6 +160,7 @@ import { Store } from '@ngrx/store';
 export class CuttingSheetsComponent {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Input() isLoading: boolean | null;
+  @Input() customers: Customer[] | null | undefined;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
@@ -165,9 +174,14 @@ export class CuttingSheetsComponent {
     {value: 6, view: 'All'},
   ]
   public readyBySelected = 0;
+  public selectedCustomer = "";
   private _term: string;
 
-   public onSearchTermChange(term: string) {
+  ngOnInit() {
+    // console.log('customers', this.customers);
+  }
+
+  public onSearchTermChange(term: string) {
     this.changeSearchTerm.emit(term);
   }
 
@@ -184,10 +198,18 @@ export class CuttingSheetsComponent {
     return cuttingSheet.id;
   }
 
-  public selectBy(option: any) {
+  // public selectBy(option: any) {
+  //   const criteria: SearchCriteria = {
+  //     customerId: undefined,
+  //     readyByOption: option
+  //   }
+  //   this.changeSearchCriteria.emit(criteria);
+  // }
+
+  public changeCriteria() {
     const criteria: SearchCriteria = {
-      customerId: undefined,
-      readyByOption: option
+      customerId: this.selectedCustomer,
+      readyByOption: this.readyBySelected
     }
     this.changeSearchCriteria.emit(criteria);
   }
