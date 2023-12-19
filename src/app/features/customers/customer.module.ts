@@ -7,10 +7,7 @@ import { BaseModule } from '@base/base.module';
 import { AppCommonModule } from '@common/app-common.module';
 import { CustomerContainer } from './containers/customers.container';
 import { CustomerComponent } from './containers/components/customer.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import * as customersStore from './store';
-import { CustomersGuard } from './guards';
+import { CustomersGuard } from '../../base/guards';
 import { AddEditComponent } from './containers/components/add-edit.component';
 
 const routes: Routes = [
@@ -41,8 +38,6 @@ const routes: Routes = [
     AddEditComponent
   ],
   imports: [
-    StoreModule.forFeature('customers', customersStore.reducer),
-    EffectsModule.forFeature([customersStore.CustomersEffects]),
     RouterModule.forChild(routes),
     CommonModule,
     ReactiveFormsModule,

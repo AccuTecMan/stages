@@ -13,7 +13,7 @@ export const stageTemplatesInitialState: StageTemplatesState = {
   stageTemplates: undefined,
 };
 
-export const sTemplatesReducer = createReducer(
+export const stageTemplatesReducer = createReducer(
   stageTemplatesInitialState,
   on(
     StageTemplatesGuardActions.loadAll,

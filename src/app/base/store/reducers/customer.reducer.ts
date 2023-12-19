@@ -1,11 +1,9 @@
 import { EntityLoadStatus, LoadStatus } from '@core/models';
 import { Customer } from '../../models';
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 import { CustomersGuardActions, CustomersApiActions} from '../actions';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-
-export const featureName = 'customers';
 
 export interface CustomerState extends EntityState<Customer>, LoadStatus {}
 
@@ -13,13 +11,13 @@ export const customerAdapter = createEntityAdapter<Customer>({
   selectId: c => c.id
 });
 
-const initialState: CustomerState = {
+export const customersInitialState: CustomerState = {
   ...customerAdapter.getInitialState(),
   status: EntityLoadStatus.INITIAL
 };
 
-export const internalReducer = createReducer(
-  initialState,
+export const customersReducer = createReducer(
+  customersInitialState,
   on(
     CustomersGuardActions.loadAll,
     (state): CustomerState => ({
@@ -41,8 +39,3 @@ export const internalReducer = createReducer(
   ),
 
 );
-
-export function reducer(state: CustomerState | undefined, action: Action) {
-  // required that we export this in a higher order named function to support aot ... done separately to reduce nesting
-  return internalReducer(state, action);
-}

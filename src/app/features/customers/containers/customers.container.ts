@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import * as fromStore from '../store';
+import * as fromStore from '@app/base/store';
 import { Observable, map } from 'rxjs';
-import { Customer } from '../models';
+import { Customer } from '@app/base/models';
 
 @Component({
   selector: 'app-customer-container',
@@ -26,15 +26,15 @@ import { Customer } from '../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
-  public customers$ = this.store.select(fromStore.selectCustomers);
-  public isLoading$ = this.store.select(fromStore.selectIsLoading);
+  public customers$ = this.store.select(fromStore.selectCustomersAll);
+  public isLoading$ = this.store.select(fromStore.selectCustomersLoadedStatus);
   public filteredCustomers$: Observable<Customer[]>;
   private isInactiveDisplayed: boolean = false;
   private searchTerm: string = "";
 
   constructor(private store: Store) {
     this.filteredCustomers$ = this.customers$.pipe(
-      map(x => x.filter(c => c.active))
+      map(x => x.filter((c: Customer)  => c.active))
     );
   }
 
