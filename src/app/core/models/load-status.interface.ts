@@ -20,5 +20,5 @@ import { EntityLoadStatus } from './entity-load-status.enum';
  * };
  */
 export interface LoadStatus {
-  status: EntityLoadStatus;
+  loadStatus: EntityLoadStatus;
 }

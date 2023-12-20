@@ -3,7 +3,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Customer } from '../../models';
 
 export const CustomersGuardActions = createActionGroup({
-  source: 'Customers Container',
+  source: 'Customers Guard',
   events: {
     'Load All': emptyProps(),
   },

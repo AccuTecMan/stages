@@ -26,7 +26,7 @@ const initialState: CuttingSheetsState = {
     customerId: undefined,
     readyByOption: 0
   },
-  status: EntityLoadStatus.INITIAL
+  loadStatus: EntityLoadStatus.INITIAL
 };
 
 export const internalReducer = createReducer(
@@ -35,14 +35,14 @@ export const internalReducer = createReducer(
     CuttingSheetsGuardActions.loadAll,
     (state): CuttingSheetsState => ({
       ...state,
-      status: EntityLoadStatus.LOADING,
+      loadStatus: EntityLoadStatus.LOADING,
     }),
   ),
   on(
     CuttingSheetsApiActions.loadAllSuccess,
     (state, { cuttingSheets }): CuttingSheetsState => ({
       ...state,
-      status: EntityLoadStatus.SUCCESS,
+      loadStatus: EntityLoadStatus.SUCCESS,
       summary: cuttingSheetsAdapter.setAll(cuttingSheets, state.summary),
     })
   ),
@@ -50,7 +50,7 @@ export const internalReducer = createReducer(
     CuttingSheetsApiActions.loadAllFailure,
     (state): CuttingSheetsState => ({
       ...state,
-      status: EntityLoadStatus.FAILURE,
+      loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
   on(
@@ -58,7 +58,7 @@ export const internalReducer = createReducer(
     (state, { searchCriteria }): CuttingSheetsState => ({
       ...state,
       searchCriteria,
-      status: EntityLoadStatus.FAILURE,
+      loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
 

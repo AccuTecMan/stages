@@ -4,4 +4,4 @@ import { CuttingSheetsState } from "../reducers";
 
 export const selectStageTemplatesLoadedStatus = createSelector(
   selectCuttingSheetsState,
-  (state: CuttingSheetsState) => state.stageTemplates.status);
+  (state: CuttingSheetsState) => state.stageTemplates.loadStatus);

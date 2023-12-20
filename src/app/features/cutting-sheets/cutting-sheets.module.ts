@@ -12,11 +12,12 @@ import { CuttingSheetsContainer } from './containers/cutting-sheets.container';
 import { CuttingSheetsComponent } from './containers/components/cutting-sheets.component';
 import { CuttingSheetsEffects, featureName, reducer } from './store';
 import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
+import { CustomersGuard } from '@app/base/guards';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [CuttingSheetsGuard],
+    canActivate: [CustomersGuard, CuttingSheetsGuard],
     children: [
       {
         path: '',

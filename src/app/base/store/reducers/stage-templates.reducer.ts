@@ -9,7 +9,7 @@ export interface StageTemplatesState extends LoadStatus {
 }
 
 export const stageTemplatesInitialState: StageTemplatesState = {
-  status: EntityLoadStatus.INITIAL,
+  loadStatus: EntityLoadStatus.INITIAL,
   stageTemplates: undefined,
 };
 
@@ -19,14 +19,14 @@ export const stageTemplatesReducer = createReducer(
     StageTemplatesGuardActions.loadAll,
     (state): StageTemplatesState => ({
       ...state,
-      status: EntityLoadStatus.LOADING,
+      loadStatus: EntityLoadStatus.LOADING,
     }),
   ),
   on(
     StageTemplatesApiActions.loadAllSuccess,
     (state, { stageTemplates }): StageTemplatesState => ({
       ...state,
-      status: EntityLoadStatus.SUCCESS,
+      loadStatus: EntityLoadStatus.SUCCESS,
       stageTemplates,
     })
   ),
@@ -34,7 +34,7 @@ export const stageTemplatesReducer = createReducer(
     StageTemplatesApiActions.loadAllFailure,
     (state): StageTemplatesState => ({
       ...state,
-      status: EntityLoadStatus.FAILURE,
+      loadStatus: EntityLoadStatus.FAILURE,
     })
   )
 );

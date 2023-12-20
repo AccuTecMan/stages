@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService } from '../../../../base/services';
-import { Customer } from '../../../../base/models';
+import { CustomerService } from '@app/base/services';
+import { Customer } from '@app/base/models';
 
 
 @Component({
