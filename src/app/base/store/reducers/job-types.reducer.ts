@@ -9,7 +9,7 @@ export interface TypeState extends LoadStatus {
 }
 
 export const typesInitialState: TypeState = {
-  status: EntityLoadStatus.INITIAL,
+  loadStatus: EntityLoadStatus.INITIAL,
   types: undefined,
 };
 
@@ -19,14 +19,14 @@ export const typesReducer = createReducer(
     TypesGuardActions.loadAll,
     (state): TypeState => ({
       ...state,
-      status: EntityLoadStatus.LOADING,
+      loadStatus: EntityLoadStatus.LOADING,
     }),
   ),
   on(
     TypesApiActions.loadAllSuccess,
     (state, { types }): TypeState => ({
       ...state,
-      status: EntityLoadStatus.SUCCESS,
+      loadStatus: EntityLoadStatus.SUCCESS,
       types,
     })
   ),
@@ -34,7 +34,7 @@ export const typesReducer = createReducer(
     TypesApiActions.loadAllFailure,
     (state): TypeState => ({
       ...state,
-      status: EntityLoadStatus.FAILURE,
+      loadStatus: EntityLoadStatus.FAILURE,
     })
   )
 );

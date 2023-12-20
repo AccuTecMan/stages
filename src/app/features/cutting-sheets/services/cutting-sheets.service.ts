@@ -23,7 +23,7 @@ export class CuttingSheetsService {
   public getWithCriteria(criteria: SearchCriteria | undefined) {
     const wheres: QueryConstraint[] = [];
 
-    if (!!criteria?.customerId) {
+    if (!!criteria?.customerId && criteria?.customerId.length > 1) {
       wheres.push(where('customer.id', '==', criteria.customerId));
     }
 
@@ -41,7 +41,6 @@ export class CuttingSheetsService {
   private getReadyByConstraint(option: number): QueryConstraint[] {
     let constraint: QueryConstraint[] = [];
 
-    console.log('option', option);
     if (option === 0) {
       const startOfToday = new Date(new Date().setHours(0,0,0,0));
       constraint.push(where('readyBy', '>=', startOfToday));

@@ -3,4 +3,4 @@ import { selectCuttingSheetsState } from './feature.selectors';
 import { CuttingSheetsState } from "../reducers";
 
 export const selectTypesLoadedStatus = createSelector(
-  selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes.status);
+  selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes.loadStatus);

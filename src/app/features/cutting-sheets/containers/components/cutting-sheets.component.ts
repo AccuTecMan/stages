@@ -29,7 +29,7 @@ import { Customer } from '@app/base/models';
         <mat-form-field>
           <mat-label>Customer</mat-label>
           <mat-select [(value)]="selectedCustomer" (selectionChange)="changeCriteria()">
-            @for (customer of customers; track customer) {
+            @for (customer of customers; track customer.id) {
               <mat-option [value]="customer.id">{{customer.name}}</mat-option>
             }
           </mat-select>
@@ -38,8 +38,7 @@ import { Customer } from '@app/base/models';
     </header>
 
     @if (isLoading) {
-      <mat-spinner fxLayout="row" fxLayoutAlign="start start" diameter="60" strokeWidth="5">
-      </mat-spinner>
+      <mat-spinner fxLayoutAlign="center top" diameter="80" strokeWidth="5"></mat-spinner>
     } @else {
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
       <div fxFlex="50%" fxFlex.lt-sm="100%"
@@ -164,6 +163,18 @@ export class CuttingSheetsComponent {
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
+  constructor() {}
+
+  ngOnInit() {
+    if (!!this.customers && this.customers[0].id !== '0') {
+      this.customers?.unshift({
+        id: '0',
+        name: 'All',
+        active: true
+      })
+    }
+  }
+
   public readyByOptions = [
     {value: 0, view: 'Today'},
     {value: 1, view: 'Yesterday'},
@@ -174,12 +185,8 @@ export class CuttingSheetsComponent {
     {value: 6, view: 'All'},
   ]
   public readyBySelected = 0;
-  public selectedCustomer = "";
+  public selectedCustomer = "0";
   private _term: string;
-
-  ngOnInit() {
-    // console.log('customers', this.customers);
-  }
 
   public onSearchTermChange(term: string) {
     this.changeSearchTerm.emit(term);
@@ -197,14 +204,6 @@ export class CuttingSheetsComponent {
   public trackByCuttingSheetGuid(index: number, cuttingSheet: CuttingSheet) {
     return cuttingSheet.id;
   }
-
-  // public selectBy(option: any) {
-  //   const criteria: SearchCriteria = {
-  //     customerId: undefined,
-  //     readyByOption: option
-  //   }
-  //   this.changeSearchCriteria.emit(criteria);
-  // }
 
   public changeCriteria() {
     const criteria: SearchCriteria = {

@@ -5,15 +5,17 @@ import { createReducer, on } from '@ngrx/store';
 import { CustomersGuardActions, CustomersApiActions} from '../actions';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-export interface CustomerState extends EntityState<Customer>, LoadStatus {}
+export interface CustomerState extends LoadStatus {
+  customers: EntityState<Customer>
+}
 
 export const customerAdapter = createEntityAdapter<Customer>({
-  selectId: c => c.id
+  selectId: customers => customers.id
 });
 
 export const customersInitialState: CustomerState = {
-  ...customerAdapter.getInitialState(),
-  status: EntityLoadStatus.INITIAL
+  customers: customerAdapter.getInitialState(),
+  loadStatus: EntityLoadStatus.INITIAL
 };
 
 export const customersReducer = createReducer(
@@ -22,19 +24,21 @@ export const customersReducer = createReducer(
     CustomersGuardActions.loadAll,
     (state): CustomerState => ({
       ...state,
-      status: EntityLoadStatus.LOADING,
+      loadStatus: EntityLoadStatus.LOADING,
     }),
   ),
   on(
     CustomersApiActions.loadAllSuccess,
-    (state, { customers }): CustomerState =>
-      customerAdapter.setAll(customers, { ...state, status: EntityLoadStatus.SUCCESS })
-  ),
+    (state, { customers }): CustomerState => ({
+      ...state,
+      loadStatus: EntityLoadStatus.SUCCESS,
+      customers: customerAdapter.setAll(customers, state.customers),
+    })),
   on(
     CustomersApiActions.loadAllFailure,
     (state): CustomerState => ({
       ...state,
-      status: EntityLoadStatus.FAILURE,
+      loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
 

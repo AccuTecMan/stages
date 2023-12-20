@@ -5,19 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './core/authentication/components';
 import { ErrorContainer } from './error.container';
 
-const redirectLoggedInToOverview = () => redirectLoggedInTo(['overview']);
+const redirectLoggedInMainPage = () => redirectLoggedInTo(['customers']);
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 // const adminOnly = () => hasCustomClaim('admin');
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./features/cutting-sheets/cutting-sheets.module').then((m) => m.CuttingSheetsModule),
-    ...canActivate(redirectUnauthorizedToLogin),
-  },
-  {
-    path: 'cuttingSheets',
-    loadChildren: () => import('./features/cutting-sheets/cutting-sheets.module').then((m) => m.CuttingSheetsModule),
+    loadChildren: () => import('./features/customers/customer.module').then((m) => m.CustomersModule),
     ...canActivate(redirectUnauthorizedToLogin),
   },
   {
@@ -26,9 +21,14 @@ const routes: Routes = [
     ...canActivate(redirectUnauthorizedToLogin),
   },
   {
+    path: 'cuttingSheets',
+    loadChildren: () => import('./features/cutting-sheets/cutting-sheets.module').then((m) => m.CuttingSheetsModule),
+    ...canActivate(redirectUnauthorizedToLogin),
+  },
+  {
     path: 'login',
     component: LoginComponent,
-    ...canActivate(redirectLoggedInToOverview),
+    ...canActivate(redirectLoggedInMainPage),
   },
   {
     path: 'error',
