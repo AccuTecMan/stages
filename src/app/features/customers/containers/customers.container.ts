@@ -26,7 +26,7 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
-  public customers$ = this.store.select(fromBase.selectAllCustomers);
+  public customers$ = this.store.select(fromBase.selectCustomers);
   public isLoading$ = this.store.select(fromBase.selectCustomersIsLoading);
   public filteredCustomers$: Observable<Customer[]>;
   private isInactiveDisplayed: boolean = false;
