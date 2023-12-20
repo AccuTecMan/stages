@@ -16,6 +16,10 @@ export const customersSelectors = customerAdapter.getSelectors(customerState);
 export const selectAllCustomers = createSelector(
   customersSelectors.selectAll, (c) => c);
 
+  export const selectCustomers = createSelector(
+    selectAllCustomers,
+    (customers) => customers.filter(x => x.id !== '0'));
+
 export const selectCustomersAll = createSelector(
     selectCuttingSheetsState,
     (state: CuttingSheetsState) => state.customers.customers);
