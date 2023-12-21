@@ -33,7 +33,7 @@ export class CustomerContainer {
   private searchTerm: string = "";
 
   constructor(private store: Store) {
-    this.filteredCustomers$ = this.customers$;
+    this.filteredCustomers$ = this.getFilteredCustomers();
   }
 
   public onChangeSearchTerm(term: string) {
@@ -48,17 +48,16 @@ export class CustomerContainer {
 
   searchCustomers(): void {
     const a = this.searchTerm.toLocaleLowerCase();
-    if (a.length === 0) {
-      this.filteredCustomers$ = this.customers$.pipe(
-        map((c: any) => c.filter((x: any) => x.active == (this.isInactiveDisplayed ? x.active : true)))
+    if (a.length >= 0) {
+      this.filteredCustomers$ = this.getFilteredCustomers().pipe(
+        map((c: any) => c.filter((x:any) => x.name.toLocaleLowerCase().indexOf(a) > -1))
       )
-    } else {
-      this.filteredCustomers$ = this.customers$.pipe(
-        map((c: any) => c.filter((x:any) => x.name.toLocaleLowerCase().indexOf(a) > -1
-                    && x.active == (this.isInactiveDisplayed ? x.active : true)))
-      );
     }
   }
 
-
+  private getFilteredCustomers(): Observable<Customer[]> {
+    return this.customers$.pipe(
+      map((c: any) => c.filter((x: any) => x.active == (this.isInactiveDisplayed ? x.active : true)))
+    );
+  }
 }

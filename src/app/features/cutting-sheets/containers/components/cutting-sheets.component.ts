@@ -14,11 +14,11 @@ import { Customer } from '@app/base/models';
         </button>
       </div>
       <mat-divider></mat-divider>
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-        <mat-form-field>
+      <div fxLayoutAlign="start center" fxLayoutGap="12px">
+        <mat-form-field fxFlex="20">
           <input matInput placeholder="Job Name" [(ngModel)]="term">
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field fxFlex="30">
           <mat-label>Ready by</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
             @for (readyBy of readyByOptions; track readyBy) {
@@ -26,7 +26,7 @@ import { Customer } from '@app/base/models';
             }
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field fxFlex="50">
           <mat-label>Customer</mat-label>
           <mat-select [(value)]="selectedCustomer" (selectionChange)="changeCriteria()">
             @for (customer of customers; track customer.id) {
@@ -38,40 +38,40 @@ import { Customer } from '@app/base/models';
     </header>
 
     @if (isLoading) {
-      <mat-spinner fxLayoutAlign="center top" diameter="80" strokeWidth="5"></mat-spinner>
+      <mat-spinner fxLayoutAlign="center start" diameter="80" strokeWidth="5"></mat-spinner>
     } @else {
-    <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-      <div fxFlex="50%" fxFlex.lt-sm="100%"
-            *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
-        <mat-card  class="mat-elevation-z16">
-          <mat-card-header>
-            <mat-card-title>{{ sheet.jobName }}</mat-card-title>
-            <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
-            <dl>
-              <dt>Job Type</dt>
-              <dd>{{ sheet.jobType.name }}</dd>
-            </dl>
-            <dl>
-              <dt>Color</dt>
-              <dd>{{ sheet.color }}</dd>
-            </dl>
-            <dl>
-              <dt>Customer</dt>
-              <dd>{{ sheet.customer.name }}</dd>
-            </dl>
-            <dl>
-              <dt>Ready By</dt>
-              <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
-            </dl>
-          </mat-card-content>
-          <mat-card-actions fxLayoutAlign="space-between center">
-            <button mat-button [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </section>
+      <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
+        <div fxFlex="50%" fxFlex.lt-sm="100%"
+              *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
+          <mat-card  class="mat-elevation-z16">
+            <mat-card-header>
+              <mat-card-title>{{ sheet.jobName }}</mat-card-title>
+              <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
+              <dl>
+                <dt>Job Type</dt>
+                <dd>{{ sheet.jobType.name }}</dd>
+              </dl>
+              <dl>
+                <dt>Color</dt>
+                <dd>{{ sheet.color }}</dd>
+              </dl>
+              <dl>
+                <dt>Customer</dt>
+                <dd>{{ sheet.customer.name }}</dd>
+              </dl>
+              <dl>
+                <dt>Ready By</dt>
+                <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
+              </dl>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start end">
+              <button mat-button [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </section>
     }
   `,
   styles: [`
@@ -86,6 +86,20 @@ import { Customer } from '@app/base/models';
       max-width: 850px;
     }
 
+    .content-records {
+      margin: 0rem 1rem 4rem 1rem !Important;
+      max-width: 850px;
+    }
+
+    mat-card-actions {
+      margin-top: auto;
+    }
+
+    mat-card {
+      min-width: 350px;
+      min-height: 210px;
+    }
+
     .mat-mdc-fab.mat-primary {
       margin-right: 0px;
     }
@@ -96,7 +110,7 @@ import { Customer } from '@app/base/models';
 
     mat-card-title {
       color: #607ec9;
-      margin: 0rem 0rem -.6rem 0rem;
+      margin: -.5rem 0rem -.5rem 0rem;
       padding: 0px;
     }
 
@@ -115,28 +129,15 @@ import { Customer } from '@app/base/models';
     dd {
       font-size: 1.1rem;
       font-weight: 500;
-      margin: 0rem 0rem 1rem 0rem;
+      margin: 0rem 0rem .1rem 0rem;
     }
 
     mat-divider {
       margin: .5rem 0rem 1rem 0rem;
     }
 
-    .content-records {
-      margin: .5rem 1rem 4rem 1rem !Important;
-      max-width: 850px;
-    }
-
     .mat-mdc-form-field {
       width: 150px;
-    }
-
-    mat-card {
-      width: 400px;
-    }
-
-    .mat-mdc-card-header {
-      padding: .3rem 1rem;
     }
 
     .mat-mdc-button {
@@ -145,12 +146,18 @@ import { Customer } from '@app/base/models';
     }
 
     @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+        padding: 0px;
+        margin: 0;
+      }
+
       mat-card {
         width: 100%;
       }
 
-      .add-button {
-        margin-right: 1rem;
+      .mdc-fab--extended {
+        height: 30px;
       }
     }
   `],
@@ -178,7 +185,7 @@ export class CuttingSheetsComponent {
   public readyByOptions = [
     {value: 0, view: 'Today'},
     {value: 1, view: 'Yesterday'},
-    {value: 2, view: 'This week'},
+    {value: 2, view: 'This week (Mon-Today)'},
     {value: 3, view: 'Last 7 days'},
     {value: 4, view: 'Last 15 days'},
     {value: 5, view: 'Last 30 days'},

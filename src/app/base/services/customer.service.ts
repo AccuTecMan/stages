@@ -16,7 +16,6 @@ export class CustomerService {
   }
 
   public getAll() {
-    console.log('customer.service')
     return collectionData(this.customerCollection, {
       idField: 'id',
     }) as Observable<Customer[]>;
