@@ -18,11 +18,12 @@ export const selectAllCustomers = createSelector(
 
   export const selectCustomers = createSelector(
     selectAllCustomers,
-    (customers) => customers.filter(x => x.id !== '0'));
+    (customers) => customers.filter(x => x.id !== '0')
+                            .sort((a, b) => (a.name < b.name ? -1 : 1)));
 
-export const selectCustomersAll = createSelector(
-    selectCuttingSheetsState,
-    (state: CuttingSheetsState) => state.customers.customers);
+// export const selectCustomersAll = createSelector(
+//     selectCuttingSheetsState,
+//     (state: CuttingSheetsState) => state.customers.customers);
 
   export const selectCustomersIsLoading = createSelector(
     selectCuttingSheetsState,

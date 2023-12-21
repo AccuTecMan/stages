@@ -43,7 +43,7 @@ import { Customer } from '@app/base/models';
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
         <div fxFlex="50%" fxFlex.lt-sm="100%"
               *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
-          <mat-card  class="mat-elevation-z16">
+          <mat-card  class="mat-elevation-z26" [routerLink]="['/customers']">
             <mat-card-header>
               <mat-card-title>{{ sheet.jobName }}</mat-card-title>
               <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
@@ -66,8 +66,9 @@ import { Customer } from '@app/base/models';
                 <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
               </dl>
             </mat-card-content>
-            <mat-card-actions fxLayoutAlign="start end">
-              <button mat-button [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
+            <mat-card-actions fxLayoutAlign="space-between end">
+              <button mat-button class="button-update" [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
+              <!-- <button mat-button [routerLink]="['/cuttingSheets']">STAGES</button> -->
             </mat-card-actions>
           </mat-card>
         </div>
@@ -87,7 +88,7 @@ import { Customer } from '@app/base/models';
     }
 
     .content-records {
-      margin: 0rem 1rem 4rem 1rem !Important;
+      margin: 0rem 0rem 2rem 1rem !Important;
       max-width: 850px;
     }
 
@@ -98,6 +99,7 @@ import { Customer } from '@app/base/models';
     mat-card {
       min-width: 350px;
       min-height: 210px;
+      cursor: pointer;
     }
 
     .mat-mdc-fab.mat-primary {
@@ -119,7 +121,7 @@ import { Customer } from '@app/base/models';
     }
 
     dl {
-      margin: .5rem 0rem 0rem 1rem;
+      margin: .3rem 0rem 0rem .4rem;
     }
 
     dt {
@@ -141,6 +143,10 @@ import { Customer } from '@app/base/models';
     }
 
     .mat-mdc-button {
+      color: #607ec9;
+    }
+
+    .button-update {
       background-color: #607ec9;
       color: white;
     }

@@ -12,7 +12,7 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./features/customers/customer.module').then((m) => m.CustomersModule),
+    loadChildren: () => import('./features/cutting-sheets/cutting-sheets.module').then((m) => m.CuttingSheetsModule),
     ...canActivate(redirectUnauthorizedToLogin),
   },
   {
