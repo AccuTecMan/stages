@@ -22,9 +22,9 @@ import { Customer } from '@app/base/models';
               [ngClass]="{ 'inactive-background': isInactiveDisplayed}"
               (click)="displayInactive()">
           @if (isInactiveDisplayed) {
-            <mat-icon>done</mat-icon>
-          } @else {
             <mat-icon>close</mat-icon>
+          } @else {
+            <mat-icon>filter_list</mat-icon>
           }
           @if (isInactiveDisplayed) {
             <span>Hide Inactive</span>
