@@ -26,7 +26,7 @@ import { Observable, map } from 'rxjs';
 })
 export class CuttingSheetsContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
-  public customers$ = this.store.select(fromBase.selectAllCustomers);
+  public customers$ = this.store.select(fromBase.selectCustomers);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
 
   public filteredCuttingSheets$: Observable<CuttingSheet[]>;

@@ -110,9 +110,16 @@ import { Customer } from '@app/base/models';
 
     .inactive-background {
       background-color: #607ec9;
+      color: white;
     }
 
     @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+        padding: 0;
+        margin: 0;
+      }
+
       mat-card {
         width: 100%;
       }
