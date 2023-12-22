@@ -19,7 +19,7 @@ import { devOnlyGuardedExpression } from '@angular/compiler';
       <mat-divider></mat-divider>
       <div fxLayoutAlign="start center" fxLayoutGap="12px">
         <mat-form-field fxFlex="20">
-          <input matInput placeholder="Job Name" [(ngModel)]="term">
+          <input matInput placeholder="Job Name or PO#" [(ngModel)]="term">
         </mat-form-field>
         <mat-form-field fxFlex="30">
           <mat-label>Ready by</mat-label>
@@ -33,7 +33,7 @@ import { devOnlyGuardedExpression } from '@angular/compiler';
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"
-                (optionSelected)='changeCustomer($event.option.value)'>
+                            [autoActiveFirstOption]='true' (optionSelected)='changeCustomer($event.option.value)'>
             @for (customer of filteredCustomers$ | async; track customer.id) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
@@ -178,26 +178,30 @@ export class CuttingSheetsComponent {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Input() isLoading: boolean | null;
   @Input() customers: Customer[] | null | undefined;
+  @Input() searchCriteria: SearchCriteria | null | undefined;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
-  myControl = new FormControl('');
-  public filteredCustomers$: Observable<Customer[]>;
+  myControl = new FormControl();
+  public filteredCustomers$: Observable<Customer[]> = this.myControl.valueChanges.pipe(
+    startWith(''), map(value => this._filter(value.name || '')),
+  );
 
   constructor() {}
 
   ngOnInit() {
     if (!!this.customers && this.customers[0].id !== '0') {
-      this.customers?.unshift({
-        id: '0',
-        name: 'All',
-        active: true
-      })
+      this.customers?.unshift({ id: '0', name: 'All', active: true })
     }
 
-    this.filteredCustomers$ = this.myControl.valueChanges.pipe(
-      startWith(''), map(value => this._filter(value || '')),
-    );
+    this.selectedCustomer = this.searchCriteria?.customerId || '';
+    this.readyBySelected = this.searchCriteria?.readyByOption || 0;
+    this.changeCriteria();
+
+    if (this.selectedCustomer.length > 0) {
+      const previousSelectedCustomer = this.customers?.find(x => x.id === this.selectedCustomer);
+      this.myControl.setValue(previousSelectedCustomer);
+    }
   }
 
   private _filter(value: string): Customer[] {
@@ -245,7 +249,6 @@ export class CuttingSheetsComponent {
       customerId: this.selectedCustomer,
       readyByOption: this.readyBySelected
     }
-
     this.changeSearchCriteria.emit(criteria);
   }
 
