@@ -13,6 +13,7 @@ import { Observable, map } from 'rxjs';
       [cuttingSheets]="filteredCuttingSheets$ | async"
       [isLoading]="isLoading$ | async"
       [customers]="customers$ | async"
+      [searchCriteria]="searchCriteria$ | async"
       (changeSearchTerm)="onChangeSearchTerm($event)"
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
     />
@@ -28,6 +29,7 @@ export class CuttingSheetsContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
   public customers$ = this.store.select(fromBase.selectCustomers);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
+  public searchCriteria$ = this.store.select(fromStore.selectSearchCriteria);
 
   public filteredCuttingSheets$: Observable<CuttingSheet[]>;
 
@@ -41,7 +43,7 @@ export class CuttingSheetsContainer {
       this.filteredCuttingSheets$ = this.cuttingSheets$;
     } else {
       this.filteredCuttingSheets$= this.cuttingSheets$.pipe(
-        map(c => c.filter(x => x.jobName.toLocaleLowerCase().indexOf(a) > -1))
+        map(c => c.filter(x => (x.jobName + x.poNumber).toLocaleLowerCase().indexOf(a) > -1))
       );
     }
   }
