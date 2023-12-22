@@ -13,6 +13,7 @@ import { CuttingSheetsComponent } from './containers/components/cutting-sheets.c
 import { CuttingSheetsEffects, featureName, reducer } from './store';
 import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
 import { CustomersGuard } from '@app/base/guards';
+import { AddEditCuttingSheetComponent } from './containers/components/add-edit.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,14 @@ const routes: Routes = [
         path: '',
         component: CuttingSheetsContainer
       },
+      {
+        path: 'add',
+        component: AddEditCuttingSheetComponent
+      },
+      {
+        path: 'edit/:id',
+        component: AddEditCuttingSheetComponent
+      }
     ]
   }
 ];
@@ -30,6 +39,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CuttingSheetsContainer,
+    AddEditCuttingSheetComponent,
     CuttingSheetsComponent
   ],
   imports: [
