@@ -18,16 +18,13 @@ import { Observable, map } from 'rxjs';
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
     />
   `,
-  styles:[`
-    mat-spinner {
-      margin: 1rem;
-    }
-  `],
+  styles:[``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CuttingSheetsContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
   public customers$ = this.store.select(fromBase.selectCustomers);
+  public jobTypes$ = this.store.select(fromBase.selectAllJobTypes);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
   public searchCriteria$ = this.store.select(fromStore.selectSearchCriteria);
 

@@ -4,3 +4,6 @@ import { CuttingSheetsState } from "../reducers";
 
 export const selectTypesLoadedStatus = createSelector(
   selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes.loadStatus);
+
+export const selectAllJobTypes = createSelector(
+  selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes);

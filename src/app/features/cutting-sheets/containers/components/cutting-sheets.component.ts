@@ -3,7 +3,6 @@ import { CuttingSheet, SearchCriteria } from '../../models';
 import { Customer } from '@app/base/models';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { devOnlyGuardedExpression } from '@angular/compiler';
 
 @Component({
   selector: 'app-cutting-sheets-component',
@@ -11,7 +10,7 @@ import { devOnlyGuardedExpression } from '@angular/compiler';
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Cutting Sheets</h1>
-        <button mat-fab extended routerLink="/customers/add">
+        <button mat-fab extended routerLink="/cuttingSheets/add">
           <mat-icon>add</mat-icon>
           Add New
         </button>
@@ -48,7 +47,7 @@ import { devOnlyGuardedExpression } from '@angular/compiler';
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
         <div fxFlex="50%" fxFlex.lt-sm="100%"
               *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
-          <mat-card  class="mat-elevation-z26" [routerLink]="['/customers']">
+          <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets']">
             <mat-card-header>
               <mat-card-title>{{ sheet.jobName }}</mat-card-title>
               <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
@@ -72,7 +71,7 @@ import { devOnlyGuardedExpression } from '@angular/compiler';
               </dl>
             </mat-card-content>
             <mat-card-actions fxLayoutAlign="space-between end">
-              <button mat-button class="button-update" [routerLink]="['/customers/edit', sheet.id]">UPDATE</button>
+              <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
               <!-- <button mat-button [routerLink]="['/cuttingSheets']">STAGES</button> -->
             </mat-card-actions>
           </mat-card>
