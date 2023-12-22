@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CuttingSheet, SearchCriteria } from '../../models';
 import { Customer } from '@app/base/models';
+import { Observable, map, startWith } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { devOnlyGuardedExpression } from '@angular/compiler';
 
 @Component({
   selector: 'app-cutting-sheets-component',
@@ -28,11 +31,13 @@ import { Customer } from '@app/base/models';
         </mat-form-field>
         <mat-form-field fxFlex="50">
           <mat-label>Customer</mat-label>
-          <mat-select [(value)]="selectedCustomer" (selectionChange)="changeCriteria()">
-            @for (customer of customers; track customer.id) {
-              <mat-option [value]="customer.id">{{customer.name}}</mat-option>
+          <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"
+                (optionSelected)='changeCustomer($event.option.value)'>
+            @for (customer of filteredCustomers$ | async; track customer.id) {
+              <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
     </header>
@@ -176,6 +181,9 @@ export class CuttingSheetsComponent {
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
+  myControl = new FormControl('');
+  public filteredCustomers$: Observable<Customer[]>;
+
   constructor() {}
 
   ngOnInit() {
@@ -186,6 +194,20 @@ export class CuttingSheetsComponent {
         active: true
       })
     }
+
+    this.filteredCustomers$ = this.myControl.valueChanges.pipe(
+      startWith(''), map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): Customer[] {
+    const filterValue = value.toString().toLowerCase();
+    return this.customers?.filter(option => option.name.toLowerCase().includes(filterValue) ||
+                                            option.id.toLowerCase().includes(filterValue))!;
+  }
+
+  displayFn(customer: Customer): string {
+    return customer && customer.name ? customer.name : '';
   }
 
   public readyByOptions = [
@@ -223,7 +245,13 @@ export class CuttingSheetsComponent {
       customerId: this.selectedCustomer,
       readyByOption: this.readyBySelected
     }
+
     this.changeSearchCriteria.emit(criteria);
+  }
+
+  changeCustomer(customer: Customer) {
+    this.selectedCustomer = customer.id;
+    this.changeCriteria();
   }
 
 }
