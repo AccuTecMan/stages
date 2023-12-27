@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CuttingSheet, SearchCriteria } from '../../models';
 import { Customer } from '@app/base/models';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -31,9 +31,9 @@ import { FormControl } from '@angular/forms';
         <mat-form-field fxFlex="50">
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"
-                            [autoActiveFirstOption]='true' (optionSelected)='changeCustomer($event.option.value)'>
-            @for (customer of filteredCustomers$ | async; track customer.id) {
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                            (optionSelected)='changeCustomer($event.option.value)'>
+            @for (customer of filteredCustomers$ | async; track customer) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
           </mat-autocomplete>
@@ -183,7 +183,7 @@ export class CuttingSheetsComponent {
 
   myControl = new FormControl();
   public filteredCustomers$: Observable<Customer[]> = this.myControl.valueChanges.pipe(
-    startWith(''), map(value => this._filter(value.name || '')),
+    startWith(''), map(value => this._filter(value || '')),
   );
 
   constructor() {}
@@ -205,6 +205,7 @@ export class CuttingSheetsComponent {
 
   private _filter(value: string): Customer[] {
     const filterValue = value.toString().toLowerCase();
+    console.log('value', value);
     return this.customers?.filter(option => option.name.toLowerCase().includes(filterValue) ||
                                             option.id.toLowerCase().includes(filterValue))!;
   }
