@@ -7,21 +7,17 @@ import { CuttingSheet, SearchCriteria } from '../models';
 import { Observable, map } from 'rxjs';
 
 @Component({
-  selector: 'app-cutting-sheets-container',
+  selector: 'app-cutting-sheets-add-edit-container',
   template: `
-    <app-cutting-sheets-component
-      [cuttingSheets]="filteredCuttingSheets$ | async"
-      [isLoading]="isLoading$ | async"
+    <app-cutting-sheets-add-edit
       [customers]="customers$ | async"
-      [searchCriteria]="searchCriteria$ | async"
-      (changeSearchTerm)="onChangeSearchTerm($event)"
-      (changeSearchCriteria)="onChangeSearchCriteria($event)"
+      (save)="onSave($event)"
     />
   `,
   styles:[``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CuttingSheetsContainer {
+export class AddEditContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
   public customers$ = this.store.select(fromBase.selectCustomers);
   public jobTypes$ = this.store.select(fromBase.selectAllJobTypes);
@@ -48,5 +44,9 @@ export class CuttingSheetsContainer {
   public onChangeSearchCriteria(criteria: SearchCriteria) {
     this.store.dispatch(fromStore.SearchCriteriaActions.set({ searchCriteria: criteria }))
     this.store.dispatch(fromStore.CuttingSheetsGuardActions.loadAll());
+  }
+
+  public onSave(event: any) {
+    console.log(event);
   }
 }

@@ -8,29 +8,35 @@ import { EffectsModule } from '@ngrx/effects';
 import { BaseModule } from '@base/base.module';
 import { AppCommonModule } from '@common/app-common.module';
 
-import { CuttingSheetsContainer } from './containers/cutting-sheets.container';
-import { CuttingSheetsComponent } from './containers/components/cutting-sheets.component';
+import { ListContainer } from './containers/list.container';
+import { ListComponent } from './containers/components/list.component';
 import { CuttingSheetsEffects, featureName, reducer } from './store';
 import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
 import { CustomersGuard, JobTypesGuard, StageTemplatesGuard } from '@app/base/guards';
-import { AddEditCuttingSheetComponent } from './containers/components/add-edit.component';
+import { AddEditComponent } from './containers/components/add-edit.component';
+import { AddEditContainer } from './containers/add-edit.container';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [StageTemplatesGuard, JobTypesGuard, CustomersGuard, CuttingSheetsGuard],
+    canActivate: [
+      StageTemplatesGuard,
+      JobTypesGuard,
+      CustomersGuard,
+      CuttingSheetsGuard
+    ],
     children: [
       {
         path: '',
-        component: CuttingSheetsContainer
+        component: ListContainer
       },
       {
         path: 'add',
-        component: AddEditCuttingSheetComponent
+        component: AddEditContainer
       },
       {
         path: 'edit/:id',
-        component: AddEditCuttingSheetComponent
+        component: AddEditContainer
       }
     ]
   }
@@ -38,9 +44,10 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    CuttingSheetsContainer,
-    AddEditCuttingSheetComponent,
-    CuttingSheetsComponent
+    ListContainer,
+    AddEditContainer,
+    AddEditComponent,
+    ListComponent
   ],
   imports: [
     StoreModule.forFeature(featureName, reducer),

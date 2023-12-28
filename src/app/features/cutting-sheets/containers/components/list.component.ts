@@ -5,7 +5,7 @@ import { Observable, map, startWith, tap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-cutting-sheets-component',
+  selector: 'app-cutting-sheets-list-component',
   template: `
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -173,7 +173,7 @@ import { FormControl } from '@angular/forms';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CuttingSheetsComponent {
+export class ListComponent {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Input() isLoading: boolean | null;
   @Input() customers: Customer[] | null | undefined;
@@ -205,7 +205,6 @@ export class CuttingSheetsComponent {
 
   private _filter(value: string): Customer[] {
     const filterValue = value.toString().toLowerCase();
-    console.log('value', value);
     return this.customers?.filter(option => option.name.toLowerCase().includes(filterValue) ||
                                             option.id.toLowerCase().includes(filterValue))!;
   }
