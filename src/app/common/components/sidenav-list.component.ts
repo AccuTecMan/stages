@@ -14,27 +14,24 @@ import * as fromCore from '@core/store';
         <mat-icon>account_balance</mat-icon>
         <span class="list-title">Accutec Manufacturing</span>
       </a>
-
       <mat-divider></mat-divider>
-
       <a mat-list-item routerLink="/cuttingSheets" (click)="onClose()">
         <mat-icon>view_list</mat-icon>
         <span class="nav-caption">Cutting Sheets</span>
       </a>
-
-      <a *ngIf="isAuth$ | async" mat-list-item routerLink="/customers" (click)="onClose()">
-        <mat-icon>web</mat-icon>
-        <span class="nav-caption">Customers</span>
-      </a>
-
+      @if (isAuth$ | async) {
+        <a mat-list-item routerLink="/customers" (click)="onClose()">
+          <mat-icon>web</mat-icon>
+          <span class="nav-caption">Customers</span>
+        </a>
+      }
       <mat-divider></mat-divider>
-
       <a mat-list-item routerLink="/login" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
         <span class="nav-caption">Logout</span>
       </a>
     </mat-nav-list>
-  `,
+    `,
   styles: [
     `
       .list-title {

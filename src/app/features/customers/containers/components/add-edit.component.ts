@@ -10,7 +10,7 @@ import { Customer } from '@app/base/models';
   template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/customers">
-          < All Customers
+        < All Customers
       </button>
     </section>
     <header class="content-header">
@@ -21,28 +21,27 @@ import { Customer } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-
     <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px">
       <mat-checkbox formControlName="isActive">Is active?</mat-checkbox>
       <mat-form-field>
         <mat-label>Customer</mat-label>
         <input matInput formControlName="name">
-        <mat-error *ngIf="form.get('name')!.hasError('required')">
-                Name is required
-        </mat-error>
+        @if (form.get('name')!.hasError('required')) {
+          <mat-error>
+            Name is required
+          </mat-error>
+        }
       </mat-form-field>
-
-
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
         <button mat-raised-button routerLink="/customers">
-            Cancel
+          Cancel
         </button>
         <button mat-raised-button color="primary" (click)="save()" [disabled]="!form.valid">
-              Save
+          Save
         </button>
       </div>
     </form>
-  `,
+    `,
   styles: [`
     .breadcrumb {
       width: 100%;

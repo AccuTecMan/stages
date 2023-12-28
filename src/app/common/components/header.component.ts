@@ -10,24 +10,28 @@ import { environment } from 'src/environments/environment';
   selector: 'app-header',
   template: `
     <mat-toolbar [ngClass]="{ 'dev-background': isDev}" color="primary" fxLayout="row"
-            fxLayoutAlign="space-between center">
+      fxLayoutAlign="space-between center">
       @if (isAuth$ | async) {
         <span>
-          <button *ngIf="isAuth$ | async" mat-button
-                type="button" (click)="onToggleSidenav()">
-            <mat-icon>menu</mat-icon>
-            <span class="brand-title">AccuTec</span>
-          </button>
+          @if (isAuth$ | async) {
+            <button mat-button
+              type="button" (click)="onToggleSidenav()">
+              <mat-icon>menu</mat-icon>
+              <span class="brand-title">AccuTec</span>
+            </button>
+          }
         </span>
-        <button class='logout' mat-button *ngIf="isAuth$ | async" (click)="onLogout()" >
-          <mat-icon>exit_to_app</mat-icon>
-          Logout
-        </button>
+        @if (isAuth$ | async) {
+          <button class='logout' mat-button (click)="onLogout()" >
+            <mat-icon>exit_to_app</mat-icon>
+            Logout
+          </button>
+        }
       } @else {
         <span class="brand-title-no-auth">AccuTec</span>
       }
     </mat-toolbar>
-  `,
+    `,
   styles: [
     `
       .dev-background {

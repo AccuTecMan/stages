@@ -32,7 +32,7 @@ import { FormControl } from '@angular/forms';
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-                            (optionSelected)='changeCustomer($event.option.value)'>
+            (optionSelected)='changeCustomer($event.option.value)'>
             @for (customer of filteredCustomers$ | async; track customer) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
@@ -40,45 +40,48 @@ import { FormControl } from '@angular/forms';
         </mat-form-field>
       </div>
     </header>
-
     @if (isLoading) {
       <mat-spinner fxLayoutAlign="center start" diameter="80" strokeWidth="5"></mat-spinner>
     } @else {
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-        <div fxFlex="50%" fxFlex.lt-sm="100%"
-              *ngFor="let sheet of cuttingSheets; trackBy: trackByCuttingSheetGuid">
-          <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets']">
-            <mat-card-header>
-              <mat-card-title>{{ sheet.jobName }}</mat-card-title>
-              <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
-              <dl>
-                <dt>Job Type</dt>
-                <dd>{{ sheet.jobType.name }}</dd>
-              </dl>
-              <dl>
-                <dt>Color</dt>
-                <dd>{{ sheet.color }}</dd>
-              </dl>
-              <dl>
-                <dt>Customer</dt>
-                <dd>{{ sheet.customer.name }}</dd>
-              </dl>
-              <dl>
-                <dt>Ready By</dt>
-                <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
-              </dl>
-            </mat-card-content>
-            <mat-card-actions fxLayoutAlign="space-between end">
-              <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-              <!-- <button mat-button [routerLink]="['/cuttingSheets']">STAGES</button> -->
-            </mat-card-actions>
-          </mat-card>
-        </div>
+        @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
+          <div fxFlex="50%" fxFlex.lt-sm="100%"
+            >
+            <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets']">
+              <mat-card-header>
+                <mat-card-title>{{ sheet.jobName }}</mat-card-title>
+                <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
+                <dl>
+                  <dt>Job Type</dt>
+                  <dd>{{ sheet.jobType.name }}</dd>
+                </dl>
+                <dl>
+                  <dt>Color</dt>
+                  <dd>{{ sheet.color }}</dd>
+                </dl>
+                <dl>
+                  <dt>Customer</dt>
+                  <dd>{{ sheet.customer.name }}</dd>
+                </dl>
+                <dl>
+                  <dt>Ready By</dt>
+                  <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
+                </dl>
+              </mat-card-content>
+              <mat-card-actions fxLayoutAlign="space-between end">
+                <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
+                <!-- <button mat-button [routerLink]="['/cuttingSheets']">STAGES</button> -->
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        } @empty {
+          <p>No records found</p>
+        }
       </section>
     }
-  `,
+    `,
   styles: [`
     h1 {
       font-size: 2rem;
