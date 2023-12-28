@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService } from '@app/base/services';
+import { CuttingSheetsService } from '../../services';
+import { CuttingSheet } from '../../models';
 import { Customer } from '@app/base/models';
 
 
@@ -92,14 +93,16 @@ import { Customer } from '@app/base/models';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEditCuttingSheetComponent {
+export class AddEditComponent {
+  @Input() customers: Customer[] | null | undefined;
+
   form: UntypedFormGroup;
-  public customerId: string;
+  public cuttingSheetId: string;
   public isEditing: boolean;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private service: CustomerService,
+              private service: CuttingSheetsService,
               private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -108,13 +111,12 @@ export class AddEditCuttingSheetComponent {
     });
 
     this.route.params.subscribe(params => {
-        this.customerId = params['id'] || null;
-        this.isEditing = !!this.customerId && this.customerId.length > 0
+        this.cuttingSheetId = params['id'] || null;
+        this.isEditing = this.cuttingSheetId?.length > 0
 
         if (this.isEditing) {
-          this.service.get(this.customerId).subscribe((x: any) => {
-            this.form.controls['name'].setValue(x.name);
-            this.form.controls['isActive'].setValue(x.active);
+          this.service.get(this.cuttingSheetId).subscribe((x: any) => {
+            this.form.controls['name'].setValue(x.jobName);
           });
         }
     });
@@ -125,15 +127,21 @@ export class AddEditCuttingSheetComponent {
   }
 
   public save() {
-    const customer = <Customer>{
-      name: this.form.value.name,
-      active: this.form.value.isActive
+    const cuttingSheet = <CuttingSheet>{
+      jobName: this.form.value.name,
     }
 
+    // jobName: string;
+    // poNumber: string;
+    // customer: Customer;
+    // jobType: JobType;
+    // color: string;
+    // readyBy: any;
+
     if (this.isEditing) {
-      this.service.update(customer, this.customerId);
+      this.service.update(cuttingSheet, this.cuttingSheetId);
     } else {
-      this.service.create(customer);
+      this.service.create(cuttingSheet);
     }
     this.router.navigate(['/', 'cuttingSheets']);
   }
