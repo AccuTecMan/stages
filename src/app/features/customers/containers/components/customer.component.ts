@@ -19,8 +19,8 @@ import { Customer } from '@app/base/models';
           <input matInput [(ngModel)]="term">
         </mat-form-field>
         <button mat-fab extended color="normal"
-              [ngClass]="{ 'inactive-background': isInactiveDisplayed}"
-              (click)="displayInactive()">
+          [ngClass]="{ 'inactive-background': isInactiveDisplayed}"
+          (click)="displayInactive()">
           @if (isInactiveDisplayed) {
             <mat-icon>close</mat-icon>
           } @else {
@@ -34,23 +34,24 @@ import { Customer } from '@app/base/models';
         </button>
       </div>
     </header>
-
     <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-      <div fxFlex="50%" fxFlex.lt-sm="100%" *ngFor="let customer of customers; trackBy: trackByCustomerGuid">
-        <mat-card  class="mat-elevation-z16">
-          <mat-card-header>
-            <mat-card-title>{{ customer.name }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-actions fxLayoutAlign="space-between center">
-            <button mat-button [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
-            <mat-chip>
-              {{ customer.active ? "Active" : "Inactive" }}
-            </mat-chip>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+      @for (customer of customers; track trackByCustomerGuid($index, customer)) {
+        <div fxFlex="50%" fxFlex.lt-sm="100%">
+          <mat-card  class="mat-elevation-z16">
+            <mat-card-header>
+              <mat-card-title>{{ customer.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-actions fxLayoutAlign="space-between center">
+              <button mat-button [routerLink]="['/customers/edit', customer.id]">UPDATE</button>
+              <mat-chip>
+                {{ customer.active ? "Active" : "Inactive" }}
+              </mat-chip>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
     </section>
-  `,
+    `,
   styles: [`
     h1 {
       font-size: 2rem;

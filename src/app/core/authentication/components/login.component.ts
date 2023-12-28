@@ -13,32 +13,38 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         <form [formGroup]="form">
           <h2>Enter with your account</h2>
           <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input type="email" matInput placeholder="Ex: pat@example.com" formControlName="email">
-              <mat-error *ngIf="form.get('email')!.hasError('required')">
-                  Email is required
+            <mat-label>Email</mat-label>
+            <input type="email" matInput placeholder="Ex: pat@example.com" formControlName="email">
+            @if (form.get('email')!.hasError('required')) {
+              <mat-error>
+                Email is required
               </mat-error>
-              <mat-error *ngIf="form.get('email')!.hasError('email')">
-                  Email is invalid
+            }
+            @if (form.get('email')!.hasError('email')) {
+              <mat-error>
+                Email is invalid
               </mat-error>
+            }
           </mat-form-field>
           <mat-form-field>
-              <mat-label>Password</mat-label>
-              <input type="password" matInput placeholder="Password" formControlName="password">
-              <mat-error *ngIf="form.get('password')!.hasError('required')">
-                  Password is required
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="Password" formControlName="password">
+            @if (form.get('password')!.hasError('required')) {
+              <mat-error>
+                Password is required
               </mat-error>
+            }
           </mat-form-field>
           <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
+            <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
               test-id="login-button">
               LOGIN
-          </button>
+            </button>
           </div>
         </form>
       </mat-card>
     </main>
-  `,
+    `,
   styles: [
     `
     mat-card {
