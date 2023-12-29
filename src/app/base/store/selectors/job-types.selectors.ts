@@ -6,4 +6,4 @@ export const selectTypesLoadedStatus = createSelector(
   selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes.loadStatus);
 
 export const selectAllJobTypes = createSelector(
-  selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes);
+  selectCuttingSheetsState, (state: CuttingSheetsState) => state.jobTypes.types);

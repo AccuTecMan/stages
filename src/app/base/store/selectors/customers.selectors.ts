@@ -18,7 +18,7 @@ export const selectAllCustomers = createSelector(
 
   export const selectCustomers = createSelector(
     selectAllCustomers,
-    (customers) => customers.filter(x => x.id !== '0')
+    (customers) => customers.filter(x => x.id != '0')
                             .sort((a, b) => (a.name < b.name ? -1 : 1)));
 
   export const selectCustomersIsLoading = createSelector(

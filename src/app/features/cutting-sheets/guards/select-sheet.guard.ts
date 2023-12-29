@@ -8,7 +8,7 @@ import { loadEntity } from '../../../core';
 import * as fromFeature from '../store';
 
 @Injectable({ providedIn: 'root' })
-export class StagesGuard {
+export class SelectSheetGuard {
   constructor(
     private store: Store,
     private route: ActivatedRoute,

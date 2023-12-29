@@ -19,7 +19,7 @@ import {
   StagesContainer,
   CuttingSheetsStagesComponent
 } from './containers';
-import { StagesGuard } from './guards/stages.guard';
+import { SelectSheetGuard } from './guards/select-sheet.guard';
 
 const routes: Routes = [
   {
@@ -41,12 +41,13 @@ const routes: Routes = [
       },
       {
         path: 'edit/:id',
-        component: AddEditContainer
+        component: AddEditContainer,
+        canActivate: [SelectSheetGuard]
       },
       {
         path: 'stages/:id',
         component: StagesContainer,
-        canActivate: [StagesGuard],
+        canActivate: [SelectSheetGuard]
       }
     ]
   }
