@@ -15,6 +15,7 @@ import { Customer } from '@app/base/models';
     </section>
     <header class="content-header">
       <h1>Stages</h1>
+      <h2>{{ selectedSheet?.jobName }}</h2>
     </header>
     `,
   styles: [`
@@ -67,5 +68,6 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CuttingSheetsStagesComponent {
+  @Input() selectedSheet: CuttingSheet | null | undefined;
   constructor() {}
 }

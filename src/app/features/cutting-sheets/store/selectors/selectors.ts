@@ -14,3 +14,5 @@ export const cuttingSheetsSelectors = cuttingSheetsAdapter.getSelectors(selectSu
 export const selectAllCuttingSheets = createSelector(cuttingSheetsSelectors.selectAll, (cus) => cus);
 
 export const selectSearchCriteria = createSelector(selectCuttingSheetsState, (state) => state.searchCriteria);
+
+export const selectSelectedSheet = createSelector(selectCuttingSheetsState, (state) => state.selectedSheet);
