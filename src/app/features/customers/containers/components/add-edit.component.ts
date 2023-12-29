@@ -10,7 +10,8 @@ import { Customer } from '@app/base/models';
   template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/customers">
-        < All Customers
+        <mat-icon>arrow_back_ios</mat-icon>
+        All Customers
       </button>
     </section>
     <header class="content-header">
@@ -79,6 +80,10 @@ import { Customer } from '@app/base/models';
 
     .buttons-section {
       margin-top: 1.5rem;
+    }
+
+    .mat-icon {
+      margin: 0;
     }
 
     @media (max-width: 600px) {

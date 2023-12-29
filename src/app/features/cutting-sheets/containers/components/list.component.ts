@@ -45,8 +45,7 @@ import { FormControl } from '@angular/forms';
     } @else {
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
         @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
-          <div fxFlex="50%" fxFlex.lt-sm="100%"
-            >
+          <div fxFlex="50%" fxFlex.lt-sm="100%">
             <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]">
               <mat-card-header>
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
@@ -76,7 +75,6 @@ import { FormControl } from '@angular/forms';
               </mat-card-content>
               <mat-card-actions fxLayoutAlign="space-between end">
                 <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-                <!-- <button mat-button [routerLink]="['/cuttingSheets']">STAGES</button> -->
               </mat-card-actions>
             </mat-card>
           </div>
@@ -196,7 +194,7 @@ export class ListComponent {
   constructor() {}
 
   ngOnInit() {
-    if (!!this.customers && this.customers[0].id !== '0') {
+    if (!!this.customers && this.customers[0].id != '0') {
       this.customers?.unshift({ id: '0', name: 'All', active: true })
     }
 

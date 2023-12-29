@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CuttingSheetsService } from '../../services';
 import { CuttingSheet } from '../../models';
-import { Customer } from '@app/base/models';
+import { Customer, JobType } from '@app/base/models';
 
 
 @Component({
@@ -11,7 +11,8 @@ import { Customer } from '@app/base/models';
   template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/cuttingSheets">
-        < All Cutting Sheets
+        <mat-icon>arrow_back_ios</mat-icon>
+        All Cutting Sheets
       </button>
     </section>
     <header class="content-header">
@@ -23,15 +24,47 @@ import { Customer } from '@app/base/models';
       <mat-divider></mat-divider>
     </header>
     <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px">
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name">
-        @if (form.get('name')!.hasError('required')) {
-          <mat-error>
-            Name is required
-          </mat-error>
-        }
-      </mat-form-field>
+      <div fxFlex="50%" fxFlex.lt-sm="100%">
+        <mat-form-field>
+          <mat-label>Job Type</mat-label>
+          <mat-select formControlName="jobType" [(value)]="jobTypeSelected">
+            @for (job of jobTypes; track trackByjobTypeGuid($index, job)) {
+              <mat-option [value]="job.id">{{ job.name }}</mat-option>
+            }
+            @if (form.get('name')!.hasError('required')) {
+              <mat-error>
+                Job Type is required
+              </mat-error>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Customer</mat-label>
+          <mat-select formControlName="customer" [(value)]="customerSelected">
+            @for (customer of customers; track trackByCustomerGuid($index, customer)) {
+              <mat-option [value]="customer.id">{{ customer.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name">
+          @if (form.get('name')!.hasError('required')) {
+            <mat-error>
+              Name is required
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>PO#</mat-label>
+          <input matInput formControlName="poNumber">
+          @if (form.get('poNumber')!.hasError('required')) {
+            <mat-error>
+              PO# is required
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
         <button mat-raised-button routerLink="/cuttingSheets">
           Cancel
@@ -81,6 +114,10 @@ import { Customer } from '@app/base/models';
       margin-top: 1.5rem;
     }
 
+    .mat-icon {
+      margin: 0;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.5rem;
@@ -92,37 +129,35 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
+  @Input() selectedSheet: CuttingSheet | null | undefined;
   @Input() customers: Customer[] | null | undefined;
-  @Input() cuttingSheets: CuttingSheet[] | null | undefined;
+  @Input() jobTypes: JobType[] | null | undefined;
+  @Input() isEditing: boolean | null;
 
   form: UntypedFormGroup;
   public cuttingSheetId: string;
-  public isEditing: boolean;
+  public jobTypeSelected: string;
+  public customerSelected: string;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
               private service: CuttingSheetsService,
               private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    this.customers = this.customers?.filter(x => x.id != '0');
     this.form = this.formBuilder.group({
+      jobType: ['', [Validators.required]],
+      customer: ['', [Validators.required]],
       name: ['', [Validators.required]],
+      poNumber: ['', [Validators.required]],
     });
 
-    this.route.params.subscribe(params => {
-        this.cuttingSheetId = params['id'] || null;
-        this.isEditing = this.cuttingSheetId?.length > 0
-        console.log(this.cuttingSheetId);
-        this.isEditing = !!this.cuttingSheetId;
-
-        if (this.isEditing) {
-          const currentCuttingSheet = this.cuttingSheets?.find(x => x.id === this.cuttingSheetId);
-          this.form.controls['name'].setValue(currentCuttingSheet?.jobName);
-          // this.service.get(this.cuttingSheetId).subscribe((x: any) => {
-          //   this.form.controls['name'].setValue(x.jobName);
-          // });
-        }
-    });
+    if (this.isEditing) {
+      this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
+      this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
+      this.form.controls['name'].setValue(this.selectedSheet?.jobName);
+      this.form.controls['poNumber'].setValue(this.selectedSheet?.poNumber);
+    }
   }
 
   get name() {
@@ -147,5 +182,13 @@ export class AddEditComponent {
       this.service.create(cuttingSheet);
     }
     this.router.navigate(['/', 'cuttingSheets']);
+  }
+
+  public trackByCustomerGuid(index: number, customer: Customer) {
+    return customer.id;
+  }
+
+  public trackByjobTypeGuid(index: number, jobType: JobType) {
+    return jobType.id;
   }
 }
