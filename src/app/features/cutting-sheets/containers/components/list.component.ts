@@ -18,7 +18,7 @@ import { FormControl } from '@angular/forms';
       <mat-divider></mat-divider>
       <div fxLayoutAlign="start center" fxLayoutGap="12px">
         <mat-form-field fxFlex="20">
-          <input matInput placeholder="Job Name or PO#" [(ngModel)]="term">
+          <input matInput placeholder="PO# or Job Name" [(ngModel)]="term">
         </mat-form-field>
         <mat-form-field fxFlex="30">
           <mat-label>Ready by</mat-label>
@@ -47,7 +47,7 @@ import { FormControl } from '@angular/forms';
         @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
           <div fxFlex="50%" fxFlex.lt-sm="100%"
             >
-            <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets']">
+            <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]">
               <mat-card-header>
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
                 <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
@@ -81,7 +81,7 @@ import { FormControl } from '@angular/forms';
             </mat-card>
           </div>
         } @empty {
-          <p>No records found</p>
+          <p class='no-records'>No records found</p>
         }
       </section>
     }

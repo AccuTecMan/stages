@@ -3,7 +3,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 
 import { CuttingSheetsGuardActions, CuttingSheetsApiActions } from '..';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { CuttingSheet } from '../../models';
+import { CuttingSheet, Stage } from '../../models';
 import { SearchCriteria } from '../../models/search-criteria';
 import { SearchCriteriaActions } from '../actions/cutting-sheets.actions';
 
@@ -12,6 +12,7 @@ export const featureName = 'cuttingSheets';
 export interface CuttingSheetsState extends LoadStatus {
   searchCriteria?: SearchCriteria;
   summary: EntityState<CuttingSheet>;
+  stages?: Stage[];
 }
 
 const SummaryAdapterOptions = {
@@ -26,6 +27,7 @@ const initialState: CuttingSheetsState = {
     customerId: undefined,
     readyByOption: 0
   },
+  stages: undefined,
   loadStatus: EntityLoadStatus.INITIAL
 };
 
@@ -61,7 +63,28 @@ export const internalReducer = createReducer(
       loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
-
+  on(
+    CuttingSheetsGuardActions.loadStages,
+    (state): CuttingSheetsState => ({
+      ...state,
+      loadStatus: EntityLoadStatus.LOADING,
+    }),
+  ),
+  on(
+    CuttingSheetsApiActions.loadStagesSuccess,
+    (state, { cuttingSheet }): CuttingSheetsState => ({
+      ...state,
+      ...cuttingSheetsAdapter.upsertOne(cuttingSheet, state.summary),
+      loadStatus: EntityLoadStatus.SUCCESS
+    })
+  ),
+  on(
+    CuttingSheetsApiActions.loadStagesFailure,
+    (state): CuttingSheetsState => ({
+      ...state,
+      loadStatus: EntityLoadStatus.FAILURE,
+    })
+  ),
 );
 
 export function reducer(state: CuttingSheetsState | undefined, action: Action) {

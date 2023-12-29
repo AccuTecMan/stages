@@ -17,13 +17,13 @@ export class AuthService {
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
       if (user) {
-        const storage = getStorage();
-        const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
-          return !!res.claims['role'] && res.claims['role'] === 'admin';
-        });
+        // const storage = getStorage();
+        // const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
+        //   return !!res.claims['role'] && res.claims['role'] === 'admin';
+        // });
         this.store.dispatch(
           fromRoot.AuthenticationActions.setAuthenticated({
-            isAdmin: isAdmin,
+            isAdmin: false,
             displayName: user.displayName,
           })
         );

@@ -13,8 +13,13 @@ import { ListComponent } from './containers/components/list.component';
 import { CuttingSheetsEffects, featureName, reducer } from './store';
 import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
 import { CustomersGuard, JobTypesGuard, StageTemplatesGuard } from '@app/base/guards';
-import { AddEditComponent } from './containers/components/add-edit.component';
-import { AddEditContainer } from './containers/add-edit.container';
+import {
+  AddEditContainer,
+  AddEditComponent,
+  StagesContainer,
+  CuttingSheetsStagesComponent
+} from './containers';
+import { StagesGuard } from './guards/stages.guard';
 
 const routes: Routes = [
   {
@@ -40,7 +45,8 @@ const routes: Routes = [
       },
       {
         path: 'stages/:id',
-        component: AddEditContainer
+        component: StagesContainer,
+        canActivate: [StagesGuard],
       }
     ]
   }
@@ -51,7 +57,9 @@ const routes: Routes = [
     ListContainer,
     AddEditContainer,
     AddEditComponent,
-    ListComponent
+    ListComponent,
+    CuttingSheetsStagesComponent,
+    StagesContainer
   ],
   imports: [
     StoreModule.forFeature(featureName, reducer),

@@ -49,6 +49,8 @@ import { Customer } from '@app/base/models';
             </mat-card-actions>
           </mat-card>
         </div>
+      } @empty {
+        <p class='no-records'>No records found</p>
       }
     </section>
     `,
