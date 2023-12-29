@@ -9,25 +9,26 @@ import { SearchCriteriaActions } from '../actions/cutting-sheets.actions';
 
 export const featureName = 'cuttingSheets';
 
+export interface SummaryState extends EntityState<CuttingSheet> {}
+export const cuttingSheetsAdapter = createEntityAdapter<CuttingSheet>({
+  selectId: (sheet: CuttingSheet) => sheet.id,
+});
+
 export interface CuttingSheetsState extends LoadStatus {
   searchCriteria?: SearchCriteria;
-  summary: EntityState<CuttingSheet>;
+  summary: SummaryState;
   stages?: Stage[];
+  selectedSheet: CuttingSheet | undefined;
 }
 
-const SummaryAdapterOptions = {
-  selectId: (summary: CuttingSheet) => summary.id,
-};
-
-export const cuttingSheetsAdapter = createEntityAdapter<CuttingSheet>(SummaryAdapterOptions);
-
 const initialState: CuttingSheetsState = {
-  summary: cuttingSheetsAdapter.getInitialState(),
+  summary : { ...cuttingSheetsAdapter.getInitialState() },
   searchCriteria: {
     customerId: undefined,
     readyByOption: 0
   },
   stages: undefined,
+  selectedSheet: undefined,
   loadStatus: EntityLoadStatus.INITIAL
 };
 
@@ -67,6 +68,7 @@ export const internalReducer = createReducer(
     CuttingSheetsGuardActions.loadStages,
     (state): CuttingSheetsState => ({
       ...state,
+      selectedSheet: undefined,
       loadStatus: EntityLoadStatus.LOADING,
     }),
   ),
@@ -74,7 +76,7 @@ export const internalReducer = createReducer(
     CuttingSheetsApiActions.loadStagesSuccess,
     (state, { cuttingSheet }): CuttingSheetsState => ({
       ...state,
-      ...cuttingSheetsAdapter.upsertOne(cuttingSheet, state.summary),
+      selectedSheet: cuttingSheet,
       loadStatus: EntityLoadStatus.SUCCESS
     })
   ),
@@ -82,6 +84,7 @@ export const internalReducer = createReducer(
     CuttingSheetsApiActions.loadStagesFailure,
     (state): CuttingSheetsState => ({
       ...state,
+      selectedSheet: undefined,
       loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
