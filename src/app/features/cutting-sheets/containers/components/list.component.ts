@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CuttingSheet, SearchCriteria } from '../../models';
 import { Customer } from '@app/base/models';
-import { Observable, map, startWith, tap } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -68,6 +68,10 @@ import { FormControl } from '@angular/forms';
                 <dl>
                   <dt>Ready By</dt>
                   <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
+                </dl>
+                <dl>
+                  <dt>Current Stage</dt>
+                  <dd>{{ sheet.currentStage.stage }}</dd>
                 </dl>
               </mat-card-content>
               <mat-card-actions fxLayoutAlign="space-between end">

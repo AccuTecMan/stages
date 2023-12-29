@@ -21,10 +21,6 @@ export const selectAllCustomers = createSelector(
     (customers) => customers.filter(x => x.id !== '0')
                             .sort((a, b) => (a.name < b.name ? -1 : 1)));
 
-// export const selectCustomersAll = createSelector(
-//     selectCuttingSheetsState,
-//     (state: CuttingSheetsState) => state.customers.customers);
-
   export const selectCustomersIsLoading = createSelector(
     selectCuttingSheetsState,
     (state) => state.customers.loadStatus === EntityLoadStatus.LOADING);

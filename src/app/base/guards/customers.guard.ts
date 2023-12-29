@@ -14,6 +14,6 @@ export class CustomersGuard {
   canActivate(): Observable<boolean | UrlTree> {
     return this.store
       .select(fromBase.selectCustomersLoadedStatus)
-      .pipe(loadEntity(() => this.store.dispatch(fromBase.CustomersGuardActions.loadAll()), undefined, false));
+      .pipe(loadEntity(() => this.store.dispatch(fromBase.CustomersGuardActions.loadAll()), undefined, true));
   }
 }

@@ -93,6 +93,7 @@ import { Customer } from '@app/base/models';
 })
 export class AddEditComponent {
   @Input() customers: Customer[] | null | undefined;
+  @Input() cuttingSheets: CuttingSheet[] | null | undefined;
 
   form: UntypedFormGroup;
   public cuttingSheetId: string;
@@ -111,11 +112,15 @@ export class AddEditComponent {
     this.route.params.subscribe(params => {
         this.cuttingSheetId = params['id'] || null;
         this.isEditing = this.cuttingSheetId?.length > 0
+        console.log(this.cuttingSheetId);
+        this.isEditing = !!this.cuttingSheetId;
 
         if (this.isEditing) {
-          this.service.get(this.cuttingSheetId).subscribe((x: any) => {
-            this.form.controls['name'].setValue(x.jobName);
-          });
+          const currentCuttingSheet = this.cuttingSheets?.find(x => x.id === this.cuttingSheetId);
+          this.form.controls['name'].setValue(currentCuttingSheet?.jobName);
+          // this.service.get(this.cuttingSheetId).subscribe((x: any) => {
+          //   this.form.controls['name'].setValue(x.jobName);
+          // });
         }
     });
   }

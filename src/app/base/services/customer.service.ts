@@ -15,7 +15,7 @@ export class CustomerService {
     this.customerCollection = collection(this.firestore, 'customers');
   }
 
-  public getAll() {
+  public getAll(): Observable<Customer[]> {
     return collectionData(this.customerCollection, {
       idField: 'id',
     }) as Observable<Customer[]>;

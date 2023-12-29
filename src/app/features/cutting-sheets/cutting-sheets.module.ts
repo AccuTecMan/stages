@@ -37,6 +37,10 @@ const routes: Routes = [
       {
         path: 'edit/:id',
         component: AddEditContainer
+      },
+      {
+        path: 'stages/:id',
+        component: AddEditContainer
       }
     ]
   }

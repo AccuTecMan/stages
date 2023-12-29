@@ -3,10 +3,8 @@ import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, QueryConstraint, addDoc, collection, collectionData, doc, docData, query, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { CuttingSheet, SearchCriteria } from '../models';
+import { CuttingSheet, SearchCriteria, Stage } from '../models';
 import { Store } from '@ngrx/store';
-
-import * as fromStore from '../store';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +12,7 @@ import * as fromStore from '../store';
 export class CuttingSheetsService {
   // public searchCriteria$ = this.store.select(fromStore.selectSearchCriteria);
   private cuttingSheetsCollection: CollectionReference<DocumentData>;
+  private stagesCollection: CollectionReference<DocumentData>;
 
   constructor(private readonly firestore: Firestore,
               private store: Store) {
@@ -117,6 +116,13 @@ export class CuttingSheetsService {
   get(id: string): Observable<CuttingSheet> {
     const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
     return docData(cuttingSheetsReference, { idField: 'id' }) as Observable<CuttingSheet>;
+  }
+
+  getStages(id: string): Observable<Stage[]> {
+    this.stagesCollection = collection(this.firestore, `cuttingSheets/${id}/stages`);
+    return collectionData(this.stagesCollection,
+      { idField: 'id' }
+    ) as Observable<Stage[]>;
   }
 
   create(cuttingSheet: CuttingSheet) {
