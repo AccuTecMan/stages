@@ -3,7 +3,6 @@ export interface Stage {
   name: string;
   date: Date;
   notes: string;
-  isCurrent: boolean;
   canGoBack: boolean;
   canGoForward: boolean;
 }

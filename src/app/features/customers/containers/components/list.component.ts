@@ -132,7 +132,7 @@ import { Customer } from '@app/base/models';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomerComponent {
+export class ListComponent {
   @Input() customers!: Customer[] | null;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public showInactive = new EventEmitter<boolean>();
