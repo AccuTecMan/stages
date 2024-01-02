@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CuttingSheetsService } from '../../services';
 import { CuttingSheet } from '../../models';
-import { Customer, JobType } from '@app/base/models';
+import { Customer, JobType, StageTemplate } from '@app/base/models';
 
 
 @Component({
@@ -83,7 +82,7 @@ import { Customer, JobType } from '@app/base/models';
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
-        <button mat-raised-button routerLink="/cuttingSheets">
+        <button mat-raised-button routerLink="/cuttingSheets" type="button">
           Cancel
         </button>
         <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
@@ -149,14 +148,16 @@ export class AddEditComponent {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Input() customers: Customer[] | null | undefined;
   @Input() jobTypes: JobType[] | null | undefined;
+  @Input() templates: StageTemplate[] | null | undefined;
   @Input() isEditing: boolean | null;
+  @Output() onSave = new EventEmitter<CuttingSheet>();
 
   form: UntypedFormGroup;
   public jobTypeSelected: string | undefined;
   public customerSelected: string | undefined;
 
   constructor(private router: Router,
-              private service: CuttingSheetsService,
+
               private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -172,7 +173,6 @@ export class AddEditComponent {
 
     if (this.isEditing) {
       this.customerSelected = this.selectedSheet?.customer.id;
-      console.log('initial', this.customerSelected)
       this.jobTypeSelected = this.selectedSheet?.jobType.id;
       this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
       this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
@@ -194,20 +194,16 @@ export class AddEditComponent {
       jobName: this.form.value.name,
       poNumber: this.form.value.poNumber,
       customer: { id: this.customerSelected, name: customerName },
-      //jobType: { id: this.jobTypeSelected?.id, name: this.jobTypeSelected?.name },
       color: this.form.value.color,
       readyBy: this.form.value.readyBy,
     }
 
-
-    if (this.isEditing) {
-     this.service.update(cuttingSheet, this.selectedSheet?.id!);
-    } else {
-      const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
-      cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName}
-      this.service.create(cuttingSheet);
-    }
-    this.router.navigate(['/', 'cuttingSheets']);
+    const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
+    cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName};
+    cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected)!;
+    cuttingSheet.currentStage = { order: 1, stage: 'Processing'};
+    cuttingSheet.id = !!this.selectedSheet?.id ? this.selectedSheet.id : '';
+    this.onSave.emit(cuttingSheet);
   }
 
   public trackByCustomerGuid(index: number, customer: Customer) {
