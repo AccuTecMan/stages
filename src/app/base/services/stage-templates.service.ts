@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
-import { DocumentReference, Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import { DocumentReference, Firestore, collection, collectionData, doc, docData, query, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StageTemplate } from '../models/stage-template';
 
@@ -21,8 +21,10 @@ export class StageTemplatesService {
     }) as Observable<StageTemplate[]>;
   }
 
-  public get(id: string): Observable<StageTemplate> {
-    const typesReference = doc(this.firestore, `stageTemplates/${id}`);
-    return docData(typesReference, { idField: 'id' }) as Observable<StageTemplate>;
+  public get(id: string): Observable<StageTemplate[]> {
+    const q = query(this.typesCollection, where("jobType", "==", id));
+    return collectionData(q, {
+      idField: 'id'
+    }) as Observable<StageTemplate[]>;
   }
 }

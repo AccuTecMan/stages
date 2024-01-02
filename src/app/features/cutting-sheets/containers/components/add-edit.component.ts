@@ -23,7 +23,8 @@ import { Customer, JobType } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px">
+    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px" #f="ngForm"
+    (ngSubmit)="f.form.valid && save()">
       <div fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-form-field>
           <mat-label>Job Type</mat-label>
@@ -85,7 +86,7 @@ import { Customer, JobType } from '@app/base/models';
         <button mat-raised-button routerLink="/cuttingSheets">
           Cancel
         </button>
-        <button mat-raised-button color="primary" (click)="save()" [disabled]="!form.valid">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
           Save
         </button>
       </div>
@@ -151,7 +152,7 @@ export class AddEditComponent {
   @Input() isEditing: boolean | null;
 
   form: UntypedFormGroup;
-  public jobTypeSelected: JobType | undefined;
+  public jobTypeSelected: string | undefined;
   public customerSelected: string | undefined;
 
   constructor(private router: Router,
@@ -172,7 +173,7 @@ export class AddEditComponent {
     if (this.isEditing) {
       this.customerSelected = this.selectedSheet?.customer.id;
       console.log('initial', this.customerSelected)
-      this.jobTypeSelected = this.selectedSheet?.jobType;
+      this.jobTypeSelected = this.selectedSheet?.jobType.id;
       this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
       this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
@@ -193,17 +194,19 @@ export class AddEditComponent {
       jobName: this.form.value.name,
       poNumber: this.form.value.poNumber,
       customer: { id: this.customerSelected, name: customerName },
-      jobType: { id: this.jobTypeSelected?.id, name: this.jobTypeSelected?.name },
+      //jobType: { id: this.jobTypeSelected?.id, name: this.jobTypeSelected?.name },
       color: this.form.value.color,
       readyBy: this.form.value.readyBy,
     }
 
 
-    // if (this.isEditing) {
+    if (this.isEditing) {
      this.service.update(cuttingSheet, this.selectedSheet?.id!);
-    // } else {
-    //   this.service.create(cuttingSheet);
-    // }
+    } else {
+      const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
+      cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName}
+      this.service.create(cuttingSheet);
+    }
     this.router.navigate(['/', 'cuttingSheets']);
   }
 
