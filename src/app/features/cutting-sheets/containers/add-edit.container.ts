@@ -37,7 +37,6 @@ export class AddEditContainer {
               private route: ActivatedRoute,) {}
 
   public onSave(cuttingSheet: CuttingSheet) {
-    console.log(cuttingSheet);
     this.route.params.subscribe(params => {
       if (params['id'] != null) {
         this.service.update(cuttingSheet, params['id']);
