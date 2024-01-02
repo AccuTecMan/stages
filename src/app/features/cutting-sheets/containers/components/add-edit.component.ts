@@ -64,6 +64,22 @@ import { Customer, JobType } from '@app/base/models';
             </mat-error>
           }
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>Color</mat-label>
+          <input matInput formControlName="color">
+          @if (form.get('color')!.hasError('required')) {
+            <mat-error>
+              Color is required
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ready by</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="readyBy">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
       </div>
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
         <button mat-raised-button routerLink="/cuttingSheets">
@@ -135,9 +151,8 @@ export class AddEditComponent {
   @Input() isEditing: boolean | null;
 
   form: UntypedFormGroup;
-  public cuttingSheetId: string;
-  public jobTypeSelected: string;
-  public customerSelected: string;
+  public jobTypeSelected: JobType | undefined;
+  public customerSelected: string | undefined;
 
   constructor(private router: Router,
               private service: CuttingSheetsService,
@@ -150,13 +165,21 @@ export class AddEditComponent {
       customer: ['', [Validators.required]],
       name: ['', [Validators.required]],
       poNumber: ['', [Validators.required]],
+      color: ['', [Validators.required]],
+      readyBy: [new Date(), [Validators.required]],
     });
 
     if (this.isEditing) {
+      this.customerSelected = this.selectedSheet?.customer.id;
+      console.log('initial', this.customerSelected)
+      this.jobTypeSelected = this.selectedSheet?.jobType;
       this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
       this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
       this.form.controls['poNumber'].setValue(this.selectedSheet?.poNumber);
+      this.form.controls['color'].setValue(this.selectedSheet?.color);
+      this.form.controls['readyBy'].setValue(this.selectedSheet?.readyBy.toDate());
+      this.form.controls['jobType'].disable();
     }
   }
 
@@ -165,22 +188,22 @@ export class AddEditComponent {
   }
 
   public save() {
+    const customerName = this.customers?.find(x=> x.id === this.customerSelected)?.name;
     const cuttingSheet = <CuttingSheet>{
       jobName: this.form.value.name,
+      poNumber: this.form.value.poNumber,
+      customer: { id: this.customerSelected, name: customerName },
+      jobType: { id: this.jobTypeSelected?.id, name: this.jobTypeSelected?.name },
+      color: this.form.value.color,
+      readyBy: this.form.value.readyBy,
     }
 
-    // jobName: string;
-    // poNumber: string;
-    // customer: Customer;
-    // jobType: JobType;
-    // color: string;
-    // readyBy: any;
 
-    if (this.isEditing) {
-      this.service.update(cuttingSheet, this.cuttingSheetId);
-    } else {
-      this.service.create(cuttingSheet);
-    }
+    // if (this.isEditing) {
+     this.service.update(cuttingSheet, this.selectedSheet?.id!);
+    // } else {
+    //   this.service.create(cuttingSheet);
+    // }
     this.router.navigate(['/', 'cuttingSheets']);
   }
 
