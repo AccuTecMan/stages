@@ -22,8 +22,8 @@ import { Customer, JobType, StageTemplate } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px" #f="ngForm"
-    (ngSubmit)="f.form.valid && save()">
+    <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="8px" #f="ngForm"
+                      (ngSubmit)="f.form.valid && save()">
       <div fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-form-field>
           <mat-label>Job Type</mat-label>
@@ -80,14 +80,14 @@ import { Customer, JobType, StageTemplate } from '@app/base/models';
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
-        <button mat-raised-button routerLink="/cuttingSheets" type="button">
-          Cancel
-        </button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
-          Save
-        </button>
+        <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
+          <button mat-raised-button routerLink="/cuttingSheets" type="button">
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+            Save
+          </button>
+        </div>
       </div>
     </form>
     `,
