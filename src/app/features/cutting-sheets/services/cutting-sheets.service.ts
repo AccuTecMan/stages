@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, QueryConstraint, addDoc, collection, collectionData, doc, docData, query, updateDoc, where } from '@angular/fire/firestore';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CuttingSheet, SearchCriteria, Stage } from '../models';
 import { Store } from '@ngrx/store';
 import { StageTemplatesService } from '@app/base/services';
@@ -11,7 +11,6 @@ import { StageTemplatesService } from '@app/base/services';
   providedIn: 'root',
 })
 export class CuttingSheetsService {
-  // public searchCriteria$ = this.store.select(fromStore.selectSearchCriteria);
   private cuttingSheetsCollection: CollectionReference<DocumentData>;
   private stagesCollection: CollectionReference<DocumentData>;
 
@@ -128,16 +127,7 @@ export class CuttingSheetsService {
   }
 
   create(cuttingSheet: CuttingSheet) {
-    const stages = this.templateService.get(cuttingSheet.jobType.id);
-    // stages.pipe(map(s => console.log('estados', s)))
-    return stages.subscribe(stages => {
-        cuttingSheet.stages = stages;
-        const currentStg = { order: 1, stage: 'Processing'};
-        cuttingSheet.currentStage = currentStg;
-        console.log(cuttingSheet)
-        addDoc(this.cuttingSheetsCollection, cuttingSheet);
-      });
-    // return addDoc(this.cuttingSheetsCollection, cuttingSheet);
+    return addDoc(this.cuttingSheetsCollection, cuttingSheet)
   }
 
   update(cuttingSheet: CuttingSheet, id: string) {
