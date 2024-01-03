@@ -47,9 +47,10 @@ import { FormControl } from '@angular/forms';
         @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
           <div fxFlex="50%" fxFlex.lt-sm="100%">
             <mat-card  class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]">
-              <mat-card-header>
-                <mat-card-title>{{ sheet.jobName }}</mat-card-title>
-                <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
+              <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
+                  <mat-card-title>{{ sheet.jobName }}</mat-card-title>
+                  <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
+                  <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
               </mat-card-header>
               <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
                 <dl>
@@ -73,9 +74,9 @@ import { FormControl } from '@angular/forms';
                   <dd>{{ sheet.currentStage.stage }}</dd>
                 </dl>
               </mat-card-content>
-              <mat-card-actions fxLayoutAlign="space-between end">
+              <!-- <mat-card-actions fxLayoutAlign="space-between end">
                 <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-              </mat-card-actions>
+              </mat-card-actions> -->
             </mat-card>
           </div>
         } @empty {
@@ -107,7 +108,7 @@ import { FormControl } from '@angular/forms';
 
     mat-card {
       min-width: 350px;
-      min-height: 210px;
+      min-height: 160px;
       cursor: pointer;
     }
 
@@ -121,8 +122,9 @@ import { FormControl } from '@angular/forms';
 
     mat-card-title {
       color: #607ec9;
-      margin: -.5rem 0rem -.5rem 0rem;
+      margin: -.5rem 0rem 0 0rem;
       padding: 0px;
+      line-height: 90%;
     }
 
     mat-card-subtitle {
@@ -158,6 +160,7 @@ import { FormControl } from '@angular/forms';
     .button-update {
       background-color: #607ec9;
       color: white;
+      margin-top: -.5rem;
     }
 
     @media (max-width: 600px) {
