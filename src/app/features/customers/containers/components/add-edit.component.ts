@@ -110,7 +110,7 @@ export class AddEditComponent {
   ngOnInit() {
     this.form = this.formBuilder.group({
       name: ['', [Validators.required]],
-      isActive: ['true']
+      isActive: [true]
     });
 
     this.route.params.subscribe(params => {
@@ -133,7 +133,7 @@ export class AddEditComponent {
   public save() {
     const customer = <Customer>{
       name: this.form.value.name,
-      active: this.form.value.isActive
+      active: <boolean>this.form.value.isActive
     }
 
     if (this.isEditing) {

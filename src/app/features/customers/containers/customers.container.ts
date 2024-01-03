@@ -26,10 +26,10 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
-  public customers$ = this.store.select(fromBase.selectCustomers);
+  public customers$ = this.store.select(fromBase.selectAllCustomers);
   public isLoading$ = this.store.select(fromBase.selectCustomersIsLoading);
   public filteredCustomers$: Observable<Customer[]>;
-  private isInactiveDisplayed: boolean = false;
+  private isInactiveDisplayed: boolean = true;
   private searchTerm: string = "";
 
   constructor(private store: Store) {
@@ -56,8 +56,14 @@ export class CustomerContainer {
   }
 
   private getFilteredCustomers(): Observable<Customer[]> {
+    console.log('active?',this.isInactiveDisplayed)
     return this.customers$.pipe(
-      map((c: any) => c.filter((x: any) => x.active == (this.isInactiveDisplayed ? x.active : true)))
+      map((c: any) => {
+        if (!this.isInactiveDisplayed) {
+          return c.filter((x: any) => x.active === true)
+        }
+        return c;
+      })
     );
   }
 }

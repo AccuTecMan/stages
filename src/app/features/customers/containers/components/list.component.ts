@@ -140,7 +140,7 @@ export class ListComponent {
   @Output() public showInactive = new EventEmitter<boolean>();
 
   private _term: string;
-  public isInactiveDisplayed: boolean = false;
+  public isInactiveDisplayed: boolean = true;
 
   public onSearchTermChange(term: string) {
     this.changeSearchTerm.emit(term);

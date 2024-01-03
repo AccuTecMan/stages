@@ -11,13 +11,13 @@ import { StageTemplatesService } from '@app/base/services';
   providedIn: 'root',
 })
 export class CuttingSheetsService {
-  private cuttingSheetsCollection: CollectionReference<DocumentData>;
+  private cuttingSheetsRef: CollectionReference<DocumentData>;
   private stagesCollection: CollectionReference<DocumentData>;
 
   constructor(private readonly firestore: Firestore,
               private templateService: StageTemplatesService,
               private store: Store) {
-    this.cuttingSheetsCollection = collection(this.firestore, 'cuttingSheets');
+    this.cuttingSheetsRef = collection(this.firestore, 'cuttingSheets');
   }
 
   public getWithCriteria(criteria: SearchCriteria | undefined) {
@@ -31,7 +31,7 @@ export class CuttingSheetsService {
       wheres.push(...this.getReadyByConstraint(criteria.readyByOption))
     }
 
-    let sheetsQuery = query(this.cuttingSheetsCollection, ...wheres);
+    let sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
     return collectionData(sheetsQuery, {
       idField: 'id',
@@ -109,7 +109,7 @@ export class CuttingSheetsService {
   }
 
   public getAll() {
-    return collectionData(this.cuttingSheetsCollection, {
+    return collectionData(this.cuttingSheetsRef, {
       idField: 'id',
     }) as Observable<CuttingSheet[]>;
   }
@@ -126,15 +126,19 @@ export class CuttingSheetsService {
     ) as Observable<Stage[]>;
   }
 
-  create(cuttingSheet: CuttingSheet) {
-    return addDoc(this.cuttingSheetsCollection, cuttingSheet)
-  }
+  // create(cuttingSheet: CuttingSheet) {
+  //   return addDoc(this.cuttingSheetsCollection, cuttingSheet)
+  // }
 
-  update(cuttingSheet: CuttingSheet, id: string) {
-    const cuttingSheetsReference = doc(
-      this.firestore,
-      `cuttingSheets/${id}`
-    );
-    return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
+  upsert(cuttingSheet: CuttingSheet, id?: string) {
+    if (!!id) {
+      const cuttingSheetsReference = doc(
+        this.firestore,
+        `cuttingSheets/${id}`
+      );
+      return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
+    } else {
+      return addDoc(this.cuttingSheetsRef, cuttingSheet)
+    }
   }
 }
