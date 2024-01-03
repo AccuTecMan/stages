@@ -38,11 +38,12 @@ export class AddEditContainer {
 
   public onSave(cuttingSheet: CuttingSheet) {
     this.route.params.subscribe(params => {
-      if (params['id'] != null) {
-        this.service.update(cuttingSheet, params['id']);
-      } else {
-        this.service.create(cuttingSheet);
-      }
+      this.service.upsert(cuttingSheet, params['id'])
+      // if (!!params['id']) {
+      //   this.service.update(cuttingSheet, params['id']);
+      // } else {
+      //   this.service.create(cuttingSheet);
+      // }
       this.router.navigate(['/cuttingSheets']);
     })
   }
