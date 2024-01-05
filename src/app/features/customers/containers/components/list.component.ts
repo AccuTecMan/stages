@@ -4,6 +4,9 @@ import { Customer } from '@app/base/models';
 @Component({
   selector: 'app-customer-component',
   template: `
+    @if (IsLoading) {
+      <mat-spinner fxLayoutAlign="center top" diameter="80" strokeWidth="5"></mat-spinner>
+    } @else {
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Customers</h1>
@@ -53,6 +56,7 @@ import { Customer } from '@app/base/models';
         <p class='no-records'>No records found</p>
       }
     </section>
+    }
     `,
   styles: [`
     h1 {
@@ -116,6 +120,10 @@ import { Customer } from '@app/base/models';
       color: white;
     }
 
+    mat-spinner {
+      margin: 1rem;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.5rem;
@@ -135,6 +143,7 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListComponent {
+  @Input() IsLoading!: boolean | null;
   @Input() customers!: Customer[] | null;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public showInactive = new EventEmitter<boolean>();

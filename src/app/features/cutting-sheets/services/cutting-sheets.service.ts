@@ -137,4 +137,8 @@ export class CuttingSheetsService {
       return addDoc(this.cuttingSheetsRef, cuttingSheet)
     }
   }
+
+  updateStage(stage: number): void {
+
+  }
 }

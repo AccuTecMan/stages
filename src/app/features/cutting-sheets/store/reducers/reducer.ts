@@ -88,6 +88,22 @@ export const internalReducer = createReducer(
       loadStatus: EntityLoadStatus.FAILURE,
     })
   ),
+  on(
+    CuttingSheetsApiActions.changeStageSuccess,
+    (state, { cuttingSheet }): CuttingSheetsState => ({
+      ...state,
+      selectedSheet: cuttingSheet,
+      loadStatus: EntityLoadStatus.SUCCESS
+    })
+  ),
+  on(
+    CuttingSheetsApiActions.changeStageFailure,
+    (state): CuttingSheetsState => ({
+      ...state,
+      selectedSheet: undefined,
+      loadStatus: EntityLoadStatus.FAILURE,
+    })
+  ),
 );
 
 export function reducer(state: CuttingSheetsState | undefined, action: Action) {

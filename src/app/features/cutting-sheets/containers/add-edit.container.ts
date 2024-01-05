@@ -20,7 +20,6 @@ import { CuttingSheet } from '../models';
       (onSave)="onSave($event)"
     />
   `,
-  styles:[``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditContainer {

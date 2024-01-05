@@ -40,7 +40,7 @@ export class CuttingSheetsEffects {
   loadCustomers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(CustomersGuardActions.loadAll),
-      switchMap((action) =>
+      switchMap(() =>
         this.customersServices.getAll().pipe(
           map((customers) => CustomersApiActions.loadAllSuccess({ customers: customers })),
           catchError(() => of(CustomersApiActions.loadAllFailure()))
