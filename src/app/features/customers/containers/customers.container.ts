@@ -8,27 +8,20 @@ import { Customer } from '@app/base/models';
 @Component({
   selector: 'app-customer-container',
   template: `
-    @if (isLoading$ | async) {
-      <mat-spinner fxLayoutAlign="center top" diameter="80" strokeWidth="5"></mat-spinner>
-    } @else {
-      <app-customer-component
-        [customers]="filteredCustomers$ | async"
-        (changeSearchTerm)="onChangeSearchTerm($event)"
-        (showInactive)="onShowInactive($event)"
-      />
-    }
+    <app-customer-component
+      [IsLoading]="isLoading$ | async"
+      [customers]="filteredCustomers$ | async"
+      (changeSearchTerm)="onChangeSearchTerm($event)"
+      (showInactive)="onShowInactive($event)"
+    />
   `,
-  styles:[`
-    mat-spinner {
-      margin: 1rem;
-    }
-  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerContainer {
   public customers$ = this.store.select(fromBase.selectAllCustomers);
   public isLoading$ = this.store.select(fromBase.selectCustomersIsLoading);
   public filteredCustomers$: Observable<Customer[]>;
+
   private isInactiveDisplayed: boolean = true;
   private searchTerm: string = "";
 

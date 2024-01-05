@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { CuttingSheet, Stage } from '../../models';
+import { MatStepper } from "@angular/material/stepper";
+import { pluck } from 'rxjs';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -16,18 +18,19 @@ import { CuttingSheet, Stage } from '../../models';
       <h2>{{ selectedSheet?.jobName }}</h2>
       <h3>PO#:{{ selectedSheet?.poNumber }}</h3>
     </header>
-    <mat-stepper orientation="vertical" linear="true">
+    <mat-stepper orientation="vertical" linear="false" #stepper
+                (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of stages; track selectedSheet?.stages ) {
         <mat-step [label]="stage.stage" fxLayoutAlign="start space-between">
           {{ stage.notes}}
-          <!-- <div  class="buttons-section"> -->
-            <button mat-raised-button matStepperPrevious [disabled]="!stage.canGoBack">
-              Back
-            </button>
-            <button mat-raised-button matStepperNext color="primary" [disabled]="!stage.canGoForward">
-              Next
-            </button>
-          <!-- </div> -->
+          <div  class="buttons-section">
+            @if (stage.canGoBack) {
+              <button mat-raised-button matStepperPrevious>Previous</button>
+            }
+            @if (stage.canGoForward) {
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            }
+          </div>
         </mat-step>
       }
     </mat-stepper>
@@ -73,7 +76,7 @@ import { CuttingSheet, Stage } from '../../models';
     }
 
     .buttons-section {
-      margin-top: 0;
+      margin-top: 1rem;
     }
 
     .mat-icon {
@@ -97,12 +100,24 @@ import { CuttingSheet, Stage } from '../../models';
 })
 export class CuttingSheetsStagesComponent {
   @Input() selectedSheet: CuttingSheet | null | undefined;
+  @ViewChild("stepper") private stepper: MatStepper;
 
   public stages: Stage[];
+  public stepperIndex: number;
 
   constructor() {}
 
   ngOnInit() {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) =>  (a.order < b.order ? -1 : 1))!;
+    this.stepperIndex = this.selectedSheet?.currentStage.order!;
+  }
+
+  // ngAfterViewInit() {
+  //   console.log(`Stepper Index: ${this.stepper.selectedIndex}`);
+  //   console.log(this.stepper.selectedIndex);
+  // }
+
+  onStepChange(event: any): void {
+    this.stepperIndex = event.selectedIndex;
   }
 }

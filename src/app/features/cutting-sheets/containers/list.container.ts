@@ -18,7 +18,6 @@ import { Observable, map } from 'rxjs';
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
     />
   `,
-  styles:[``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListContainer {

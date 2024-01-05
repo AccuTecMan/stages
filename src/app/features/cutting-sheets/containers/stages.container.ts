@@ -10,7 +10,6 @@ import * as fromStore from '../store';
       [selectedSheet]="selectedCuttingSheet$ | async"
     />
   `,
-  styles:[``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StagesContainer {
