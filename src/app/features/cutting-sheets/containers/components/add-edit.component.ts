@@ -201,7 +201,7 @@ export class AddEditComponent {
     const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
     cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName};
     cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected)!;
-    cuttingSheet.currentStage = { order: 1, stage: 'Processing'};
+    cuttingSheet.currentStage = { order: 1, name: 'Processing'};
     this.onSave.emit(cuttingSheet);
   }
 

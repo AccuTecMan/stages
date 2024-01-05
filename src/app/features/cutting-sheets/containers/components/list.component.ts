@@ -71,7 +71,7 @@ import { FormControl } from '@angular/forms';
                 </dl>
                 <dl>
                   <dt>Current Stage</dt>
-                  <dd>{{ sheet.currentStage.stage }}</dd>
+                  <dd>{{ sheet.currentStage.name }}</dd>
                 </dl>
               </mat-card-content>
               <!-- <mat-card-actions fxLayoutAlign="space-between end">

@@ -1,7 +1,7 @@
 export interface StageTemplate {
   id: string;
   jobType: string;
-  name: string;
+  stage: string;
   order: number;
   date: Date;
   notes: string;

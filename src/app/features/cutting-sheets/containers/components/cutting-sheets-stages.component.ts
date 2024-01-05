@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { CuttingSheet } from '../../models';
+import { CuttingSheet, Stage } from '../../models';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -16,6 +16,13 @@ import { CuttingSheet } from '../../models';
       <h2>{{ selectedSheet?.jobName }}</h2>
       <h3>PO#:{{ selectedSheet?.poNumber }}</h3>
     </header>
+    <mat-vertical-stepper>
+      @for (stage of stages; track selectedSheet?.stages ) {
+        <mat-step [label]="stage.stage">
+          {{ stage.notes}}
+        </mat-step>
+      }
+    </mat-vertical-stepper>
     `,
   styles: [`
     .breadcrumb {
@@ -76,5 +83,12 @@ import { CuttingSheet } from '../../models';
 })
 export class CuttingSheetsStagesComponent {
   @Input() selectedSheet: CuttingSheet | null | undefined;
+
+  public stages: Stage[];
+
   constructor() {}
+
+  ngOnInit() {
+    this.stages = this.selectedSheet?.stages.slice().sort((a, b) =>  (a.order < b.order ? -1 : 1))!;
+  }
 }
