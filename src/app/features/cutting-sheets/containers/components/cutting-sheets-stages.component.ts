@@ -16,13 +16,21 @@ import { CuttingSheet, Stage } from '../../models';
       <h2>{{ selectedSheet?.jobName }}</h2>
       <h3>PO#:{{ selectedSheet?.poNumber }}</h3>
     </header>
-    <mat-vertical-stepper>
+    <mat-stepper orientation="vertical" linear="true">
       @for (stage of stages; track selectedSheet?.stages ) {
-        <mat-step [label]="stage.stage">
+        <mat-step [label]="stage.stage" fxLayoutAlign="start space-between">
           {{ stage.notes}}
+          <!-- <div  class="buttons-section"> -->
+            <button mat-raised-button matStepperPrevious [disabled]="!stage.canGoBack">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary" [disabled]="!stage.canGoForward">
+              Next
+            </button>
+          <!-- </div> -->
         </mat-step>
       }
-    </mat-vertical-stepper>
+    </mat-stepper>
     `,
   styles: [`
     .breadcrumb {
@@ -54,21 +62,27 @@ import { CuttingSheet, Stage } from '../../models';
       max-width: 850px;
     }
 
-    mat-form-field, mat-checkbox, button {
+    mat-form-field, mat-checkbox {
       width: 300px;
       margin-left: 3rem;
     }
 
     button {
       width: 100px;
+      margin-right: 1rem;
     }
 
     .buttons-section {
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
 
     .mat-icon {
       margin: 0;
+    }
+
+    mat-stepper {
+      max-width: 850px;
+      margin: 0 1rem;
     }
 
     @media (max-width: 600px) {

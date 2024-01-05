@@ -112,6 +112,10 @@ import { FormControl } from '@angular/forms';
       cursor: pointer;
     }
 
+    mat-card:hover {
+      background-color: #e7edf6;
+    }
+
     .mat-mdc-fab.mat-primary {
       margin-right: 0px;
     }

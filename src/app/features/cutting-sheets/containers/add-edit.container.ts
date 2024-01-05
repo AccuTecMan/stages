@@ -37,10 +37,9 @@ export class AddEditContainer {
               private route: ActivatedRoute,) {}
 
   public onSave(cuttingSheet: CuttingSheet) {
-    this.route.params.subscribe(params => {
-      this.service.upsert(cuttingSheet, params['id'])
-      this.router.navigate(['/cuttingSheets']);
-    })
+    const id = this.route.snapshot.params.id || '';
+    this.service.upsert(cuttingSheet, id)
+    this.router.navigate(['/cuttingSheets']);
   }
 
 }

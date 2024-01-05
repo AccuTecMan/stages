@@ -156,9 +156,7 @@ export class AddEditComponent {
   public jobTypeSelected: string | undefined;
   public customerSelected: string | undefined;
 
-  constructor(private router: Router,
-
-              private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.customers = this.customers?.filter(x => x.id != '0');
