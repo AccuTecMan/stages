@@ -29,12 +29,10 @@ export class CuttingSheetsEffects {
   loadStages$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(CuttingSheetsGuardActions.loadStages),
-      switchMap((action) => this.service.get(action.cuttingSheetId)),
-      switchMap((cuttingSheet) =>
-        this.service.getStages(cuttingSheet.id).pipe(
-          map((stages) => {
-            const newSheet = { ...cuttingSheet, stages: stages};
-            return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: newSheet })
+      switchMap((cs) =>
+        this.service.get(cs.cuttingSheetId).pipe(
+          map((cuttingSheet) => {
+            return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: cuttingSheet })
           }),
           catchError(() => of(CuttingSheetsApiActions.loadStagesFailure()))
         )

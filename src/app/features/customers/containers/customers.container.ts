@@ -56,7 +56,6 @@ export class CustomerContainer {
   }
 
   private getFilteredCustomers(): Observable<Customer[]> {
-    console.log('active?',this.isInactiveDisplayed)
     return this.customers$.pipe(
       map((c: any) => {
         if (!this.isInactiveDisplayed) {

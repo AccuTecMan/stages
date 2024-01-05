@@ -126,10 +126,6 @@ export class CuttingSheetsService {
     ) as Observable<Stage[]>;
   }
 
-  // create(cuttingSheet: CuttingSheet) {
-  //   return addDoc(this.cuttingSheetsCollection, cuttingSheet)
-  // }
-
   upsert(cuttingSheet: CuttingSheet, id?: string) {
     if (!!id) {
       const cuttingSheetsReference = doc(
