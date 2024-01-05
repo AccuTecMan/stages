@@ -22,7 +22,8 @@ import { Customer } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px">
+    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px"
+            #f="ngForm" (ngSubmit)="f.form.valid && save()">
       <mat-checkbox formControlName="isActive">Is active?</mat-checkbox>
       <mat-form-field>
         <mat-label>Customer</mat-label>
@@ -37,7 +38,7 @@ import { Customer } from '@app/base/models';
         <button mat-raised-button routerLink="/customers">
           Cancel
         </button>
-        <button mat-raised-button color="primary" (click)="save()" [disabled]="!form.valid">
+        <button mat-raised-button type='submit' color="primary" [disabled]="!form.valid">
           Save
         </button>
       </div>
@@ -98,9 +99,13 @@ import { Customer } from '@app/base/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
-  form: UntypedFormGroup;
   public customerId: string;
   public isEditing: boolean;
+
+  public form = this.formBuilder.group({
+    name: ['', [Validators.required]],
+    isActive: [true]
+  });
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -108,22 +113,15 @@ export class AddEditComponent {
               private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      isActive: [true]
-    });
+    this.customerId = this.route.snapshot.params.id;
+    this.isEditing = !!this.customerId && this.customerId.length > 0
 
-    this.route.params.subscribe(params => {
-        this.customerId = params['id'] || null;
-        this.isEditing = !!this.customerId && this.customerId.length > 0
-
-        if (this.isEditing) {
-          this.service.get(this.customerId).subscribe((x: any) => {
-            this.form.controls['name'].setValue(x.name);
-            this.form.controls['isActive'].setValue(x.active);
-          });
-        }
-    });
+    if (this.isEditing) {
+      this.service.get(this.customerId).subscribe((x: any) => {
+        this.form.controls['name'].setValue(x.name);
+        this.form.controls['isActive'].setValue(x.active);
+      });
+    }
   }
 
   get name() {
