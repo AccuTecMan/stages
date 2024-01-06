@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
-import { DocumentReference, Firestore, collection, collectionData, doc, docData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StageTemplate } from '../models/stage-template';
 

@@ -43,16 +43,16 @@ export class CustomerContainer {
     const a = this.searchTerm.toLocaleLowerCase();
     if (a.length >= 0) {
       this.filteredCustomers$ = this.getFilteredCustomers().pipe(
-        map((c: any) => c.filter((x:any) => x.name.toLocaleLowerCase().indexOf(a) > -1))
+        map((c: Customer[]) => c.filter((x: Customer) => x.name.toLocaleLowerCase().indexOf(a) > -1))
       )
     }
   }
 
   private getFilteredCustomers(): Observable<Customer[]> {
     return this.customers$.pipe(
-      map((c: any) => {
+      map((c: Customer[]) => {
         if (!this.isInactiveDisplayed) {
-          return c.filter((x: any) => x.active === true)
+          return c.filter((x: Customer) => x.active === true)
         }
         return c;
       })

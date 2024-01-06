@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { CuttingSheet, SearchCriteria, Stage } from '../../models';
+import { CuttingSheet, SearchCriteria } from '../../models';
 
 export const CuttingSheetsGuardActions = createActionGroup({
   source: 'Cutting Sheets Guard',

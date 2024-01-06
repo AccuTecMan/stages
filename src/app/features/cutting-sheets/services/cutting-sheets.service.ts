@@ -31,7 +31,7 @@ export class CuttingSheetsService {
       wheres.push(...this.getReadyByConstraint(criteria.readyByOption))
     }
 
-    let sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
+    const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
     return collectionData(sheetsQuery, {
       idField: 'id',
@@ -39,11 +39,13 @@ export class CuttingSheetsService {
   }
 
   private getReadyByConstraint(option: number): QueryConstraint[] {
-    let constraint: QueryConstraint[] = [];
+    const constraint: QueryConstraint[] = [];
 
     if (option === 0) {
-      const startOfToday = new Date(new Date().setHours(0,0,0,0));
-      constraint.push(where('readyBy', '>=', startOfToday));
+      const start = new Date(new Date().setHours(0,0,0,0));
+      const end = new Date(new Date().setHours(23,59,59,999));
+      constraint.push(where('readyBy', '>=', start));
+      constraint.push(where('readyBy', '<=', end));
     }
 
     if (option === 1) {
@@ -90,13 +92,13 @@ export class CuttingSheetsService {
     return previous;
   }
 
-  private getPreviousMonday(date = new Date()) {
+  private getPreviousMonday() {
     const previousMonday = new Date();
     previousMonday.setDate(previousMonday.getDate() - (previousMonday.getDay() + 6) % 7);
     return new Date(previousMonday);
   }
 
-  private getTomorrow(date = new Date()) {
+  private getTomorrow() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return new Date(tomorrow);
@@ -127,7 +129,7 @@ export class CuttingSheetsService {
   }
 
   upsert(cuttingSheet: CuttingSheet, id?: string) {
-    if (!!id) {
+    if (id) {
       const cuttingSheetsReference = doc(
         this.firestore,
         `cuttingSheets/${id}`

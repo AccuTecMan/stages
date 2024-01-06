@@ -6,7 +6,6 @@ import { StoreModule } from '@ngrx/store';
 
 import { LoginComponent } from './authentication/components';
 import * as coreStore from './store';
-import { AppCommonModule } from '@common/app-common.module';
 import { MaterialModule } from '../material.module';
 
 @NgModule({

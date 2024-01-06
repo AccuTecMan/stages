@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CuttingSheet } from '../../models';
+import { CuttingSheet, TimeStamp } from '../../models';
 import { Customer, JobType, StageTemplate } from '@app/base/models';
 
 
@@ -144,13 +143,13 @@ import { Customer, JobType, StageTemplate } from '@app/base/models';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEditComponent {
+export class AddEditComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Input() customers: Customer[] | null | undefined;
   @Input() jobTypes: JobType[] | null | undefined;
   @Input() templates: StageTemplate[] | null | undefined;
   @Input() isEditing: boolean | null;
-  @Output() onSave = new EventEmitter<CuttingSheet>();
+  @Output() Save = new EventEmitter<CuttingSheet>();
 
   form: UntypedFormGroup;
   public jobTypeSelected: string | undefined;
@@ -177,7 +176,7 @@ export class AddEditComponent {
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
       this.form.controls['poNumber'].setValue(this.selectedSheet?.poNumber);
       this.form.controls['color'].setValue(this.selectedSheet?.color);
-      this.form.controls['readyBy'].setValue(this.selectedSheet?.readyBy.toDate());
+      this.form.controls['readyBy'].setValue(this.convertTimestamp(this.selectedSheet?.readyBy));
       this.form.controls['jobType'].disable();
     }
   }
@@ -198,9 +197,9 @@ export class AddEditComponent {
 
     const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
     cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName};
-    cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected)!;
+    cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected) || [];
     cuttingSheet.currentStage = { order: 0, name: 'Processing'};
-    this.onSave.emit(cuttingSheet);
+    this.Save.emit(cuttingSheet);
   }
 
   public trackByCustomerGuid(index: number, customer: Customer) {
@@ -210,4 +209,16 @@ export class AddEditComponent {
   public trackByjobTypeGuid(index: number, jobType: JobType) {
     return jobType.id;
   }
+
+  private convertTimestamp (timestamp: TimeStamp | undefined): Date {
+    if (timestamp != undefined ) {
+      const { seconds, nanoseconds } = timestamp;
+      const milliseconds = seconds * 1000 + nanoseconds / 1e6;
+      return new Date(milliseconds);
+    }
+    return new Date();
+	}
+
 }
+
+
