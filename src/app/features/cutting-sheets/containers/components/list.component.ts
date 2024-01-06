@@ -74,9 +74,6 @@ import { FormControl } from '@angular/forms';
                   <dd>{{ sheet.currentStage.name }}</dd>
                 </dl>
               </mat-card-content>
-              <!-- <mat-card-actions fxLayoutAlign="space-between end">
-                <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-              </mat-card-actions> -->
             </mat-card>
           </div>
         } @empty {
