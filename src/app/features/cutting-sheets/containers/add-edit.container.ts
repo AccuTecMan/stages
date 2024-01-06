@@ -17,7 +17,7 @@ import { CuttingSheet } from '../models';
       [jobTypes]="jobTypes$ | async"
       [templates]="jobTypesTemplate$ | async"
       [isEditing]="isEditing$ | async"
-      (onSave)="onSave($event)"
+      (Save)="onSave($event)"
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

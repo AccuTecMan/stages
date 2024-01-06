@@ -2,6 +2,7 @@ import { JobType } from "@app/base/models/job-type";
 import { Customer } from "@app/base/models";
 import { CurrentStage } from "./current-stage";
 import { Stage } from "./stage";
+import { Timestamp } from "firebase/firestore";
 
 export interface CuttingSheet {
   id: string;
@@ -10,7 +11,7 @@ export interface CuttingSheet {
   customer: Customer;
   jobType: JobType;
   color: string;
-  readyBy: any;
+  readyBy: Timestamp;
   currentStage: CurrentStage;
   stages: Stage[];
 }

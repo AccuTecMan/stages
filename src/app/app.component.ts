@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/services';
-
-import { environment } from './../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +32,7 @@ import { environment } from './../environments/environment';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {

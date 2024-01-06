@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CustomerService } from '@app/base/services';
 import { Customer } from '@app/base/models';
 
@@ -98,7 +98,7 @@ import { Customer } from '@app/base/models';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEditComponent {
+export class AddEditComponent implements OnInit {
   public customerId: string;
   public isEditing: boolean;
 
@@ -117,7 +117,7 @@ export class AddEditComponent {
     this.isEditing = !!this.customerId && this.customerId.length > 0
 
     if (this.isEditing) {
-      this.service.get(this.customerId).subscribe((x: any) => {
+      this.service.get(this.customerId).subscribe((x: Customer) => {
         this.form.controls['name'].setValue(x.name);
         this.form.controls['isActive'].setValue(x.active);
       });

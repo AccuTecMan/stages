@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,8 @@
     "@ngrx/router-store": "^17.0.1",
     "@ngrx/store": "^17.0.1",
     "@ngrx/store-devtools": "^17.0.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1",
     "firebase": "^10.6.0",
     "flexbox": "^0.0.3",
     "rxjs": "~7.8.0",
@@ -35,9 +38,17 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.3",
+    "@angular-eslint/builder": "17.1.1",
+    "@angular-eslint/eslint-plugin": "17.1.1",
+    "@angular-eslint/eslint-plugin-template": "17.1.1",
+    "@angular-eslint/schematics": "17.1.1",
+    "@angular-eslint/template-parser": "17.1.1",
     "@angular/cli": "~17.0.3",
     "@angular/compiler-cli": "^17.0.4",
     "@types/jasmine": "~4.3.0",
+    "@typescript-eslint/eslint-plugin": "6.13.1",
+    "@typescript-eslint/parser": "6.13.1",
+    "eslint": "^8.54.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

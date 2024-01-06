@@ -17,7 +17,7 @@ export class CuttingSheetsEffects {
     return this.actions$.pipe(
       ofType(CuttingSheetsGuardActions.loadAll),
       withLatestFrom(this.store.select(fromStore.selectSearchCriteria)),
-      switchMap(([action, criteria]) =>
+      switchMap(([, criteria]) =>
         this.service.getWithCriteria(criteria).pipe(
           map((cuttingSheets) => CuttingSheetsApiActions.loadAllSuccess({ cuttingSheets: cuttingSheets })),
           catchError(() => of(CuttingSheetsApiActions.loadAllFailure()))
@@ -39,18 +39,4 @@ export class CuttingSheetsEffects {
       )
     );
   });
-
-  // changeStage$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(CuttingSheetsApiActions.changeStage),
-  //     switchMap((cs) =>
-  //       this.service.upsert(cs.cuttingSheet, cs.cuttingSheet.id).pipe(
-  //         map((cuttingSheet) => {
-  //           return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: cuttingSheet })
-  //         }),
-  //         catchError(() => of(CuttingSheetsApiActions.loadStagesFailure()))
-  //       )
-  //     )
-  //   );
-  // });
 }

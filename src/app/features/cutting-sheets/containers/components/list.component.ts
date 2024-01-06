@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CuttingSheet, SearchCriteria } from '../../models';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CuttingSheet, SearchCriteria, TimeStamp } from '../../models';
 import { Customer } from '@app/base/models';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -67,7 +67,7 @@ import { FormControl } from '@angular/forms';
                 </dl>
                 <dl>
                   <dt>Ready By</dt>
-                  <dd>{{ sheet.readyBy.toDate() | date:'MMM-dd-yyyy' }}</dd>
+                  <dd>{{ convertTimestamp(sheet.readyBy) | date:'MMM-dd-yyyy' }}</dd>
                 </dl>
                 <dl>
                   <dt>Current Stage</dt>
@@ -140,12 +140,13 @@ import { FormControl } from '@angular/forms';
     }
 
     dt {
+      font-size: 0.8rem;
       color: gray;
     }
 
     dd {
-      font-size: 1.1rem;
-      font-weight: 500;
+      // font-size: 1.1rem;
+      font-weight: 550;
       margin: 0rem 0rem .1rem 0rem;
     }
 
@@ -185,7 +186,7 @@ import { FormControl } from '@angular/forms';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Input() isLoading: boolean | null;
   @Input() customers: Customer[] | null | undefined;
@@ -218,7 +219,7 @@ export class ListComponent {
   private _filter(value: string): Customer[] {
     const filterValue = value.toString().toLowerCase();
     return this.customers?.filter(option => option.name.toLowerCase().includes(filterValue) ||
-                                            option.id.toLowerCase().includes(filterValue))!;
+                                            option.id.toLowerCase().includes(filterValue)) || [];
   }
 
   displayFn(customer: Customer): string {
@@ -267,5 +268,11 @@ export class ListComponent {
     this.selectedCustomer = customer.id;
     this.changeCriteria();
   }
+
+  public convertTimestamp (timestamp: TimeStamp): Date {
+		const { seconds, nanoseconds } = timestamp;
+		const milliseconds = seconds * 1000 + nanoseconds / 1e6;
+		return new Date(milliseconds);
+	}
 
 }

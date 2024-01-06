@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, authState, User } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, authState, User, UserCredential } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { Observable, catchError, from, throwError } from 'rxjs';
 
 import { AuthData } from '@core/models';
@@ -17,10 +16,6 @@ export class AuthService {
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
       if (user) {
-        // const storage = getStorage();
-        // const isAdmin: boolean = await user.getIdTokenResult(true).then((res) => {
-        //   return !!res.claims['role'] && res.claims['role'] === 'admin';
-        // });
         this.store.dispatch(
           fromRoot.AuthenticationActions.setAuthenticated({
             isAdmin: false,
@@ -47,7 +42,7 @@ export class AuthService {
     return this.afAuth.currentUser;
   }
 
-  signIn(params: AuthData): Observable<any> {
+  signIn(params: AuthData): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.afAuth, params.email, params.password)).pipe(
       catchError((error: FirebaseError) =>
         throwError(() => new Error(this.translateFirebaseErrorMessage(error)))
