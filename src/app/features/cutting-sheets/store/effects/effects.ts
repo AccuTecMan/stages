@@ -44,7 +44,7 @@ export class CuttingSheetsEffects {
   //   return this.actions$.pipe(
   //     ofType(CuttingSheetsApiActions.changeStage),
   //     switchMap((cs) =>
-  //       this.service.get(cs.cuttingSheetId).pipe(
+  //       this.service.upsert(cs.cuttingSheet, cs.cuttingSheet.id).pipe(
   //         map((cuttingSheet) => {
   //           return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: cuttingSheet })
   //         }),
