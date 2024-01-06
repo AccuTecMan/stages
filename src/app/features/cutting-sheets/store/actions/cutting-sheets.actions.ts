@@ -17,7 +17,7 @@ export const CuttingSheetsApiActions = createActionGroup({
     'Load All Failure': emptyProps(),
     'Load Stages Success': props<{ cuttingSheet: CuttingSheet }>(),
     'Load Stages Failure': emptyProps(),
-    'Change Stage': emptyProps(),
+    'Change Stage': props<{ cuttingSheet: CuttingSheet }>(),
     'Change Stage Success': props<{ cuttingSheet: CuttingSheet }>(),
     'Change Stage Failure': emptyProps(),
   },

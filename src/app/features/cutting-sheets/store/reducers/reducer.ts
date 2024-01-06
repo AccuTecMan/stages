@@ -89,10 +89,13 @@ export const internalReducer = createReducer(
     })
   ),
   on(
-    CuttingSheetsApiActions.changeStageSuccess,
+    CuttingSheetsApiActions.changeStage,
     (state, { cuttingSheet }): CuttingSheetsState => ({
       ...state,
-      selectedSheet: cuttingSheet,
+      summary: cuttingSheetsAdapter.updateOne(
+        { id: cuttingSheet.id, changes: cuttingSheet },
+        state.summary
+      ),
       loadStatus: EntityLoadStatus.SUCCESS
     })
   ),

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CuttingSheet, Stage } from '../../models';
 import { MatStepper } from "@angular/material/stepper";
 import { pluck } from 'rxjs';
@@ -100,6 +100,8 @@ import { pluck } from 'rxjs';
 })
 export class CuttingSheetsStagesComponent {
   @Input() selectedSheet: CuttingSheet | null | undefined;
+  @Output() public changeStage = new EventEmitter<CuttingSheet>();
+
   @ViewChild("stepper") private stepper: MatStepper;
 
   public stages: Stage[];
@@ -112,12 +114,9 @@ export class CuttingSheetsStagesComponent {
     this.stepperIndex = this.selectedSheet?.currentStage.order!;
   }
 
-  // ngAfterViewInit() {
-  //   console.log(`Stepper Index: ${this.stepper.selectedIndex}`);
-  //   console.log(this.stepper.selectedIndex);
-  // }
-
   onStepChange(event: any): void {
-    this.stepperIndex = event.selectedIndex;
+    const newCurrentStage = {order: +event.selectedIndex, name: event.selectedStep.label };
+    this.selectedSheet = { ...this.selectedSheet!, currentStage: newCurrentStage };
+    this.changeStage.emit(this.selectedSheet);
   }
 }
