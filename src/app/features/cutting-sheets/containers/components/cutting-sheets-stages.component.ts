@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
-import { CuttingSheet, Stage } from '../../models';
+import { CuttingSheet, Stage, TimeStamp } from '../../models';
 import { MatStepper } from "@angular/material/stepper";
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
@@ -22,7 +22,18 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
                 (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of stages; track selectedSheet?.stages ) {
         <mat-step [label]="stage.stage" fxLayoutAlign="start space-between">
-          {{ stage.notes}}
+        <ng-template matStepLabel>
+          <div>{{ stage.stage }}</div>
+          @if (isValidDate(stage.date)) {
+            <span>{{ convertTimestamp(stage.date) | date:'MMM-dd-yyyy HH:MM' }}</span>
+          }
+        </ng-template>
+
+          <form>
+            <mat-form-field>
+              <input matInput placeholder="Notes" required>
+            </mat-form-field>
+          </form>
           <div  class="buttons-section">
             @if (stage.canGoBack) {
               <button mat-raised-button matStepperPrevious>Previous</button>
@@ -65,9 +76,8 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
       max-width: 850px;
     }
 
-    mat-form-field, mat-checkbox {
-      width: 300px;
-      margin-left: 3rem;
+    mat-form-field {
+      width: 100%;
     }
 
     button {
@@ -118,5 +128,18 @@ export class CuttingSheetsStagesComponent implements OnInit {
     const newCurrentStage = {order: +event.selectedIndex, name: event.selectedStep.label };
     this.selectedSheet = { ...this.selectedSheet!, currentStage: newCurrentStage };
     this.changeStage.emit(this.selectedSheet);
+  }
+
+  public convertTimestamp(timestamp: TimeStamp): Date {
+		const { seconds, nanoseconds } = timestamp;
+		const milliseconds = seconds * 1000 + nanoseconds / 1e6;
+		return new Date(milliseconds);
+	}
+
+  public isValidDate(timestamp: TimeStamp): boolean {
+    const date = this.convertTimestamp(timestamp);
+    console.log(date);
+    console.log('dos mil', new Date(2000, 0, 1));
+    return date > new Date(2000, 0, 1);
   }
 }
