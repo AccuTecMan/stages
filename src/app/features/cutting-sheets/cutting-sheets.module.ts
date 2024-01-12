@@ -20,6 +20,7 @@ import {
   CuttingSheetsStagesComponent
 } from './containers';
 import { SelectSheetGuard } from './guards/select-sheet.guard';
+import { StageMapGuard } from '@app/base/guards/stage-map.guard';
 
 const routes: Routes = [
   {
@@ -28,7 +29,8 @@ const routes: Routes = [
       StageTemplatesGuard,
       JobTypesGuard,
       CustomersGuard,
-      CuttingSheetsGuard
+      CuttingSheetsGuard,
+      StageMapGuard
     ],
     children: [
       {
