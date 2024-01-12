@@ -32,7 +32,6 @@ export class StageTemplatesService {
   }
 
   public getAllStages(): Observable<StageMap[]> {
-    console.log('servicio')
     return collectionData(this.stagesCollection, {
       idField: 'id',
     }) as Observable<StageMap[]>;

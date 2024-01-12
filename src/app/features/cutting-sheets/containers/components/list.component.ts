@@ -54,23 +54,23 @@ import { FormControl } from '@angular/forms';
               </mat-card-header>
               <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
                 <dl>
-                  <dt>Job Type</dt>
+                  <dt>JOB TYPE</dt>
                   <dd>{{ sheet.jobType.name }}</dd>
                 </dl>
                 <dl>
-                  <dt>Color</dt>
+                  <dt>COLOR</dt>
                   <dd>{{ sheet.color }}</dd>
                 </dl>
                 <dl>
-                  <dt>Customer</dt>
+                  <dt>CUSTOMER</dt>
                   <dd>{{ sheet.customer.name }}</dd>
                 </dl>
                 <dl>
-                  <dt>Ready By</dt>
+                  <dt>READY BY</dt>
                   <dd>{{ convertTimestamp(sheet.readyBy) | date:'MMM-dd-yyyy' }}</dd>
                 </dl>
                 <dl>
-                  <dt>Current Stage</dt>
+                  <dt>STAGE</dt>
                   <dd>{{ sheet.currentStage.name }}</dd>
                 </dl>
               </mat-card-content>
@@ -137,14 +137,13 @@ import { FormControl } from '@angular/forms';
     }
 
     dt {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: gray;
     }
 
     dd {
-      // font-size: 1.1rem;
       font-weight: 550;
-      margin: 0rem 0rem .1rem 0rem;
+      margin: -.3rem 0rem .1rem 0rem;
     }
 
     mat-divider {
