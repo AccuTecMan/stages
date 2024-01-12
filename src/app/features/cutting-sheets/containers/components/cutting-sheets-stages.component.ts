@@ -138,6 +138,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   public isValidDate(timestamp: TimeStamp): boolean {
     const date = this.convertTimestamp(timestamp);
-    return date > new Date(2000, 0, 1);
+    return date > new Date(2000, 1, 1);
   }
 }

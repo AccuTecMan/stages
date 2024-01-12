@@ -4,15 +4,18 @@ import { CollectionReference, DocumentData } from '@firebase/firestore';
 import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StageTemplate } from '../models/stage-template';
+import { StageMap } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StageTemplatesService {
   private typesCollection: CollectionReference<DocumentData>;
+  private stagesCollection: CollectionReference<DocumentData>;
 
   constructor(private readonly firestore: Firestore) {
     this.typesCollection = collection(this.firestore, 'stageTemplates');
+    this.stagesCollection = collection(this.firestore, 'stages');
   }
 
   public getAll(): Observable<StageTemplate[]> {
@@ -26,5 +29,12 @@ export class StageTemplatesService {
     return collectionData(q, {
       idField: 'id'
     }) as Observable<StageTemplate[]>;
+  }
+
+  public getAllStages(): Observable<StageMap[]> {
+    console.log('servicio')
+    return collectionData(this.stagesCollection, {
+      idField: 'id',
+    }) as Observable<StageMap[]>;
   }
 }
