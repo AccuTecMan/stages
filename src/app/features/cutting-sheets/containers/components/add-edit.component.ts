@@ -198,7 +198,7 @@ export class AddEditComponent implements OnInit {
     const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
     cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName};
     cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected) || [];
-    cuttingSheet.currentStage = { order: 0, name: 'Processing'};
+    cuttingSheet.currentStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
     this.Save.emit(cuttingSheet);
   }
 

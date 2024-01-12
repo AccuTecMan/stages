@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CuttingSheet, Stage, TimeStamp } from '../../models';
-import { MatStepper } from "@angular/material/stepper";
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { StageMap } from '@app/base/models';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -21,9 +21,9 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
     <mat-stepper orientation="vertical" linear="false" #stepper
                 (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of stages; track selectedSheet?.stages ) {
-        <mat-step [label]="stage.stage" fxLayoutAlign="start space-between">
+        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between">
         <ng-template matStepLabel>
-          <div>{{ stage.stage }}</div>
+          <div>{{ stage.stageMap.name }}</div>
           @if (isValidDate(stage.date)) {
             <span>{{ convertTimestamp(stage.date) | date:'MMM-dd-yyyy HH:MM' }}</span>
           }
@@ -110,9 +110,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 })
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
-  @Output() public changeStage = new EventEmitter<CuttingSheet>();
-
-  @ViewChild("stepper") private stepper: MatStepper;
+  @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
 
   public stages: Stage[];
   public stepperIndex: number;
@@ -121,12 +119,14 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   ngOnInit() {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) =>  (a.order < b.order ? -1 : 1)) || [];
-    this.stepperIndex = this.selectedSheet?.currentStage.order || 0;
+    this.stepperIndex = this.selectedSheet?.currentStage.index || 0;
   }
 
   onStepChange(event: StepperSelectionEvent): void {
-    const newCurrentStage = {order: +event.selectedIndex, name: event.selectedStep.label };
-    this.selectedSheet = { ...this.selectedSheet!, currentStage: newCurrentStage };
+    const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
+    const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
+    const newCurrentStage = <StageMap>{id: id, name: name, index: event.selectedIndex };
+    this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage };
     this.changeStage.emit(this.selectedSheet);
   }
 
@@ -138,8 +138,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   public isValidDate(timestamp: TimeStamp): boolean {
     const date = this.convertTimestamp(timestamp);
-    console.log(date);
-    console.log('dos mil', new Date(2000, 0, 1));
     return date > new Date(2000, 0, 1);
   }
 }

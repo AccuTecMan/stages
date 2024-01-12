@@ -35,7 +35,7 @@ import { environment } from 'src/environments/environment';
   styles: [
     `
       .dev-background {
-        background-color: lightblue;
+        background-color: #d2691e;
       }
 
       .brand-title {
