@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CuttingSheet, SearchCriteria, TimeStamp } from '../../models';
-import { Customer } from '@app/base/models';
+import { Customer, StageMap } from '@app/base/models';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
@@ -23,8 +23,16 @@ import { FormControl } from '@angular/forms';
         <mat-form-field fxFlex="30">
           <mat-label>Ready by</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
-            @for (readyBy of readyByOptions; track readyBy) {
+            @for (readyBy of readyByOptions; track readyBy.value) {
               <mat-option [value]="readyBy.value">{{readyBy.view}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="30">
+          <mat-label>Stage</mat-label>
+          <mat-select [(value)]="stagesMapSelected" (selectionChange)="changeCriteria()">
+            @for (stageMap of stagesMap; track stageMap.id) {
+              <mat-option [value]="stageMap.id">{{stageMap.name}}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -33,7 +41,7 @@ import { FormControl } from '@angular/forms';
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
             (optionSelected)='changeCustomer($event.option.value)'>
-            @for (customer of filteredCustomers$ | async; track customer) {
+            @for (customer of filteredCustomers$ | async; track customer.id) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
           </mat-autocomplete>
@@ -186,6 +194,7 @@ export class ListComponent implements OnInit {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
   @Input() isLoading: boolean | null;
   @Input() customers: Customer[] | null | undefined;
+  @Input() stagesMap: StageMap[] | null | undefined;
   @Input() searchCriteria: SearchCriteria | null | undefined;
   @Output() public changeSearchTerm = new EventEmitter<string>();
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
@@ -203,6 +212,7 @@ export class ListComponent implements OnInit {
     }
 
     this.selectedCustomer = this.searchCriteria?.customerId || '';
+    this.stagesMapSelected = this.searchCriteria?.stageMapId || '0';
     this.readyBySelected = this.searchCriteria?.readyByOption || 0;
     this.changeCriteria();
 
@@ -233,6 +243,7 @@ export class ListComponent implements OnInit {
   ]
   public readyBySelected = 0;
   public selectedCustomer = "0";
+  public stagesMapSelected = "";
   private _term: string;
 
   public onSearchTermChange(term: string) {
@@ -255,6 +266,7 @@ export class ListComponent implements OnInit {
   public changeCriteria() {
     const criteria: SearchCriteria = {
       customerId: this.selectedCustomer,
+      stageMapId: this.stagesMapSelected,
       readyByOption: this.readyBySelected
     }
     this.changeSearchCriteria.emit(criteria);

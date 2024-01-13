@@ -22,7 +22,6 @@ export class StagesContainer {
               private store: Store) { }
 
   public onChangeStage(cuttingSheet: CuttingSheet | null) {
-    console.log(cuttingSheet);
     this.service.upsert(cuttingSheet!, cuttingSheet?.id);
     this.store.dispatch(fromStore.CuttingSheetsApiActions.changeStage({ cuttingSheet: cuttingSheet! }));
   }

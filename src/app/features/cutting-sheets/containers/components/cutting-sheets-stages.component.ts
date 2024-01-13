@@ -22,12 +22,12 @@ import { StageMap } from '@app/base/models';
                 (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of stages; track selectedSheet?.stages ) {
         <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between">
-        <ng-template matStepLabel>
-          <div>{{ stage.stageMap.name }}</div>
-          @if (isValidDate(stage.date)) {
-            <span>{{ convertTimestamp(stage.date) | date:'MMM-dd-yyyy HH:MM' }}</span>
-          }
-        </ng-template>
+          <ng-template matStepLabel>
+            <div>{{ stage.stageMap.name }}</div>
+            @if (isValidDate(stage.date)) {
+              <span>{{ convertTimestamp(stage.date) | date:'MMM-dd-yyyy HH:MM' }}</span>
+            }
+          </ng-template>
 
           <form>
             <mat-form-field>

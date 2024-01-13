@@ -13,6 +13,7 @@ import { Observable, map } from 'rxjs';
       [cuttingSheets]="filteredCuttingSheets$ | async"
       [isLoading]="isLoading$ | async"
       [customers]="customers$ | async"
+      [stagesMap]="stagesMap$ | async"
       [searchCriteria]="searchCriteria$ | async"
       (changeSearchTerm)="onChangeSearchTerm($event)"
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
@@ -24,6 +25,7 @@ export class ListContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
   public customers$ = this.store.select(fromBase.selectCustomers);
   public jobTypes$ = this.store.select(fromBase.selectAllJobTypes);
+  public stagesMap$ = this.store.select(fromBase.selectAllStageMap);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
   public searchCriteria$ = this.store.select(fromStore.selectSearchCriteria);
 

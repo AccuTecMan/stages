@@ -140,11 +140,4 @@ export class CuttingSheetsService {
     }
   }
 
-  // updateStage(id: string, stvv) {
-  //   const cuttingSheetsReference = doc(
-  //     this.firestore,
-  //     `cuttingSheets/${id}`
-  //   );
-  //   return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
-  // }
 }
