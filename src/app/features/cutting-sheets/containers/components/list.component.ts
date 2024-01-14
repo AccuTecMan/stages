@@ -38,9 +38,8 @@ import { FormControl } from '@angular/forms';
         </mat-form-field>
         <mat-form-field fxFlex="50">
           <mat-label>Customer</mat-label>
-          <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-            (optionSelected)='changeCustomer($event.option.value)'>
+          <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl" (change)="changeCustomer($event)">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="changeCustomer2($event.option.value)">
             @for (customer of filteredCustomers$ | async; track customer.id) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
@@ -74,8 +73,8 @@ import { FormControl } from '@angular/forms';
                   <dd>{{ sheet.customer.name }}</dd>
                 </dl>
                 <dl>
-                  <dt>READY BY</dt>
-                  <dd>{{ convertTimestamp(sheet.readyBy) | date:'MMM-dd-yyyy' }}</dd>
+                  <dt>CREATED AT</dt>
+                  <dd>{{ convertTimestamp(sheet.createdAt) | date:'MMM-dd-yyyy HH:MM' }}</dd>
                 </dl>
                 <dl>
                   <dt>STAGE</dt>
@@ -103,7 +102,7 @@ import { FormControl } from '@angular/forms';
     }
 
     .content-records {
-      margin: 0rem 0rem 2rem 1rem !Important;
+      margin: 0rem 0rem 1rem 1rem !Important;
       max-width: 850px;
     }
 
@@ -113,8 +112,11 @@ import { FormControl } from '@angular/forms';
 
     mat-card {
       min-width: 350px;
-      min-height: 160px;
       cursor: pointer;
+    }
+
+    .mat-mdc-card-content:last-child {
+      padding-bottom: 0.5rem;
     }
 
     mat-card:hover {
@@ -207,12 +209,12 @@ export class ListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (!!this.customers && this.customers[0].id != '0') {
-      this.customers?.unshift({ id: '0', name: 'All', active: true })
+    if (!!this.customers && this.customers[0].id != '') {
+      this.customers?.unshift({ id: '', name: 'All', active: true })
     }
 
     this.selectedCustomer = this.searchCriteria?.customerId || '';
-    this.stagesMapSelected = this.searchCriteria?.stageMapId || '0';
+    this.stagesMapSelected = this.searchCriteria?.stageMapId || '';
     this.readyBySelected = this.searchCriteria?.readyByOption || 0;
     this.changeCriteria();
 
@@ -242,7 +244,7 @@ export class ListComponent implements OnInit {
     {value: 6, view: 'All'},
   ]
   public readyBySelected = 0;
-  public selectedCustomer = "0";
+  public selectedCustomer = "";
   public stagesMapSelected = "";
   private _term: string;
 
@@ -272,7 +274,14 @@ export class ListComponent implements OnInit {
     this.changeSearchCriteria.emit(criteria);
   }
 
-  changeCustomer(customer: Customer) {
+  changeCustomer(customer: any) {
+    if(customer.target.value === '') {
+      this.selectedCustomer = "";
+      this.changeCriteria();
+    }
+  }
+
+  changeCustomer2(customer: Customer) {
     this.selectedCustomer = customer.id;
     this.changeCriteria();
   }

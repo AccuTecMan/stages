@@ -11,6 +11,7 @@ export interface CuttingSheet {
   jobType: JobType;
   color: string;
   readyBy: Timestamp;
+  createdAt: Timestamp;
   currentStage: StageMap;
   stages: Stage[];
 }
