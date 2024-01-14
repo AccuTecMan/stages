@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
-import { Firestore, QueryConstraint, addDoc, collection, collectionData, doc, docData, query, updateDoc, where } from '@angular/fire/firestore';
+import { Firestore, QueryConstraint, addDoc, collection, collectionData, doc, docData, query, updateDoc, where, serverTimestamp } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CuttingSheet, SearchCriteria, Stage } from '../models';
 import { Store } from '@ngrx/store';
@@ -27,9 +27,53 @@ export class CuttingSheetsService {
       wheres.push(where('customer.id', '==', criteria.customerId));
     }
 
-    if (!!criteria && criteria?.readyByOption < 6) {
-      wheres.push(...this.getReadyByConstraint(criteria.readyByOption))
+    if (!!criteria?.stageMapId && criteria?.stageMapId.length > 1) {
+      wheres.push(where('currentStage.id', '==', criteria.stageMapId));
     }
+
+    // if (!!criteria && criteria?.readyByOption == 0) {
+    //   console.log('criteria?.readyByOption', criteria?.readyByOption);
+    //   const start = new Date(this.getPreviousDay().setHours(23,59,59,999));
+    //   const end = new Date(this.getTomorrow().setHours(0, 0, 0, 0));
+    //   wheres.push(where('readyBy', '>', start));
+    //   wheres.push(where('readyBy', '<=', end));
+    // }
+
+    let start;
+    let end;
+
+    if (!!criteria && criteria?.readyByOption == 0) {
+      start = new Date(new Date().setHours(0,0,0,0));
+      end = new Date(new Date().setHours(23,59,59,999));
+    }
+
+    if (!!criteria && criteria?.readyByOption == 1) {
+      start = new Date(this.getPreviousDay().setHours(0,0,0,0));
+      end = new Date(this.getPreviousDay().setHours(23,59,59,999));
+    }
+
+    if (!!criteria && criteria?.readyByOption == 2) {
+      start = new Date(this.getPreviousMonday().setHours(0,0,0,0));
+      end = new Date(this.getTomorrow().setHours(0,0,0,0));
+    }
+
+    if (!!criteria && criteria?.readyByOption == 3) {
+      start = new Date(this.getDaysBefore(7).setHours(0,0,0,0));
+      end = new Date(this.getTomorrow().setHours(0,0,0,0));
+    }
+
+    if (!!criteria && criteria?.readyByOption == 4) {
+      start = new Date(this.getDaysBefore(15).setHours(0,0,0,0));
+      end = new Date(this.getTomorrow().setHours(0,0,0,0));
+    }
+
+    if (!!criteria && criteria?.readyByOption < 6) {
+      wheres.push(where('createdAt', '>', start));
+      wheres.push(where('createdAt', '<', end));
+      // wheres.push(...this.getReadyByConstraint(criteria.readyByOption))
+    }
+
+    console.log(wheres);
 
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
@@ -41,14 +85,14 @@ export class CuttingSheetsService {
   private getReadyByConstraint(option: number): QueryConstraint[] {
     const constraint: QueryConstraint[] = [];
 
-    if (option === 0) {
+    if (option === 0) { // Today
       const start = new Date(new Date().setHours(0,0,0,0));
       const end = new Date(new Date().setHours(23,59,59,999));
       constraint.push(where('readyBy', '>=', start));
       constraint.push(where('readyBy', '<=', end));
     }
 
-    if (option === 1) {
+    if (option === 1) { // Yesterday
       const start = new Date(this.getPreviousDay().setHours(0,0,0,0));
       const end = new Date(this.getPreviousDay().setHours(23,59,59,999));
       constraint.push(where('readyBy', '>=', start));
@@ -136,7 +180,8 @@ export class CuttingSheetsService {
       );
       return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
     } else {
-      return addDoc(this.cuttingSheetsRef, cuttingSheet)
+      const cs = {...cuttingSheet, createdAt: serverTimestamp() }
+      return addDoc(this.cuttingSheetsRef, cs)
     }
   }
 
