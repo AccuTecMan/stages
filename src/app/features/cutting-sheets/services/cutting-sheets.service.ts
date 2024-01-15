@@ -31,14 +31,6 @@ export class CuttingSheetsService {
       wheres.push(where('currentStage.id', '==', criteria.stageMapId));
     }
 
-    // if (!!criteria && criteria?.readyByOption == 0) {
-    //   console.log('criteria?.readyByOption', criteria?.readyByOption);
-    //   const start = new Date(this.getPreviousDay().setHours(23,59,59,999));
-    //   const end = new Date(this.getTomorrow().setHours(0, 0, 0, 0));
-    //   wheres.push(where('readyBy', '>', start));
-    //   wheres.push(where('readyBy', '<=', end));
-    // }
-
     let start;
     let end;
 
@@ -68,13 +60,11 @@ export class CuttingSheetsService {
     }
 
     if (!!criteria && criteria?.readyByOption < 6) {
-      wheres.push(where('createdAt', '>', start));
-      wheres.push(where('createdAt', '<', end));
-      // wheres.push(...this.getReadyByConstraint(criteria.readyByOption))
+      wheres.push(where('createdAt', '>=', start));
+      wheres.push(where('createdAt', '<=', end));
     }
 
-    console.log(wheres);
-
+    console.log('wheres', wheres);
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
     return collectionData(sheetsQuery, {
