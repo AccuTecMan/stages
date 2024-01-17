@@ -16,11 +16,12 @@ import { FormControl } from '@angular/forms';
         </button>
       </div>
       <mat-divider></mat-divider>
-      <div fxLayoutAlign="start center" fxLayoutGap="12px">
-        <mat-form-field fxFlex="20">
-          <input matInput placeholder="PO# or Job Name" [(ngModel)]="term">
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="space-between center">
+        <mat-form-field fxFlex="20" fxFlex.lt-sm="45%">
+          <mat-label>PO# or Job Name</mat-label>
+          <input matInput [(ngModel)]="term">
         </mat-form-field>
-        <mat-form-field fxFlex="30">
+        <mat-form-field fxFlex="25" fxFlex.lt-sm="55%">
           <mat-label>Ready by</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
             @for (readyBy of readyByOptions; track readyBy.value) {
@@ -28,7 +29,7 @@ import { FormControl } from '@angular/forms';
             }
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="30">
+        <mat-form-field fxFlex="25" fxFlex.lt-sm="45%">
           <mat-label>Stage</mat-label>
           <mat-select [(value)]="stagesMapSelected" (selectionChange)="changeCriteria()">
             @for (stageMap of stagesMap; track stageMap.id) {
@@ -36,10 +37,10 @@ import { FormControl } from '@angular/forms';
             }
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="50">
+        <mat-form-field fxFlex="30" fxFlex.lt-sm="55%">
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl" (change)="changeCustomer($event)">
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="changeCustomer2($event.option.value)">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="changeCustomerAuto($event.option.value)">
             @for (customer of filteredCustomers$ | async; track customer.id) {
               <mat-option [value]="customer">{{customer.name}}</mat-option>
             }
@@ -102,7 +103,7 @@ import { FormControl } from '@angular/forms';
     }
 
     .content-records {
-      margin: 0rem 0rem 1rem 1rem !Important;
+      margin: 0.5rem 0rem 1rem 1rem !Important;
       max-width: 850px;
     }
 
@@ -111,7 +112,7 @@ import { FormControl } from '@angular/forms';
     }
 
     mat-card {
-      min-width: 350px;
+      min-width: 340px;
       cursor: pointer;
     }
 
@@ -162,6 +163,7 @@ import { FormControl } from '@angular/forms';
 
     .mat-mdc-form-field {
       width: 150px;
+      margin-bottom: -1.25em;
     }
 
     .mat-mdc-button {
@@ -274,14 +276,15 @@ export class ListComponent implements OnInit {
     this.changeSearchCriteria.emit(criteria);
   }
 
-  changeCustomer(customer: any) {
-    if(customer.target.value === '') {
+  changeCustomer(event: Event) {
+    const newCustomerValue = (event.target as HTMLInputElement).value;
+    if(newCustomerValue === '') {
       this.selectedCustomer = "";
       this.changeCriteria();
     }
   }
 
-  changeCustomer2(customer: Customer) {
+  changeCustomerAuto(customer: Customer) {
     this.selectedCustomer = customer.id;
     this.changeCriteria();
   }

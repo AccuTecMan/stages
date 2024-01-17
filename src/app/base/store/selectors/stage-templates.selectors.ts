@@ -12,7 +12,7 @@ export const selectStageTemplatesLoadedStatus = createSelector(
 
   export const selectAllStageMap = createSelector(
     selectCuttingSheetsState, (state: CuttingSheetsState) =>{
-      let ordered = state.stagesMap.stagesMap?.slice().sort((a, b) =>  (a.name < b.name ? -1 : 1));
+      const ordered = state.stagesMap.stagesMap?.slice().sort((a, b) =>  (a.name < b.name ? -1 : 1));
       ordered?.unshift(<StageMap>{ id: '', name: 'All' });
       return ordered;
   })
