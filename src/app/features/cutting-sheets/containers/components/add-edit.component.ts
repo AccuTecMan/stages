@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CuttingSheet, TimeStamp } from '../../models';
-import { Customer, JobType, StageTemplate } from '@app/base/models';
+import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
 
 
 @Component({
@@ -39,7 +39,7 @@ import { Customer, JobType, StageTemplate } from '@app/base/models';
         </mat-form-field>
         <mat-form-field>
           <mat-label>Customer</mat-label>
-          <mat-select formControlName="customer" [(value)]="customerSelected">
+          <mat-select formControlName="customer" [(value)]="customerSelected.id" (valueChange)="onSelectCustomer($event)">
             @for (customer of customers; track trackByCustomerGuid($index, customer)) {
               <mat-option [value]="customer.id">{{ customer.name }}</mat-option>
             }
@@ -152,8 +152,9 @@ export class AddEditComponent implements OnInit {
   @Output() Save = new EventEmitter<CuttingSheet>();
 
   form: UntypedFormGroup;
-  public jobTypeSelected: string | undefined;
-  public customerSelected: string | undefined;
+  public jobTypeSelected: JobType;
+  public customerSelected: Customer;
+  public selectedStage: StageMap;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -169,8 +170,19 @@ export class AddEditComponent implements OnInit {
     });
 
     if (this.isEditing) {
-      this.customerSelected = this.selectedSheet?.customer.id;
-      this.jobTypeSelected = this.selectedSheet?.jobType.id;
+      this.customerSelected = <Customer>{
+        id: this.selectedSheet?.customer.id,
+        name: this.selectedSheet?.customer.name
+      }
+      this.jobTypeSelected = <JobType>{
+        id: this.selectedSheet?.jobType.id,
+        name: this.selectedSheet?.jobType.name
+      }
+      this.selectedStage = <StageMap>{
+        id: this.selectedSheet?.currentStage.id,
+        name: this.selectedSheet?.currentStage.name,
+        index: this.selectedSheet?.currentStage.index
+      }
       this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
       this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
@@ -186,19 +198,19 @@ export class AddEditComponent implements OnInit {
   }
 
   public save() {
-    const customerName = this.customers?.find(x=> x.id === this.customerSelected)?.name;
     const cuttingSheet = <CuttingSheet>{
       jobName: this.form.value.name,
       poNumber: this.form.value.poNumber,
-      customer: { id: this.customerSelected, name: customerName },
+      customer: this.customerSelected,
       color: this.form.value.color,
       readyBy: this.form.value.readyBy,
+      currentStage: this.selectedStage
     }
 
-    const jobTypeName =  this.jobTypes?.find(x=> x.id === this.jobTypeSelected)?.name;
-    cuttingSheet.jobType = <JobType>{ id: this.jobTypeSelected, name: jobTypeName};
-    cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected) || [];
-    cuttingSheet.currentStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
+    if (!this.isEditing) {
+      this.selectedStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
+      cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected.id) || [];
+    }
     this.Save.emit(cuttingSheet);
   }
 
@@ -218,6 +230,13 @@ export class AddEditComponent implements OnInit {
     }
     return new Date();
 	}
+
+  public onSelectCustomer(id: string) {
+    this.customerSelected = <Customer>{
+      id: id,
+      name: this.customers?.find(x=> x.id === id)?.name
+    }
+  }
 
 }
 
