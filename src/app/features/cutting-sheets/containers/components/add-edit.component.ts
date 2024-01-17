@@ -26,7 +26,7 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
       <div fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-form-field>
           <mat-label>Job Type</mat-label>
-          <mat-select formControlName="jobType" [(value)]="jobTypeSelected">
+          <mat-select formControlName="jobType" [(value)]="jobTypeSelected" (valueChange)="onSelectJobType($event)">
             @for (job of jobTypes; track trackByjobTypeGuid($index, job)) {
               <mat-option [value]="job.id">{{ job.name }}</mat-option>
             }
@@ -72,13 +72,13 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
             </mat-error>
           }
         </mat-form-field>
-        <mat-form-field>
+        <!-- <mat-form-field>
           <mat-label>Ready by</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="readyBy">
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field> -->
         <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
           <button mat-raised-button routerLink="/cuttingSheets" type="button">
             Cancel
@@ -159,7 +159,7 @@ export class AddEditComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.customers = this.customers?.filter(x => x.id != '0');
+    this.customers = this.customers?.filter(x => x.id != '');
     this.form = this.formBuilder.group({
       jobType: ['', [Validators.required]],
       customer: ['', [Validators.required]],
@@ -190,6 +190,8 @@ export class AddEditComponent implements OnInit {
       this.form.controls['color'].setValue(this.selectedSheet?.color);
       this.form.controls['readyBy'].setValue(this.convertTimestamp(this.selectedSheet?.readyBy));
       this.form.controls['jobType'].disable();
+    } else {
+      this.customerSelected = <Customer>{ id: '', name: '' }
     }
   }
 
@@ -208,8 +210,10 @@ export class AddEditComponent implements OnInit {
     }
 
     if (!this.isEditing) {
-      this.selectedStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
+      cuttingSheet.jobType = this.jobTypeSelected;
       cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected.id) || [];
+      this.selectedStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
+      cuttingSheet.currentStage = this.selectedStage;
     }
     this.Save.emit(cuttingSheet);
   }
@@ -235,6 +239,13 @@ export class AddEditComponent implements OnInit {
     this.customerSelected = <Customer>{
       id: id,
       name: this.customers?.find(x=> x.id === id)?.name
+    }
+  }
+
+  public onSelectJobType(id: string) {
+    this.jobTypeSelected = <JobType>{
+      id: id,
+      name: this.jobTypes?.find(x=> x.id === id)?.name
     }
   }
 

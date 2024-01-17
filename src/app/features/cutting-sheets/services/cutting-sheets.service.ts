@@ -64,7 +64,6 @@ export class CuttingSheetsService {
       wheres.push(where('createdAt', '<=', end));
     }
 
-    console.log('wheres', wheres);
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
     return collectionData(sheetsQuery, {

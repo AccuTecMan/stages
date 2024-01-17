@@ -22,7 +22,7 @@ import { FormControl } from '@angular/forms';
           <input matInput [(ngModel)]="term">
         </mat-form-field>
         <mat-form-field fxFlex="25" fxFlex.lt-sm="55%">
-          <mat-label>Ready by</mat-label>
+          <mat-label>Created At</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
             @for (readyBy of readyByOptions; track readyBy.value) {
               <mat-option [value]="readyBy.value">{{readyBy.view}}</mat-option>
@@ -75,7 +75,7 @@ import { FormControl } from '@angular/forms';
                 </dl>
                 <dl>
                   <dt>CREATED AT</dt>
-                  <dd>{{ convertTimestamp(sheet.createdAt) | date:'MMM-dd-yyyy HH:MM' }}</dd>
+                  <dd>{{ convertTimestamp(sheet.createdAt) | date:'MMM d, y, h:mm a' }}</dd>
                 </dl>
                 <dl>
                   <dt>STAGE</dt>
