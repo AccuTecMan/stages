@@ -9,9 +9,11 @@ import * as fromStore from '../index';
 
 @Injectable()
 export class CuttingSheetsEffects {
-  constructor(private actions$: Actions,
-              private store: Store,
-              private service: CuttingSheetsService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private service: CuttingSheetsService
+  ) {}
 
   load$ = createEffect(() => {
     return this.actions$.pipe(
@@ -32,7 +34,7 @@ export class CuttingSheetsEffects {
       switchMap((cs) =>
         this.service.get(cs.cuttingSheetId).pipe(
           map((cuttingSheet) => {
-            return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: cuttingSheet })
+            return CuttingSheetsApiActions.loadStagesSuccess({ cuttingSheet: cuttingSheet });
           }),
           catchError(() => of(CuttingSheetsApiActions.loadStagesFailure()))
         )

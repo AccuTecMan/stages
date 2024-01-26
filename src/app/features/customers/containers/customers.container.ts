@@ -23,7 +23,7 @@ export class CustomerContainer {
   public filteredCustomers$: Observable<Customer[]>;
 
   private isInactiveDisplayed: boolean = true;
-  private searchTerm: string = "";
+  private searchTerm: string = '';
 
   constructor(private store: Store) {
     this.filteredCustomers$ = this.getFilteredCustomers();
@@ -44,7 +44,7 @@ export class CustomerContainer {
     if (a.length >= 0) {
       this.filteredCustomers$ = this.getFilteredCustomers().pipe(
         map((c: Customer[]) => c.filter((x: Customer) => x.name.toLocaleLowerCase().indexOf(a) > -1))
-      )
+      );
     }
   }
 
@@ -52,7 +52,7 @@ export class CustomerContainer {
     return this.customers$.pipe(
       map((c: Customer[]) => {
         if (!this.isInactiveDisplayed) {
-          return c.filter((x: Customer) => x.active === true)
+          return c.filter((x: Customer) => x.active === true);
         }
         return c;
       })

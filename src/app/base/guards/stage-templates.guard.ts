@@ -8,9 +8,7 @@ import * as fromFeature from '../store';
 
 @Injectable({ providedIn: 'root' })
 export class StageTemplatesGuard {
-  constructor(
-    private store: Store
-  ) {}
+  constructor(private store: Store) {}
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.store

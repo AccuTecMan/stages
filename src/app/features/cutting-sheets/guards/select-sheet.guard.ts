@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -11,8 +11,7 @@ import * as fromFeature from '../store';
 export class SelectSheetGuard {
   constructor(
     private store: Store,
-    private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
@@ -23,6 +22,12 @@ export class SelectSheetGuard {
 
     return this.store
       .select(fromFeature.selectCuttingSheetsLoadStatus)
-      .pipe(loadEntity(() => this.store.dispatch(fromFeature.CuttingSheetsGuardActions.loadStages({ cuttingSheetId: cuttingSheetId })), undefined, true));
+      .pipe(
+        loadEntity(
+          () => this.store.dispatch(fromFeature.CuttingSheetsGuardActions.loadStages({ cuttingSheetId: cuttingSheetId })),
+          undefined,
+          true
+        )
+      );
   }
 }

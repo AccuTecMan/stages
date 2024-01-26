@@ -20,7 +20,7 @@ export const typesReducer = createReducer(
     (state): TypeState => ({
       ...state,
       loadStatus: EntityLoadStatus.LOADING,
-    }),
+    })
   ),
   on(
     TypesApiActions.loadAllSuccess,

@@ -16,9 +16,7 @@ import { AppCommonModule } from './common/app-common.module';
 import { CoreModule } from '@core/core.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -35,13 +33,14 @@ import { CoreModule } from '@core/core.module';
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
       maxAge: 30,
-      logOnly: environment.production}),
+      logOnly: environment.production,
+    }),
 
     // Custom
     AppRoutingModule,
     AppCommonModule,
-    CoreModule
+    CoreModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -9,20 +9,18 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-header',
   template: `
-    <mat-toolbar [ngClass]="{ 'dev-background': isDev}" color="primary" fxLayout="row"
-      fxLayoutAlign="space-between center">
+    <mat-toolbar [ngClass]="{ 'dev-background': isDev }" color="primary" fxLayout="row" fxLayoutAlign="space-between center">
       @if (isAuth$ | async) {
         <span>
           @if (isAuth$ | async) {
-            <button mat-button
-              type="button" (click)="onToggleSidenav()">
+            <button mat-button type="button" (click)="onToggleSidenav()">
               <mat-icon>menu</mat-icon>
               <span class="brand-title">AccuTec</span>
             </button>
           }
         </span>
         @if (isAuth$ | async) {
-          <button class='logout' mat-button (click)="onLogout()" >
+          <button class="logout" mat-button (click)="onLogout()">
             <mat-icon>exit_to_app</mat-icon>
             Logout
           </button>
@@ -31,7 +29,7 @@ import { environment } from 'src/environments/environment';
         <span class="brand-title-no-auth">AccuTec</span>
       }
     </mat-toolbar>
-    `,
+  `,
   styles: [
     `
       .dev-background {
@@ -53,9 +51,8 @@ import { environment } from 'src/environments/environment';
 
       .logout {
         padding: 1rem;
-        margin-right: .5rem;
+        margin-right: 0.5rem;
       }
-
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -67,7 +64,10 @@ export class HeaderComponent {
 
   public isDev = !environment.production;
 
-  constructor(private store: Store, private authService: AuthService) {}
+  constructor(
+    private store: Store,
+    private authService: AuthService
+  ) {}
 
   onToggleSidenav() {
     this.sidenavToggle.emit();
