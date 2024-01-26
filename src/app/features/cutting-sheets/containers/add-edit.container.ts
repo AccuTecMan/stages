@@ -28,17 +28,18 @@ export class AddEditContainer {
   public jobTypes$ = this.store.select(fromBase.selectAllJobTypes);
   public jobTypesTemplate$ = this.store.select(fromBase.selectAllTemplates);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
-  public isEditing$ = this.route.params.pipe(map(x => x['id'] != null))
+  public isEditing$ = this.route.params.pipe(map((x) => x['id'] != null));
 
-  constructor(private store: Store,
-              private service: CuttingSheetsService,
-              private router: Router,
-              private route: ActivatedRoute,) {}
+  constructor(
+    private store: Store,
+    private service: CuttingSheetsService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   public onSave(cuttingSheet: CuttingSheet) {
     const id = this.route.snapshot.params.id || '';
-    this.service.upsert(cuttingSheet, id)
+    this.service.upsert(cuttingSheet, id);
     this.router.navigate(['/cuttingSheets']);
   }
-
 }

@@ -31,10 +31,7 @@ export class CustomerService {
   }
 
   update(customer: Customer, id: string) {
-    const customerReference = doc(
-      this.firestore,
-      `customers/${id}`
-    );
+    const customerReference = doc(this.firestore, `customers/${id}`);
     return updateDoc(customerReference, { ...customer });
   }
 
@@ -42,5 +39,4 @@ export class CustomerService {
   //   const customerReference = doc(this.firestore, `customers/${id}`);
   //   return deleteDoc(customerReference);
   // }
-
 }

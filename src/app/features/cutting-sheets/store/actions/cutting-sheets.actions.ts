@@ -26,6 +26,6 @@ export const CuttingSheetsApiActions = createActionGroup({
 export const SearchCriteriaActions = createActionGroup({
   source: 'Search Criteria',
   events: {
-    'Set': props<{ searchCriteria: SearchCriteria }>(),
+    Set: props<{ searchCriteria: SearchCriteria }>(),
   },
 });

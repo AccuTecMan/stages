@@ -22,14 +22,14 @@ export interface CuttingSheetsState extends LoadStatus {
 }
 
 const initialState: CuttingSheetsState = {
-  summary : { ...cuttingSheetsAdapter.getInitialState() },
+  summary: { ...cuttingSheetsAdapter.getInitialState() },
   searchCriteria: {
     customerId: undefined,
-    readyByOption: 0
+    readyByOption: 0,
   },
   stages: undefined,
   selectedSheet: undefined,
-  loadStatus: EntityLoadStatus.INITIAL
+  loadStatus: EntityLoadStatus.INITIAL,
 };
 
 export const internalReducer = createReducer(
@@ -39,7 +39,7 @@ export const internalReducer = createReducer(
     (state): CuttingSheetsState => ({
       ...state,
       loadStatus: EntityLoadStatus.LOADING,
-    }),
+    })
   ),
   on(
     CuttingSheetsApiActions.loadAllSuccess,
@@ -70,14 +70,14 @@ export const internalReducer = createReducer(
       ...state,
       selectedSheet: undefined,
       loadStatus: EntityLoadStatus.LOADING,
-    }),
+    })
   ),
   on(
     CuttingSheetsApiActions.loadStagesSuccess,
     (state, { cuttingSheet }): CuttingSheetsState => ({
       ...state,
       selectedSheet: cuttingSheet,
-      loadStatus: EntityLoadStatus.SUCCESS
+      loadStatus: EntityLoadStatus.SUCCESS,
     })
   ),
   on(
@@ -92,11 +92,8 @@ export const internalReducer = createReducer(
     CuttingSheetsApiActions.changeStage,
     (state, { cuttingSheet }): CuttingSheetsState => ({
       ...state,
-      summary: cuttingSheetsAdapter.updateOne(
-        { id: cuttingSheet.id, changes: cuttingSheet },
-        state.summary
-      ),
-      loadStatus: EntityLoadStatus.SUCCESS
+      summary: cuttingSheetsAdapter.updateOne({ id: cuttingSheet.id, changes: cuttingSheet }, state.summary),
+      loadStatus: EntityLoadStatus.SUCCESS,
     })
   ),
   on(
@@ -106,7 +103,7 @@ export const internalReducer = createReducer(
       selectedSheet: undefined,
       loadStatus: EntityLoadStatus.FAILURE,
     })
-  ),
+  )
 );
 
 export function reducer(state: CuttingSheetsState | undefined, action: Action) {

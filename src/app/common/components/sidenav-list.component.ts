@@ -31,7 +31,7 @@ import * as fromCore from '@core/store';
         <span class="nav-caption">Logout</span>
       </a>
     </mat-nav-list>
-    `,
+  `,
   styles: [
     `
       .list-title {
@@ -48,7 +48,6 @@ import * as fromCore from '@core/store';
         border-top-width: 2px;
         border-top-style: dashed;
       }
-
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +57,11 @@ export class SidenavListComponent {
   public isAuth$: Observable<boolean> = this.store.select(fromCore.selectIsAuth);
   public isAdmin$: Observable<boolean> = this.store.select(fromCore.selectIsAdmin);
 
-  constructor(private authService: AuthService, private store: Store, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+    private router: Router
+  ) {}
 
   onClose() {
     this.closeSidenav.emit();

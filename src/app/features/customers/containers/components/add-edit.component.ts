@@ -4,7 +4,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { CustomerService } from '@app/base/services';
 import { Customer } from '@app/base/models';
 
-
 @Component({
   selector: 'app-customer-add-edit',
   template: `
@@ -22,80 +21,76 @@ import { Customer } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px"
-            #f="ngForm" (ngSubmit)="f.form.valid && save()">
+    <form [formGroup]="form" fxLayout="column" fxLayoutGap="8px" #f="ngForm" (ngSubmit)="f.form.valid && save()">
       <mat-checkbox formControlName="isActive">Is active?</mat-checkbox>
       <mat-form-field>
         <mat-label>Customer</mat-label>
-        <input matInput formControlName="name">
+        <input matInput formControlName="name" />
         @if (form.get('name')!.hasError('required')) {
-          <mat-error>
-            Name is required
-          </mat-error>
+          <mat-error> Name is required </mat-error>
         }
       </mat-form-field>
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
-        <button mat-raised-button routerLink="/customers">
-          Cancel
-        </button>
-        <button mat-raised-button type='submit' color="primary" [disabled]="!form.valid">
-          Save
-        </button>
+        <button mat-raised-button routerLink="/customers">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Save</button>
       </div>
     </form>
-    `,
-  styles: [`
-    .breadcrumb {
-      width: 100%;
-      background-color: #A9A9A9;
-    }
+  `,
+  styles: [
+    `
+      .breadcrumb {
+        width: 100%;
+        background-color: #a9a9a9;
+      }
 
-    .breadcrumb > button {
-      width: 150px;
-      margin-left: .1rem;
-      padding: 0px;
-    }
+      .breadcrumb > button {
+        width: 150px;
+        margin-left: 0.1rem;
+        padding: 0px;
+      }
 
-    h1 {
-      font-size: 2rem;
-      margin: 0;
-    }
-
-    mat-divider {
-      margin-bottom: 1rem;
-    }
-
-    .content-header {
-      margin: 1.3rem 1rem 0rem 1rem !Important;
-      max-width: 850px;
-    }
-
-    mat-form-field, mat-checkbox, button {
-      width: 300px;
-      margin-left: 3rem;
-    }
-
-    button {
-      width: 100px;
-    }
-
-    .buttons-section {
-      margin-top: 1.5rem;
-    }
-
-    .mat-icon {
-      margin: 0;
-    }
-
-    @media (max-width: 600px) {
       h1 {
-        font-size: 1.5rem;
-        padding: 0;
+        font-size: 2rem;
         margin: 0;
       }
-    }
 
-  `],
+      mat-divider {
+        margin-bottom: 1rem;
+      }
+
+      .content-header {
+        margin: 1.3rem 1rem 0rem 1rem !important;
+        max-width: 850px;
+      }
+
+      mat-form-field,
+      mat-checkbox,
+      button {
+        width: 300px;
+        margin-left: 3rem;
+      }
+
+      button {
+        width: 100px;
+      }
+
+      .buttons-section {
+        margin-top: 1.5rem;
+      }
+
+      .mat-icon {
+        margin: 0;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 1.5rem;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent implements OnInit {
@@ -104,17 +99,19 @@ export class AddEditComponent implements OnInit {
 
   public form = this.formBuilder.group({
     name: ['', [Validators.required]],
-    isActive: [true]
+    isActive: [true],
   });
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private service: CustomerService,
-              private formBuilder: FormBuilder) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: CustomerService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.customerId = this.route.snapshot.params.id;
-    this.isEditing = !!this.customerId && this.customerId.length > 0
+    this.isEditing = !!this.customerId && this.customerId.length > 0;
 
     if (this.isEditing) {
       this.service.get(this.customerId).subscribe((x: Customer) => {
@@ -131,8 +128,8 @@ export class AddEditComponent implements OnInit {
   public save() {
     const customer = <Customer>{
       name: this.form.value.name,
-      active: <boolean>this.form.value.isActive
-    }
+      active: <boolean>this.form.value.isActive,
+    };
 
     if (this.isEditing) {
       this.service.update(customer, this.customerId);

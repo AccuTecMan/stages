@@ -17,33 +17,22 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: CustomerContainer
+        component: CustomerContainer,
       },
       {
         path: 'add',
-        component: AddEditComponent
+        component: AddEditComponent,
       },
       {
         path: 'edit/:id',
-        component: AddEditComponent
-      }
-    ]
-  }
+        component: AddEditComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
-  declarations: [
-    CustomerContainer,
-    ListComponent,
-    AddEditComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    ReactiveFormsModule,
-    AppCommonModule,
-    BaseModule,
-    FormsModule
-  ],
+  declarations: [CustomerContainer, ListComponent, AddEditComponent],
+  imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule, AppCommonModule, BaseModule, FormsModule],
 })
 export class CustomersModule {}

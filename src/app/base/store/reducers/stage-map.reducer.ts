@@ -20,7 +20,7 @@ export const stageMapReducer = createReducer(
     (state): StageMapState => ({
       ...state,
       loadStatus: EntityLoadStatus.LOADING,
-    }),
+    })
   ),
   on(
     StageApiActions.loadAllSuccess,

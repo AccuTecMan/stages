@@ -9,9 +9,11 @@ import * as fromRoot from '@core/store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private store: Store,
-              private router: Router,
-              private afAuth: Auth) {}
+  constructor(
+    private store: Store,
+    private router: Router,
+    private afAuth: Auth
+  ) {}
 
   initAuthListener() {
     authState(this.afAuth).subscribe(async (user) => {
@@ -44,29 +46,25 @@ export class AuthService {
 
   signIn(params: AuthData): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.afAuth, params.email, params.password)).pipe(
-      catchError((error: FirebaseError) =>
-        throwError(() => new Error(this.translateFirebaseErrorMessage(error)))
-      )
+      catchError((error: FirebaseError) => throwError(() => new Error(this.translateFirebaseErrorMessage(error))))
     );
   }
 
-  private translateFirebaseErrorMessage({code, message}: FirebaseError) {
-    if (code === "auth/invalid-login-credentials") {
-      return "Invalid user or password.";
+  private translateFirebaseErrorMessage({ code, message }: FirebaseError) {
+    if (code === 'auth/invalid-login-credentials') {
+      return 'Invalid user or password.';
     }
-    if (code === "auth/user-not-found") {
-      return "User not found.";
+    if (code === 'auth/user-not-found') {
+      return 'User not found.';
     }
-    if (code === "auth/wrong-password") {
-      return "User not found.";
+    if (code === 'auth/wrong-password') {
+      return 'User not found.';
     }
     return message;
   }
-
-
 }
 
 type FirebaseError = {
   code: string;
-  message: string
+  message: string;
 };

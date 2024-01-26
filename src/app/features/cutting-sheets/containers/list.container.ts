@@ -40,14 +40,14 @@ export class ListContainer {
     if (a.length === 0) {
       this.filteredCuttingSheets$ = this.cuttingSheets$;
     } else {
-      this.filteredCuttingSheets$= this.cuttingSheets$.pipe(
-        map(c => c.filter(x => (x.jobName + x.poNumber).toLocaleLowerCase().indexOf(a) > -1))
+      this.filteredCuttingSheets$ = this.cuttingSheets$.pipe(
+        map((c) => c.filter((x) => (x.jobName + x.poNumber).toLocaleLowerCase().indexOf(a) > -1))
       );
     }
   }
 
   public onChangeSearchCriteria(criteria: SearchCriteria) {
-    this.store.dispatch(fromStore.SearchCriteriaActions.set({ searchCriteria: criteria }))
+    this.store.dispatch(fromStore.SearchCriteriaActions.set({ searchCriteria: criteria }));
     this.store.dispatch(fromStore.CuttingSheetsGuardActions.loadAll());
   }
 }

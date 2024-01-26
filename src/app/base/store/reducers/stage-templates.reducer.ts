@@ -20,7 +20,7 @@ export const stageTemplatesReducer = createReducer(
     (state): StageTemplatesState => ({
       ...state,
       loadStatus: EntityLoadStatus.LOADING,
-    }),
+    })
   ),
   on(
     StageTemplatesApiActions.loadAllSuccess,

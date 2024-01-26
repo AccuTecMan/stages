@@ -2,16 +2,27 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 
-import { TypesGuardActions, TypesApiActions, StageTemplatesGuardActions, StageTemplatesApiActions, CustomersGuardActions, CustomersApiActions, StageGuardActions, StageApiActions } from '../../store/actions';
+import {
+  TypesGuardActions,
+  TypesApiActions,
+  StageTemplatesGuardActions,
+  StageTemplatesApiActions,
+  CustomersGuardActions,
+  CustomersApiActions,
+  StageGuardActions,
+  StageApiActions,
+} from '../../store/actions';
 import { StageTemplatesService, JobTypesService } from '../../services';
 import { CustomerService } from '@app/base/services/customer.service';
 
 @Injectable()
 export class CuttingSheetsEffects {
-  constructor(private actions$: Actions,
-              private jobTypeService: JobTypesService,
-              private customersServices: CustomerService,
-              private stageTemplatesService: StageTemplatesService) {}
+  constructor(
+    private actions$: Actions,
+    private jobTypeService: JobTypesService,
+    private customersServices: CustomerService,
+    private stageTemplatesService: StageTemplatesService
+  ) {}
 
   loadJobTypes$ = createEffect(() => {
     return this.actions$.pipe(

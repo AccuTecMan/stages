@@ -17,13 +17,12 @@ export const initialState: CuttingSheetsState = {
   jobTypes: typesInitialState,
   stageTemplates: stageTemplatesInitialState,
   customers: customersInitialState,
-  stagesMap: stageMapInitialState
+  stagesMap: stageMapInitialState,
 };
 
 export const reducer: ActionReducerMap<CuttingSheetsState> = {
   jobTypes: typesReducer,
   stageTemplates: stageTemplatesReducer,
   customers: customersReducer,
-  stagesMap: stageMapReducer
+  stagesMap: stageMapReducer,
 };
-

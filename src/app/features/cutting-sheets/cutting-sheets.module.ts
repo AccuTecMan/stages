@@ -13,57 +13,39 @@ import { ListComponent } from './containers/components/list.component';
 import { CuttingSheetsEffects, featureName, reducer } from './store';
 import { CuttingSheetsGuard } from './guards/cutting-sheets.guard';
 import { CustomersGuard, JobTypesGuard, StageTemplatesGuard } from '@app/base/guards';
-import {
-  AddEditContainer,
-  AddEditComponent,
-  StagesContainer,
-  CuttingSheetsStagesComponent
-} from './containers';
+import { AddEditContainer, AddEditComponent, StagesContainer, CuttingSheetsStagesComponent } from './containers';
 import { SelectSheetGuard } from './guards/select-sheet.guard';
 import { StageMapGuard } from '@app/base/guards/stage-map.guard';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [
-      StageTemplatesGuard,
-      JobTypesGuard,
-      CustomersGuard,
-      CuttingSheetsGuard,
-      StageMapGuard
-    ],
+    canActivate: [StageTemplatesGuard, JobTypesGuard, CustomersGuard, CuttingSheetsGuard, StageMapGuard],
     children: [
       {
         path: '',
-        component: ListContainer
+        component: ListContainer,
       },
       {
         path: 'add',
-        component: AddEditContainer
+        component: AddEditContainer,
       },
       {
         path: 'edit/:id',
         component: AddEditContainer,
-        canActivate: [SelectSheetGuard]
+        canActivate: [SelectSheetGuard],
       },
       {
         path: 'stages/:id',
         component: StagesContainer,
-        canActivate: [SelectSheetGuard]
-      }
-    ]
-  }
+        canActivate: [SelectSheetGuard],
+      },
+    ],
+  },
 ];
 
 @NgModule({
-  declarations: [
-    ListContainer,
-    AddEditContainer,
-    AddEditComponent,
-    ListComponent,
-    CuttingSheetsStagesComponent,
-    StagesContainer
-  ],
+  declarations: [ListContainer, AddEditContainer, AddEditComponent, ListComponent, CuttingSheetsStagesComponent, StagesContainer],
   imports: [
     StoreModule.forFeature(featureName, reducer),
     EffectsModule.forFeature([CuttingSheetsEffects]),
@@ -74,7 +56,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     AppCommonModule,
     BaseModule,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class CuttingSheetsModule {}

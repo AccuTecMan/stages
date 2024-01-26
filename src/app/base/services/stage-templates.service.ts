@@ -25,9 +25,9 @@ export class StageTemplatesService {
   }
 
   public get(id: string): Observable<StageTemplate[]> {
-    const q = query(this.typesCollection, where("jobType", "==", id));
+    const q = query(this.typesCollection, where('jobType', '==', id));
     return collectionData(q, {
-      idField: 'id'
+      idField: 'id',
     }) as Observable<StageTemplate[]>;
   }
 

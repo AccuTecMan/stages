@@ -3,7 +3,6 @@ import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CuttingSheet, TimeStamp } from '../../models';
 import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
 
-
 @Component({
   selector: 'app-cutting-sheets-add-edit',
   template: `
@@ -21,8 +20,7 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
       }
       <mat-divider></mat-divider>
     </header>
-    <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="8px" #f="ngForm"
-                      (ngSubmit)="f.form.valid && save()">
+    <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="8px" #f="ngForm" (ngSubmit)="f.form.valid && save()">
       <div fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-form-field>
           <mat-label>Job Type</mat-label>
@@ -31,9 +29,7 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
               <mat-option [value]="job.id">{{ job.name }}</mat-option>
             }
             @if (form.get('name')!.hasError('required')) {
-              <mat-error>
-                Job Type is required
-              </mat-error>
+              <mat-error> Job Type is required </mat-error>
             }
           </mat-select>
         </mat-form-field>
@@ -47,29 +43,23 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
         </mat-form-field>
         <mat-form-field>
           <mat-label>Name</mat-label>
-          <input matInput formControlName="name">
+          <input matInput formControlName="name" />
           @if (form.get('name')!.hasError('required')) {
-            <mat-error>
-              Name is required
-            </mat-error>
+            <mat-error> Name is required </mat-error>
           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>PO#</mat-label>
-          <input matInput formControlName="poNumber">
+          <input matInput formControlName="poNumber" />
           @if (form.get('poNumber')!.hasError('required')) {
-            <mat-error>
-              PO# is required
-            </mat-error>
+            <mat-error> PO# is required </mat-error>
           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Color</mat-label>
-          <input matInput formControlName="color">
+          <input matInput formControlName="color" />
           @if (form.get('color')!.hasError('required')) {
-            <mat-error>
-              Color is required
-            </mat-error>
+            <mat-error> Color is required </mat-error>
           }
         </mat-form-field>
         <!-- <mat-form-field>
@@ -80,67 +70,67 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field> -->
         <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
-          <button mat-raised-button routerLink="/cuttingSheets" type="button">
-            Cancel
-          </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
-            Save
-          </button>
+          <button mat-raised-button routerLink="/cuttingSheets" type="button">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Save</button>
         </div>
       </div>
     </form>
-    `,
-  styles: [`
-    .breadcrumb {
-      width: 100%;
-      background-color: #A9A9A9;
-    }
+  `,
+  styles: [
+    `
+      .breadcrumb {
+        width: 100%;
+        background-color: #a9a9a9;
+      }
 
-    .breadcrumb > button {
-      width: 150px;
-      margin-left: .1rem;
-      padding: 0px;
-    }
+      .breadcrumb > button {
+        width: 150px;
+        margin-left: 0.1rem;
+        padding: 0px;
+      }
 
-    h1 {
-      font-size: 2rem;
-      margin: 0;
-    }
-
-    mat-divider {
-      margin-bottom: 1rem;
-    }
-
-    .content-header {
-      margin: 1.3rem 1rem 0rem 1rem !Important;
-      max-width: 850px;
-    }
-
-    mat-form-field, mat-checkbox, button {
-      width: 300px;
-      margin-left: 3rem;
-    }
-
-    button {
-      width: 100px;
-    }
-
-    .buttons-section {
-      margin-top: 1.5rem;
-    }
-
-    .mat-icon {
-      margin: 0;
-    }
-
-    @media (max-width: 600px) {
       h1 {
-        font-size: 1.5rem;
-        padding: 0;
+        font-size: 2rem;
         margin: 0;
       }
-    }
-  `],
+
+      mat-divider {
+        margin-bottom: 1rem;
+      }
+
+      .content-header {
+        margin: 1.3rem 1rem 0rem 1rem !important;
+        max-width: 850px;
+      }
+
+      mat-form-field,
+      mat-checkbox,
+      button {
+        width: 300px;
+        margin-left: 3rem;
+      }
+
+      button {
+        width: 100px;
+      }
+
+      .buttons-section {
+        margin-top: 1.5rem;
+      }
+
+      .mat-icon {
+        margin: 0;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 1.5rem;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent implements OnInit {
@@ -159,7 +149,7 @@ export class AddEditComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.customers = this.customers?.filter(x => x.id != '');
+    this.customers = this.customers?.filter((x) => x.id != '');
     this.form = this.formBuilder.group({
       jobType: ['', [Validators.required]],
       customer: ['', [Validators.required]],
@@ -172,17 +162,17 @@ export class AddEditComponent implements OnInit {
     if (this.isEditing) {
       this.customerSelected = <Customer>{
         id: this.selectedSheet?.customer.id,
-        name: this.selectedSheet?.customer.name
-      }
+        name: this.selectedSheet?.customer.name,
+      };
       this.jobTypeSelected = <JobType>{
         id: this.selectedSheet?.jobType.id,
-        name: this.selectedSheet?.jobType.name
-      }
+        name: this.selectedSheet?.jobType.name,
+      };
       this.selectedStage = <StageMap>{
         id: this.selectedSheet?.currentStage.id,
         name: this.selectedSheet?.currentStage.name,
-        index: this.selectedSheet?.currentStage.index
-      }
+        index: this.selectedSheet?.currentStage.index,
+      };
       this.form.controls['jobType'].setValue(this.selectedSheet?.jobType.id);
       this.form.controls['customer'].setValue(this.selectedSheet?.customer.id);
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
@@ -191,7 +181,7 @@ export class AddEditComponent implements OnInit {
       this.form.controls['readyBy'].setValue(this.convertTimestamp(this.selectedSheet?.readyBy));
       this.form.controls['jobType'].disable();
     } else {
-      this.customerSelected = <Customer>{ id: '', name: '' }
+      this.customerSelected = <Customer>{ id: '', name: '' };
     }
   }
 
@@ -206,13 +196,13 @@ export class AddEditComponent implements OnInit {
       customer: this.customerSelected,
       color: this.form.value.color,
       readyBy: this.form.value.readyBy,
-      currentStage: this.selectedStage
-    }
+      currentStage: this.selectedStage,
+    };
 
     if (!this.isEditing) {
       cuttingSheet.jobType = this.jobTypeSelected;
-      cuttingSheet.stages = this.templates?.filter(x => x.jobType === this.jobTypeSelected.id) || [];
-      this.selectedStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0};
+      cuttingSheet.stages = this.templates?.filter((x) => x.jobType === this.jobTypeSelected.id) || [];
+      this.selectedStage = { id: 'hFYxu1Y5rqU69rvjcS5m', name: 'Processing', index: 0 };
       cuttingSheet.currentStage = this.selectedStage;
     }
     this.Save.emit(cuttingSheet);
@@ -226,29 +216,26 @@ export class AddEditComponent implements OnInit {
     return jobType.id;
   }
 
-  private convertTimestamp (timestamp: TimeStamp | undefined): Date {
-    if (timestamp != undefined ) {
+  private convertTimestamp(timestamp: TimeStamp | undefined): Date {
+    if (timestamp != undefined) {
       const { seconds, nanoseconds } = timestamp;
       const milliseconds = seconds * 1000 + nanoseconds / 1e6;
       return new Date(milliseconds);
     }
     return new Date();
-	}
+  }
 
   public onSelectCustomer(id: string) {
     this.customerSelected = <Customer>{
       id: id,
-      name: this.customers?.find(x=> x.id === id)?.name
-    }
+      name: this.customers?.find((x) => x.id === id)?.name,
+    };
   }
 
   public onSelectJobType(id: string) {
     this.jobTypeSelected = <JobType>{
       id: id,
-      name: this.jobTypes?.find(x=> x.id === id)?.name
-    }
+      name: this.jobTypes?.find((x) => x.id === id)?.name,
+    };
   }
-
 }
-
-
