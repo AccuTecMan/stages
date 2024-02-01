@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { CuttingSheet, Stage, TimeStamp } from '../../models';
-import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { CdkStepLabel, StepperSelectionEvent } from '@angular/cdk/stepper';
 import { StageMap } from '@app/base/models';
+import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -38,12 +39,15 @@ import { StageMap } from '@app/base/models';
               <button mat-raised-button matStepperPrevious>Previous</button>
             }
             @if (stage.canGoForward) {
-              <button mat-raised-button matStepperNext color="primary">Next</button>
+              <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">Next</button>
             }
           </div>
         </mat-step>
       }
     </mat-stepper>
+    <ng-template #sayHelloTemplate>
+      <p> Say Hello</p>
+    </ng-template>
   `,
   styles: [
     `
@@ -112,11 +116,13 @@ import { StageMap } from '@app/base/models';
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
+  @ViewChild('stepper') private myStepper: MatStepper;
+  @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
   public stages: Stage[];
   public stepperIndex: number;
 
-  constructor() {}
+  constructor(private _matStepperIntl: MatStepperIntl,) {}
 
   ngOnInit() {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
@@ -124,6 +130,9 @@ export class CuttingSheetsStagesComponent implements OnInit {
   }
 
   onStepChange(event: StepperSelectionEvent): void {
+    // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
+    event.previouslySelectedStep.content = this.sayHelloTemplate
+    console.log('event', event);
     const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
     const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
     const newCurrentStage = <StageMap>{ id: id, name: name, index: event.selectedIndex };
@@ -140,5 +149,13 @@ export class CuttingSheetsStagesComponent implements OnInit {
   public isValidDate(timestamp: TimeStamp): boolean {
     const date = this.convertTimestamp(timestamp);
     return date > new Date(2000, 1, 1);
+  }
+
+  public onStepDone() {
+    // console.log(this.myStepper.steps.forEach(x => console.log(x.label)));
+    // this._matStepperIntl.optionalLabel = 'Otro dato del Step';
+    // // Required for the optional label text to be updated
+    // // Notifies the MatStepperIntl service that a change has been made
+    // this._matStepperIntl.changes.next();
   }
 }
