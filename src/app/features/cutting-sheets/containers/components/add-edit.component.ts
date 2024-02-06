@@ -24,7 +24,7 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
       <div fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-form-field>
           <mat-label>Job Type</mat-label>
-          <mat-select formControlName="jobType" [(value)]="jobTypeSelected" (valueChange)="onSelectJobType($event)">
+          <mat-select formControlName="jobType" [(value)]="jobTypeSelected.id" (valueChange)="onSelectJobType($event)">
             @for (job of jobTypes; track trackByjobTypeGuid($index, job)) {
               <mat-option [value]="job.id">{{ job.name }}</mat-option>
             }
@@ -182,6 +182,7 @@ export class AddEditComponent implements OnInit {
       this.form.controls['jobType'].disable();
     } else {
       this.customerSelected = <Customer>{ id: '', name: '' };
+      this.jobTypeSelected = <Customer>{ id: '', name: '' };
     }
   }
 
