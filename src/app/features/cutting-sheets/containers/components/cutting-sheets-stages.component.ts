@@ -35,12 +35,12 @@ import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
             </mat-form-field>
           </form>
           <div class="buttons-section">
-            @if (stage.canGoBack) {
+            @if (!isFirstStep) {
               <button mat-raised-button matStepperPrevious>Previous</button>
             }
-            @if (stage.canGoForward) {
-              <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">Next</button>
-            }
+            <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">
+            {{isLastStep ? 'Done' : 'Next'}}
+            </button>
           </div>
         </mat-step>
       }
@@ -131,7 +131,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
-    event.previouslySelectedStep.content = this.sayHelloTemplate
+    // event.previouslySelectedStep.content = this.sayHelloTemplate
     console.log('event', event);
     const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
     const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
@@ -144,6 +144,14 @@ export class CuttingSheetsStagesComponent implements OnInit {
     const { seconds, nanoseconds } = timestamp;
     const milliseconds = seconds * 1000 + nanoseconds / 1e6;
     return new Date(milliseconds);
+  }
+
+  public get isFirstStep(): boolean {
+    return this.myStepper?.selectedIndex === 0;
+  }
+
+  public get isLastStep(): boolean {
+    return this.myStepper?.selectedIndex+1 === this.selectedSheet?.stages.length;
   }
 
   public isValidDate(timestamp: TimeStamp): boolean {
