@@ -21,7 +21,7 @@ import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
     </header>
     <mat-stepper orientation="vertical" linear="false" #stepper (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of stages; track selectedSheet?.stages) {
-        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between">
+        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
           <ng-template matStepLabel>
             <div>{{ stage.stageMap.name }}</div>
             @if (isValidDate(stage.date)) {
@@ -34,14 +34,16 @@ import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
               <input matInput placeholder="Notes" required />
             </mat-form-field>
           </form>
-          <div class="buttons-section">
-            @if (!isFirstStep) {
-              <button mat-raised-button matStepperPrevious>Previous</button>
-            }
-            <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">
-            {{isLastStep ? 'Done' : 'Next'}}
-            </button>
-          </div>
+          @if (selectedSheet?.isActive) {
+            <div class="buttons-section">
+              @if (!isFirstStep) {
+                <button mat-raised-button matStepperPrevious>Previous</button>
+              }
+              <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">
+              {{isLastStep ? 'Done' : 'Next'}}
+              </button>
+            </div>
+          }
         </mat-step>
       }
     </mat-stepper>
@@ -121,13 +123,20 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   public stages: Stage[];
   public stepperIndex: number;
+  public isEditable: boolean = true;
 
-  constructor(private _matStepperIntl: MatStepperIntl,) {}
+  constructor() {}
 
   ngOnInit() {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
     this.stepperIndex = this.selectedSheet?.currentStage.index || 0;
   }
+
+  // ngAfterViewInit(){
+  //   this.isEditable = this.selectedSheet?.isActive || true;
+  //   console.log('this.selectedSheet', this.selectedSheet)
+  //   console.log('this.isEditable', this.isEditable)
+  // }
 
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate

@@ -198,6 +198,7 @@ export class AddEditComponent implements OnInit {
       color: this.form.value.color,
       readyBy: this.form.value.readyBy,
       currentStage: this.selectedStage,
+      isActive: true
     };
 
     if (!this.isEditing) {

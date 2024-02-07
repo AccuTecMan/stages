@@ -31,6 +31,10 @@ export class CuttingSheetsService {
   public getWithCriteria(criteria: SearchCriteria | undefined) {
     const wheres: QueryConstraint[] = [];
 
+    if (!criteria?.showInactive) {
+      wheres.push(where('isActive', '==', true));
+    }
+
     if (!!criteria?.customerId && criteria?.customerId.length > 1) {
       wheres.push(where('customer.id', '==', criteria.customerId));
     }

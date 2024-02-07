@@ -26,6 +26,7 @@ const initialState: CuttingSheetsState = {
   searchCriteria: {
     customerId: undefined,
     readyByOption: 0,
+    showInactive: false
   },
   stages: undefined,
   selectedSheet: undefined,
