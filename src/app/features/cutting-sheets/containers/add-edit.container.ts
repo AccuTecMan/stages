@@ -24,7 +24,7 @@ import { CuttingSheet } from '../models';
 })
 export class AddEditContainer {
   public selectedSheet$ = this.store.select(fromStore.selectSelectedSheet);
-  public customers$ = this.store.select(fromBase.selectCustomers);
+  public customers$ = this.store.select(fromBase.selectActiveCustomers);
   public jobTypes$ = this.store.select(fromBase.selectAllJobTypes);
   public jobTypesTemplate$ = this.store.select(fromBase.selectAllTemplates);
   public isLoading$ = this.store.select(fromStore.selectIsLoading);
