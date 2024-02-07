@@ -16,12 +16,26 @@ import { FormControl } from '@angular/forms';
         </button>
       </div>
       <mat-divider></mat-divider>
-      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="space-between center">
-        <mat-form-field fxFlex="20" fxFlex.lt-sm="45%">
-          <mat-label>PO# or Job Name</mat-label>
-          <input matInput [(ngModel)]="term" />
-        </mat-form-field>
-        <mat-form-field fxFlex="25" fxFlex.lt-sm="55%">
+      <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+        <button mat-fab extended color="normal" [ngClass]="{ 'inactive-background': isInactiveDisplayed }" (click)="displayInactive()">
+              @if (isInactiveDisplayed) {
+                <mat-icon>close</mat-icon>
+              } @else {
+                <mat-icon>filter_list</mat-icon>
+              }
+              @if (isInactiveDisplayed) {
+                <span>Hide Done</span>
+              } @else {
+                <span>Show Done</span>
+              }
+          </button>
+          <mat-form-field fxFlex="30" fxFlex.lt-sm="50%">
+            <mat-label>PO# or Job Name</mat-label>
+            <input matInput [(ngModel)]="term" />
+          </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start center">
+        <mat-form-field fxFlex="30" fxFlex.lt-sm="55%">
           <mat-label>Created At</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
             @for (readyBy of readyByOptions; track readyBy.value) {
@@ -29,7 +43,7 @@ import { FormControl } from '@angular/forms';
             }
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="25" fxFlex.lt-sm="45%">
+        <mat-form-field fxFlex="30" fxFlex.lt-sm="45%">
           <mat-label>Stage</mat-label>
           <mat-select [(value)]="stagesMapSelected" (selectionChange)="changeCriteria()">
             @for (stageMap of stagesMap; track stageMap.id) {
@@ -37,7 +51,7 @@ import { FormControl } from '@angular/forms';
             }
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="30" fxFlex.lt-sm="55%">
+        <mat-form-field fxFlex="40" fxFlex.lt-sm="55%">
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl" (change)="changeCustomer($event)" />
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="changeCustomerAuto($event.option.value)">
@@ -54,11 +68,13 @@ import { FormControl } from '@angular/forms';
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
         @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
           <div fxFlex="50%" fxFlex.lt-sm="100%">
-            <mat-card class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]">
+            <mat-card class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]" [ngClass]="{ 'done-background': !sheet.isActive }">
               <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
                 <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-                <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
+                @if (sheet.isActive) {
+                  <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
+                }
               </mat-card-header>
               <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
                 <dl>
@@ -159,7 +175,7 @@ import { FormControl } from '@angular/forms';
       }
 
       mat-divider {
-        margin: 0.5rem 0rem 1rem 0rem;
+        margin: 0.5rem 0rem .5rem 0rem;
       }
 
       .mat-mdc-form-field {
@@ -175,6 +191,15 @@ import { FormControl } from '@angular/forms';
         background-color: #607ec9;
         color: white;
         margin-top: -0.5rem;
+      }
+
+      .inactive-background {
+        background-color: #607ec9;
+        color: white;
+      }
+
+      .done-background {
+        background-color: #ffe8e7;
       }
 
       @media (max-width: 600px) {
@@ -206,6 +231,7 @@ export class ListComponent implements OnInit {
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
   myControl = new FormControl();
+  public isInactiveDisplayed: boolean = false;
   public filteredCustomers$: Observable<Customer[]> = this.myControl.valueChanges.pipe(
     startWith(''),
     map((value) => this._filter(value || ''))
@@ -221,6 +247,7 @@ export class ListComponent implements OnInit {
     this.selectedCustomer = this.searchCriteria?.customerId || '';
     this.stagesMapSelected = this.searchCriteria?.stageMapId || '';
     this.readyBySelected = this.searchCriteria?.readyByOption || 0;
+    this.isInactiveDisplayed = this.searchCriteria?.showInactive || false;
     this.changeCriteria();
 
     if (this.selectedCustomer.length > 0) {
@@ -278,6 +305,7 @@ export class ListComponent implements OnInit {
       customerId: this.selectedCustomer,
       stageMapId: this.stagesMapSelected,
       readyByOption: this.readyBySelected,
+      showInactive: this.isInactiveDisplayed
     };
     this.changeSearchCriteria.emit(criteria);
   }
@@ -299,5 +327,11 @@ export class ListComponent implements OnInit {
     const { seconds, nanoseconds } = timestamp;
     const milliseconds = seconds * 1000 + nanoseconds / 1e6;
     return new Date(milliseconds);
+  }
+
+  public displayInactive(): void {
+    this.isInactiveDisplayed = !this.isInactiveDisplayed;
+    this.changeCriteria();
+    // this.showInactive.emit(this.isInactiveDisplayed);
   }
 }
