@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { CuttingSheet, Stage, TimeStamp } from '../../models';
-import { CdkStepLabel, StepperSelectionEvent } from '@angular/cdk/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { StageMap } from '@app/base/models';
-import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -119,7 +119,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
   @ViewChild('stepper') private myStepper: MatStepper;
-  @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
+  // @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
   public stages: Stage[];
   public stepperIndex: number;
@@ -131,12 +131,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
     this.stepperIndex = this.selectedSheet?.currentStage.index || 0;
   }
-
-  // ngAfterViewInit(){
-  //   this.isEditable = this.selectedSheet?.isActive || true;
-  //   console.log('this.selectedSheet', this.selectedSheet)
-  //   console.log('this.isEditable', this.isEditable)
-  // }
 
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate

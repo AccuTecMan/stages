@@ -18,6 +18,10 @@ export const selectCustomers = createSelector(selectAllCustomers, (customers) =>
   customers.filter((x) => x.id != '0').sort((a, b) => (a.name < b.name ? -1 : 1))
 );
 
+export const selectActiveCustomers = createSelector(selectAllCustomers, (customers) =>
+  customers.filter((x) => x.id != '0' && x.active).sort((a, b) => (a.name < b.name ? -1 : 1))
+);
+
 export const selectCustomersIsLoading = createSelector(
   selectCuttingSheetsState,
   (state) => state.customers.loadStatus === EntityLoadStatus.LOADING
