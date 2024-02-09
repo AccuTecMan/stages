@@ -3,6 +3,10 @@ import { CuttingSheet, Stage, TimeStamp } from '../../models';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { StageMap } from '@app/base/models';
 import { MatStepper } from '@angular/material/stepper';
+import { MatDialog } from '@angular/material/dialog';
+import { CloseDialogComponent } from './close-dialog.component';
+import { Router } from '@angular/router';
+import { CuttingSheetsService } from '../../services';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -39,9 +43,12 @@ import { MatStepper } from '@angular/material/stepper';
               @if (!isFirstStep) {
                 <button mat-raised-button matStepperPrevious>Previous</button>
               }
-              <button mat-raised-button matStepperNext color="primary" (click)="onStepDone()">
-              {{isLastStep ? 'Done' : 'Next'}}
-              </button>
+
+              @if (isLastStep) {
+                <button mat-raised-button matStepperNext color="primary" (click)="openDialog()">Done</button>
+              } @else {
+                <button mat-raised-button matStepperNext color="primary">Next</button>
+              }
             </div>
           }
         </mat-step>
@@ -125,7 +132,9 @@ export class CuttingSheetsStagesComponent implements OnInit {
   public stepperIndex: number;
   public isEditable: boolean = true;
 
-  constructor() {}
+  constructor(private router: Router,
+              public dialog: MatDialog,
+              private service: CuttingSheetsService) {}
 
   ngOnInit() {
     this.stages = this.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
@@ -135,7 +144,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
     // event.previouslySelectedStep.content = this.sayHelloTemplate
-    console.log('event', event);
     const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
     const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
     const newCurrentStage = <StageMap>{ id: id, name: name, index: event.selectedIndex };
@@ -168,5 +176,19 @@ export class CuttingSheetsStagesComponent implements OnInit {
     // // Required for the optional label text to be updated
     // // Notifies the MatStepperIntl service that a change has been made
     // this._matStepperIntl.changes.next();
+  }
+
+  openDialog(): void {
+    // console.log('this.selectedSheet', this.selectedSheet)
+    const dialogRef = this.dialog.open(CloseDialogComponent, {
+      data: { id: this.selectedSheet?.id, jobName: this.selectedSheet?.jobName },
+    });
+
+    dialogRef.afterClosed().subscribe(id => {
+      console.log('The dialog was closed', id);
+      this.service.closeSheet(id);
+      this.router.navigate(['/cuttingSheets']);
+      // this.animal = result;
+    });
   }
 }
