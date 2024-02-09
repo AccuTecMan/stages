@@ -127,4 +127,9 @@ export class CuttingSheetsService {
       return addDoc(this.cuttingSheetsRef, cs);
     }
   }
+
+  closeSheet(id?: string) {
+      const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
+      return updateDoc(cuttingSheetsReference, { isActive: false });
+  }
 }
