@@ -17,7 +17,11 @@ import { FormControl } from '@angular/forms';
       </div>
       <mat-divider></mat-divider>
       <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
-        <button mat-fab extended color="normal" [ngClass]="{ 'inactive-background': isInactiveDisplayed }" (click)="displayInactive()">
+        <mat-form-field fxFlex="30" fxFlex.lt-sm="50%">
+          <mat-label>PO# or Job Name</mat-label>
+          <input matInput [(ngModel)]="term" />
+        </mat-form-field>
+        <button mat-raised-button extended color="normal" [ngClass]="{ 'inactive-background': isInactiveDisplayed }" (click)="displayInactive()">
               @if (isInactiveDisplayed) {
                 <mat-icon>close</mat-icon>
               } @else {
@@ -29,10 +33,6 @@ import { FormControl } from '@angular/forms';
                 <span>Show Done</span>
               }
           </button>
-          <mat-form-field fxFlex="30" fxFlex.lt-sm="50%">
-            <mat-label>PO# or Job Name</mat-label>
-            <input matInput [(ngModel)]="term" />
-          </mat-form-field>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start center">
         <mat-form-field fxFlex="30" fxFlex.lt-sm="55%">
@@ -96,6 +96,10 @@ import { FormControl } from '@angular/forms';
                 <dl>
                   <dt>STAGE</dt>
                   <dd>{{ sheet.currentStage.name }}</dd>
+                </dl>
+                <dl>
+                  <dt>NOTES</dt>
+                  <dd>{{ sheet.notes }}</dd>
                 </dl>
               </mat-card-content>
             </mat-card>
