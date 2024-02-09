@@ -62,13 +62,10 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
             <mat-error> Color is required </mat-error>
           }
         </mat-form-field>
-        <!-- <mat-form-field>
-          <mat-label>Ready by</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="readyBy">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field> -->
+        <mat-form-field>
+          <mat-label>Notes</mat-label>
+          <input matInput formControlName="notes" />
+        </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
           <button mat-raised-button routerLink="/cuttingSheets" type="button">Cancel</button>
           <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Save</button>
@@ -156,7 +153,7 @@ export class AddEditComponent implements OnInit {
       name: ['', [Validators.required]],
       poNumber: ['', [Validators.required]],
       color: ['', [Validators.required]],
-      readyBy: [new Date(), [Validators.required]],
+      notes: [''],
     });
 
     if (this.isEditing) {
@@ -178,8 +175,8 @@ export class AddEditComponent implements OnInit {
       this.form.controls['name'].setValue(this.selectedSheet?.jobName);
       this.form.controls['poNumber'].setValue(this.selectedSheet?.poNumber);
       this.form.controls['color'].setValue(this.selectedSheet?.color);
-      this.form.controls['readyBy'].setValue(this.convertTimestamp(this.selectedSheet?.readyBy));
       this.form.controls['jobType'].disable();
+      this.form.controls['notes'].setValue(this.selectedSheet?.notes);
     } else {
       this.customerSelected = <Customer>{ id: '', name: '' };
       this.jobTypeSelected = <Customer>{ id: '', name: '' };
@@ -196,9 +193,10 @@ export class AddEditComponent implements OnInit {
       poNumber: this.form.value.poNumber,
       customer: this.customerSelected,
       color: this.form.value.color,
-      readyBy: this.form.value.readyBy,
       currentStage: this.selectedStage,
-      isActive: true
+      isActive: true,
+      notes: this.form.value.notes
+
     };
 
     if (!this.isEditing) {

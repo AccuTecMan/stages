@@ -15,4 +15,5 @@ export interface CuttingSheet {
   currentStage: StageMap;
   stages: Stage[];
   isActive: boolean;
+  notes: string;
 }
