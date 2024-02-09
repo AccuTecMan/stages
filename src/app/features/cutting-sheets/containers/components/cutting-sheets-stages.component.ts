@@ -27,12 +27,14 @@ import { CuttingSheetsService } from '../../services';
       @for (stage of stages; track selectedSheet?.stages) {
         <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
           <ng-template matStepLabel>
-            <div>{{ stage.stageMap.name }}</div>
+            <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
             @if (isValidDate(stage.date)) {
-              <span>{{ convertTimestamp(stage.date) | date: 'MMM-dd-yyyy HH:MM' }}</span>
+              <span style="font-size: 0.9rem;">{{ convertTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
             }
           </ng-template>
-
+          <ng-template matContent>
+            <div>Contenido del Stage</div>
+          </ng-template>
           <form>
             <mat-form-field>
               <input matInput placeholder="Notes" required />
@@ -111,6 +113,10 @@ import { CuttingSheetsService } from '../../services';
         margin: 0 1rem;
       }
 
+      .mat-step-header {
+        font-size: 1.5rem;
+      }
+
       @media (max-width: 600px) {
         h1 {
           font-size: 1.5rem;
@@ -125,6 +131,7 @@ import { CuttingSheetsService } from '../../services';
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
+  @Output() public changePreviousStage = new EventEmitter<string>();
   @ViewChild('stepper') private myStepper: MatStepper;
   // @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
@@ -144,11 +151,13 @@ export class CuttingSheetsStagesComponent implements OnInit {
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
     // event.previouslySelectedStep.content = this.sayHelloTemplate
+    console.log('event', event.previouslySelectedStep);
     const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
     const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
     const newCurrentStage = <StageMap>{ id: id, name: name, index: event.selectedIndex };
     this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage };
     this.changeStage.emit(this.selectedSheet);
+    this.changePreviousStage.emit(this.selectedSheet.id + '|' + event.previouslySelectedStep.label.substring(0, event.previouslySelectedStep.label.indexOf('|')))
   }
 
   public convertTimestamp(timestamp: TimeStamp): Date {
