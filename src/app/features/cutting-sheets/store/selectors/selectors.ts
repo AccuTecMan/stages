@@ -16,3 +16,6 @@ export const selectAllCuttingSheets = createSelector(cuttingSheetsSelectors.sele
 export const selectSearchCriteria = createSelector(selectCuttingSheetsState, (state) => state.searchCriteria);
 
 export const selectSelectedSheet = createSelector(selectCuttingSheetsState, (state) => state.selectedSheet);
+export const selectSelectedSheetStages = createSelector(selectCuttingSheetsState, (state) => {
+  return state.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
+});

@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
 import { CuttingSheetsService } from '../../services';
-import { Timestamp, serverTimestamp } from '@angular/fire/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -25,12 +25,12 @@ import { Timestamp, serverTimestamp } from '@angular/fire/firestore';
       <h3>PO#:{{ selectedSheet?.poNumber }}</h3>
     </header>
     <mat-stepper orientation="vertical" linear="false" #stepper (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
-      @for (stage of stages; track selectedSheet?.stages) {
-        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
+      @for (stage of selectedSheetStages; track stage.id) {
+        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
           <ng-template matStepLabel>
             <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
             @if (isValidDate(stage.date)) {
-              <span style="font-size: 0.9rem;">{{ convertTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
+              <span style="font-size: 0.8rem;">{{ convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
             }
           </ng-template>
           <ng-template matContent>
@@ -131,12 +131,11 @@ import { Timestamp, serverTimestamp } from '@angular/fire/firestore';
 })
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
+  @Input() selectedSheetStages: Stage[] | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
-  // @Output() public changePreviousStage = new EventEmitter<string>();
   @ViewChild('stepper') private myStepper: MatStepper;
   // @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
-  public stages: Stage[];
   public stepperIndex: number;
   public isEditable: boolean = true;
 
@@ -145,30 +144,27 @@ export class CuttingSheetsStagesComponent implements OnInit {
               private service: CuttingSheetsService) {}
 
   ngOnInit() {
-    this.stages = this.selectedSheet?.stages.slice().sort((a, b) => (a.order < b.order ? -1 : 1)) || [];
     this.stepperIndex = this.selectedSheet?.currentStage.index || 0;
   }
 
   onStepChange(event: StepperSelectionEvent): void {
     // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
     // event.previouslySelectedStep.content = this.sayHelloTemplate
-    console.log('event', event.previouslySelectedStep);
-    const id = event.selectedStep.label.substring(0, event.selectedStep.label.indexOf('|'));
-    const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
-    const newCurrentStage = <StageMap>{ id: id, name: name, index: event.selectedIndex };
-    this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage };
-    const previousStageId = event.previouslySelectedStep.label.substring(0, event.previouslySelectedStep.label.indexOf('|'));
+    const stageData = event.selectedStep.label.split('|');
+    const newCurrentStage = <StageMap>{ id: stageData[0], name: stageData[1], index: event.selectedIndex };
+    const previousStageId = event.previouslySelectedStep.label.split('|')[2];
     const current_timestamp = Timestamp.now();
-    this.selectedSheet.stages = this.stages.map((x: Stage) => {
-      if (x.stageMap.id === previousStageId) {
+    const newStages = this.selectedSheetStages?.map((x: Stage) => {
+      if (x.id === previousStageId) {
         return <Stage>{ ...x, date: current_timestamp }
       }
       return x;
-    })
+    });
+    this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage, stages: newStages };
     this.changeStage.emit(this.selectedSheet);
   }
 
-  public convertTimestamp(timestamp: TimeStamp): Date {
+  public convertToTimestamp(timestamp: TimeStamp): Date {
     const { seconds, nanoseconds } = timestamp;
     const milliseconds = seconds * 1000 + nanoseconds / 1e6;
     return new Date(milliseconds);
@@ -183,7 +179,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
   }
 
   public isValidDate(timestamp: TimeStamp): boolean {
-    const date = this.convertTimestamp(timestamp);
+    const date = this.convertToTimestamp(timestamp);
     return date > new Date(2000, 1, 1);
   }
 
