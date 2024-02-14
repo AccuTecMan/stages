@@ -154,6 +154,7 @@ import { FormControl } from '@angular/forms';
       }
 
       mat-card-title {
+        font-size: 1.1rem;
         color: #607ec9;
         margin: -0.5rem 0rem 0 0rem;
         padding: 0px;
