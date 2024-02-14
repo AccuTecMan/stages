@@ -119,6 +119,7 @@ export class CuttingSheetsService {
   }
 
   upsert(cuttingSheet: CuttingSheet, id?: string) {
+    console.log('upsert', cuttingSheet)
     if (id) {
       const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
       return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
@@ -134,8 +135,6 @@ export class CuttingSheetsService {
   }
 
   updateStageDate(cuttingSheetId: string, stageId: string) {
-    console.log('cuttingSheetId', cuttingSheetId)
-    console.log('stageId', stageId)
     const stageRef = doc(this.firestore, `cuttingSheets/${cuttingSheetId}/stages/${stageId}`);
     return updateDoc(stageRef, { date: new Date() });
   }

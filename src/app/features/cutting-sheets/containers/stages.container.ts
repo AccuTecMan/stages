@@ -10,7 +10,6 @@ import { CuttingSheetsService } from '../services';
   template: `
     <app-cutting-sheets-stages-component [selectedSheet]="selectedCuttingSheet$ | async"
       (changeStage)="onChangeStage($event)"
-      (changePreviousStage)="onChangePreviousStage($event)"
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,9 +27,8 @@ export class StagesContainer {
     this.store.dispatch(fromStore.CuttingSheetsApiActions.changeStage({ cuttingSheet: cuttingSheet! }));
   }
 
-  public onChangePreviousStage(ids: string) {
-    const cuttingSheetId = ids.substring(0, ids.indexOf('|'));
-    const stageId = ids.substring(ids.indexOf('|')+1);
-    this.service.updateStageDate(cuttingSheetId, stageId);
-  }
+  // public onChangePreviousStage(ids: string) {
+  //   const newIds = ids.split('|');
+  //   this.service.updateStageDate(newIds[0], newIds[1]);
+  // }
 }

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
 import { CuttingSheetsService } from '../../services';
+import { Timestamp, serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -37,7 +38,7 @@ import { CuttingSheetsService } from '../../services';
           </ng-template>
           <form>
             <mat-form-field>
-              <input matInput placeholder="Notes" required />
+              <input matInput placeholder="Notes"/>
             </mat-form-field>
           </form>
           @if (selectedSheet?.isActive) {
@@ -131,7 +132,7 @@ import { CuttingSheetsService } from '../../services';
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
-  @Output() public changePreviousStage = new EventEmitter<string>();
+  // @Output() public changePreviousStage = new EventEmitter<string>();
   @ViewChild('stepper') private myStepper: MatStepper;
   // @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
@@ -156,8 +157,15 @@ export class CuttingSheetsStagesComponent implements OnInit {
     const name = event.selectedStep.label.substring(event.selectedStep.label.indexOf('|') + 1);
     const newCurrentStage = <StageMap>{ id: id, name: name, index: event.selectedIndex };
     this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage };
+    const previousStageId = event.previouslySelectedStep.label.substring(0, event.previouslySelectedStep.label.indexOf('|'));
+    const current_timestamp = Timestamp.now();
+    this.selectedSheet.stages = this.stages.map((x: Stage) => {
+      if (x.stageMap.id === previousStageId) {
+        return <Stage>{ ...x, date: current_timestamp }
+      }
+      return x;
+    })
     this.changeStage.emit(this.selectedSheet);
-    this.changePreviousStage.emit(this.selectedSheet.id + '|' + event.previouslySelectedStep.label.substring(0, event.previouslySelectedStep.label.indexOf('|')))
   }
 
   public convertTimestamp(timestamp: TimeStamp): Date {
@@ -188,16 +196,13 @@ export class CuttingSheetsStagesComponent implements OnInit {
   }
 
   openDialog(): void {
-    // console.log('this.selectedSheet', this.selectedSheet)
     const dialogRef = this.dialog.open(CloseDialogComponent, {
       data: { id: this.selectedSheet?.id, jobName: this.selectedSheet?.jobName },
     });
 
     dialogRef.afterClosed().subscribe(id => {
-      console.log('The dialog was closed', id);
       this.service.closeSheet(id);
       this.router.navigate(['/cuttingSheets']);
-      // this.animal = result;
     });
   }
 }

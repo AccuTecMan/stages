@@ -217,15 +217,6 @@ export class AddEditComponent implements OnInit {
     return jobType.id;
   }
 
-  private convertTimestamp(timestamp: TimeStamp | undefined): Date {
-    if (timestamp != undefined) {
-      const { seconds, nanoseconds } = timestamp;
-      const milliseconds = seconds * 1000 + nanoseconds / 1e6;
-      return new Date(milliseconds);
-    }
-    return new Date();
-  }
-
   public onSelectCustomer(id: string) {
     this.customerSelected = <Customer>{
       id: id,
