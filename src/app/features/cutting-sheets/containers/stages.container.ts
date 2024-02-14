@@ -8,7 +8,9 @@ import { CuttingSheetsService } from '../services';
 @Component({
   selector: 'app-cutting-sheets-stages-container',
   template: `
-    <app-cutting-sheets-stages-component [selectedSheet]="selectedCuttingSheet$ | async"
+    <app-cutting-sheets-stages-component
+      [selectedSheet]="selectedCuttingSheet$ | async"
+      [selectedSheetStages]="selectedCuttingSheetStages$ | async"
       (changeStage)="onChangeStage($event)"
     />
   `,
@@ -16,6 +18,7 @@ import { CuttingSheetsService } from '../services';
 })
 export class StagesContainer {
   public selectedCuttingSheet$ = this.store.select(fromStore.selectSelectedSheet);
+  public selectedCuttingSheetStages$ = this.store.select(fromStore.selectSelectedSheetStages);
 
   constructor(
     private service: CuttingSheetsService,
@@ -26,9 +29,4 @@ export class StagesContainer {
     this.service.upsert(cuttingSheet!, cuttingSheet?.id);
     this.store.dispatch(fromStore.CuttingSheetsApiActions.changeStage({ cuttingSheet: cuttingSheet! }));
   }
-
-  // public onChangePreviousStage(ids: string) {
-  //   const newIds = ids.split('|');
-  //   this.service.updateStageDate(newIds[0], newIds[1]);
-  // }
 }
