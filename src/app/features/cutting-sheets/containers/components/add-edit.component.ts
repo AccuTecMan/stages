@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CuttingSheet, TimeStamp } from '../../models';
+import { CuttingSheet } from '../../models';
 import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
 
 @Component({
