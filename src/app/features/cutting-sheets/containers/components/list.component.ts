@@ -34,7 +34,7 @@ import { FormControl } from '@angular/forms';
               }
           </button>
       </div>
-      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start center">
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" fxLayoutAlign="start start">
         <mat-form-field fxFlex="30" fxFlex.lt-sm="55%">
           <mat-label>Created At</mat-label>
           <mat-select [(value)]="readyBySelected" (selectionChange)="changeCriteria()">
@@ -124,7 +124,7 @@ import { FormControl } from '@angular/forms';
       }
 
       .content-records {
-        margin: 0.5rem 0rem 1rem 1rem !important;
+        margin: 0.5rem 0rem 3rem 1rem !important;
         max-width: 850px;
       }
 
