@@ -41,4 +41,18 @@ export class CuttingSheetsEffects {
       )
     );
   });
+
+  changeCuttingSheet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CuttingSheetsApiActions.changeCuttingSheet),
+      switchMap((cs) =>
+        this.service.upsert(cs.cuttingSheet, cs.cuttingSheet.id).pipe(
+          map((cuttingSheet) => {
+            return CuttingSheetsApiActions.changeCuttingSheetSuccess({ cuttingSheet: cuttingSheet });
+          }),
+          catchError(() => of(CuttingSheetsApiActions.changeCuttingSheetFailure()))
+        )
+      )
+    );
+  });
 }

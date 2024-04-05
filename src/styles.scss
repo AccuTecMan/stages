@@ -80,6 +80,44 @@ a:active {
   width: 90%;
 }
 
+/******************************************
+// STEPPER
+******************************************/
+.mat-vertical-stepper-header {
+  height: 100% !important;
+  padding: .5rem !important;
+}
+
+.basic-container .mat-step-header .mat-step-icon-selected {
+  background-color: #d2691e;
+  color: #fff;
+}
+
+.mat-step-header .mat-step-icon {
+  background-color: #d2691e;
+  color: #fff;
+}
+
+mat-stepper {
+  max-width: 850px;
+  margin: 0 1rem;
+}
+
+.step-date {
+  font-size: 0.8rem;
+  color: #919297;
+  font-weight: 500;
+}
+
+.step-notes {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-wrap: wrap;
+}
+
+.buttons-section {
+  margin: 0 !important;
+}
 
 @media (min-width: 600px) {
   .table-responsive {
