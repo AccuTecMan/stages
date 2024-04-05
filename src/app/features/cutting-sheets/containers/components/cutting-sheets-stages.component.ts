@@ -6,7 +6,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
-import { CuttingSheetsService } from '../../services';
 import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
@@ -18,48 +17,49 @@ import { Timestamp } from '@angular/fire/firestore';
         All Cutting Sheets
       </button>
     </section>
+
     <header class="content-header">
       <h1>Stages</h1>
       <mat-divider></mat-divider>
       <h2>{{ selectedSheet?.jobName }}</h2>
       <h3>PO#:{{ selectedSheet?.poNumber }}</h3>
     </header>
+
     <mat-stepper orientation="vertical" linear="false" #stepper (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of selectedSheetStages; track stage.id) {
         <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
+
           <ng-template matStepLabel>
             <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
             @if (isValidDate(stage.date)) {
-              <span style="font-size: 0.8rem;">{{ convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
+              <span class="step-date">{{ convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
+            }
+            @if (!isCurrentStage(stage.stageMap.id)) {
+              <p class="step-notes">{{ stage.notes }}</p>
             }
           </ng-template>
-          <ng-template matContent>
-            <div>Contenido del Stage</div>
-          </ng-template>
-          @if (selectedSheet?.isActive) {
-            <form>
-              <mat-form-field>
-                <input matInput placeholder="Notes"/>
-              </mat-form-field>
-            </form>
-            <div class="buttons-section">
-              @if (!isFirstStep) {
-                <button mat-raised-button matStepperPrevious>Previous</button>
-              }
 
-              @if (isLastStep) {
-                <button mat-raised-button matStepperNext color="primary" (click)="openDialog()">Done</button>
-              } @else {
-                <button mat-raised-button matStepperNext color="primary">Next</button>
-              }
-            </div>
-          }
+          <ng-template matStepContent>
+            @if (selectedSheet?.isActive) {
+              <mat-form-field>
+                <input matInput placeholder="Notes" [value]="stage.notes" (change)="onChangeNotes($event)"/>
+              </mat-form-field>
+              <div class="buttons-section">
+                @if (!isFirstStep) {
+                  <button mat-raised-button matStepperPrevious>Previous</button>
+                }
+
+                @if (isLastStep) {
+                  <button mat-raised-button matStepperNext color="primary" (click)="openDialog()">Done</button>
+                } @else {
+                  <button mat-raised-button matStepperNext color="primary">Next</button>
+                }
+              </div>
+            }
+          </ng-template>
         </mat-step>
       }
     </mat-stepper>
-    <ng-template #sayHelloTemplate>
-      <p> Say Hello</p>
-    </ng-template>
   `,
   styles: [
     `
@@ -93,6 +93,7 @@ import { Timestamp } from '@angular/fire/firestore';
       }
 
       mat-form-field {
+        margin-top: .7rem;
         width: 100%;
       }
 
@@ -109,13 +110,8 @@ import { Timestamp } from '@angular/fire/firestore';
         margin: 0;
       }
 
-      mat-stepper {
-        max-width: 850px;
-        margin: 0 1rem;
-      }
-
-      .mat-step-header {
-        font-size: 1.5rem;
+      .mat-form-field-wrapper {
+        margin-bottom: -1.25em;
       }
 
       @media (max-width: 600px) {
@@ -134,29 +130,28 @@ export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheetStages: Stage[] | null | undefined;
   @Output() public changeStage = new EventEmitter<CuttingSheet | null>();
   @ViewChild('stepper') private myStepper: MatStepper;
-  // @ViewChild('sayHelloTemplate', { read: TemplateRef }) sayHelloTemplate:TemplateRef<any>;
 
   public stepperIndex: number;
-  // public isEditable: boolean = true;
+  private stageNotes: string;
 
   constructor(private router: Router,
-              public dialog: MatDialog,
-              private service: CuttingSheetsService) {}
+              public dialog: MatDialog) {}
 
   ngOnInit() {
     this.stepperIndex = this.selectedSheet?.currentStage.index || 0;
+    this.stageNotes = this.getStageNotes(this.selectedSheet?.currentStage.id);
   }
 
   onStepChange(event: StepperSelectionEvent): void {
-    // event.previouslySelectedStep.stepLabel.template = this.sayHelloTemplate
-    // event.previouslySelectedStep.content = this.sayHelloTemplate
     const stageData = event.selectedStep.label.split('|');
     const newCurrentStage = <StageMap>{ id: stageData[0], name: stageData[1], index: event.selectedIndex };
-    const previousStageId = event.previouslySelectedStep.label.split('|')[2];
+    const previousStageData = event.previouslySelectedStep.label.split('|');
 
-    const newStages = this.getNewStages(previousStageId);
+    const newStages = this.getNewStages(previousStageData[2]);
+
     this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage, stages: newStages };
     this.changeStage.emit(this.selectedSheet);
+    this.stageNotes = this.getStageNotes(stageData[0]);
   }
 
   public convertToTimestamp(timestamp: TimeStamp): Date {
@@ -188,12 +183,14 @@ export class CuttingSheetsStagesComponent implements OnInit {
 
   getNewStages(id: string): Stage[] | undefined{
     const current_timestamp = Timestamp.now();
-    return this.selectedSheetStages?.map((x: Stage) => {
+    // this.stageNotes = this.stageNotes === '' ? this.getStageNotes(id) : this.stageNotes;
+    const res = this.selectedSheetStages?.map((x: Stage) => {
       if (x.id === id) {
-        return <Stage>{ ...x, date: current_timestamp }
+          return <Stage>{ ...x, date: current_timestamp, notes: this.stageNotes }
       }
       return x;
     });
+    return res;
   }
 
   openDialog(): void {
@@ -208,5 +205,17 @@ export class CuttingSheetsStagesComponent implements OnInit {
       this.changeStage.emit(this.selectedSheet);
       this.router.navigate(['/cuttingSheets']);
     });
+  }
+
+  public isCurrentStage(stepStage: string): boolean {
+    return this.selectedSheet?.currentStage.id === stepStage;
+  }
+
+  public onChangeNotes(event) {
+    this.stageNotes = event.target.value;
+  }
+
+  private getStageNotes(id): string {
+    return this.selectedSheetStages?.filter(x => x.stageMap.id === id).map(x => x.notes)[0] || '';
   }
 }

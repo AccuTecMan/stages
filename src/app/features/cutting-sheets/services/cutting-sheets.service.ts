@@ -14,7 +14,7 @@ import {
   where,
   serverTimestamp,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CuttingSheet, SearchCriteria, Stage } from '../models';
 
 @Injectable({
@@ -118,14 +118,15 @@ export class CuttingSheetsService {
     return collectionData(this.stagesCollection, { idField: 'id' }) as Observable<Stage[]>;
   }
 
-  upsert(cuttingSheet: CuttingSheet, id?: string) {
+  upsert(cuttingSheet: CuttingSheet, id?: string): Observable<CuttingSheet> {
     if (id) {
       const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
-      return updateDoc(cuttingSheetsReference, { ...cuttingSheet });
+      updateDoc(cuttingSheetsReference, { ...cuttingSheet });
     } else {
       const cs = { ...cuttingSheet, createdAt: serverTimestamp() };
-      return addDoc(this.cuttingSheetsRef, cs);
+      addDoc(this.cuttingSheetsRef, cs);
     }
+    return of(cuttingSheet)
   }
 
   closeSheet(id?: string) {
