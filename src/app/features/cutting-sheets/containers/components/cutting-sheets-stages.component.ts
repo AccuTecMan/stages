@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -34,7 +35,7 @@ import { Timestamp } from '@angular/fire/firestore';
             @if (isValidDate(stage.date)) {
               <span class="step-date">{{ convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
             }
-            @if (!isCurrentStage(stage.stageMap.id)) {
+            @if (!selectedSheet?.isActive || !isCurrentStage(stage.stageMap.id)) {
               <p class="step-notes">{{ stage.notes }}</p>
             }
           </ng-template>
@@ -147,10 +148,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
     const newCurrentStage = <StageMap>{ id: stageData[0], name: stageData[1], index: event.selectedIndex };
     const previousStageData = event.previouslySelectedStep.label.split('|');
 
-    const newStages = this.getNewStages(previousStageData[2]);
-
-    this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, currentStage: newCurrentStage, stages: newStages };
-    this.changeStage.emit(this.selectedSheet);
+    this.saveNotes(previousStageData[2], true, newCurrentStage)
     this.stageNotes = this.getStageNotes(stageData[0]);
   }
 
@@ -173,24 +171,11 @@ export class CuttingSheetsStagesComponent implements OnInit {
     return date > new Date(2000, 1, 1);
   }
 
-  public onStepDone() {
-    // console.log(this.myStepper.steps.forEach(x => console.log(x.label)));
-    // this._matStepperIntl.optionalLabel = 'Otro dato del Step';
-    // // Required for the optional label text to be updated
-    // // Notifies the MatStepperIntl service that a change has been made
-    // this._matStepperIntl.changes.next();
-  }
-
   getNewStages(id: string): Stage[] | undefined{
     const current_timestamp = Timestamp.now();
-    // this.stageNotes = this.stageNotes === '' ? this.getStageNotes(id) : this.stageNotes;
-    const res = this.selectedSheetStages?.map((x: Stage) => {
-      if (x.id === id) {
-          return <Stage>{ ...x, date: current_timestamp, notes: this.stageNotes }
-      }
-      return x;
+    return this.selectedSheetStages?.map((x: Stage) => {
+      return x.id === id ?<Stage>{ ...x, date: current_timestamp, notes: this.stageNotes } : x;
     });
-    return res;
   }
 
   openDialog(): void {
@@ -198,13 +183,27 @@ export class CuttingSheetsStagesComponent implements OnInit {
       data: { id: this.selectedSheet?.id, jobName: this.selectedSheet?.jobName },
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      const stageId = this.selectedSheetStages?.filter((s, i, a) => i === a.length -1).map(x => x.id)[0] || '';
-      const newStages = this.getNewStages(stageId);
-      this.selectedSheet = <CuttingSheet>{ ...this.selectedSheet, isActive: false,  stages: newStages };
-      this.changeStage.emit(this.selectedSheet);
-      this.router.navigate(['/cuttingSheets']);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('result', result)
+      if (!result) return;
+      const lastStageIndex = (this.selectedSheetStages?.length || 0) - 1;
+      const lastStage = this.selectedSheetStages ? this.selectedSheetStages[lastStageIndex] : null;
+      const newCurrentStage = <StageMap>{ id: lastStage?.stageMap.id, name: lastStage?.stageMap.name, index: lastStageIndex };
+      const stageId = this.selectedSheetStages?.filter((s, i, a) => i === a.length -1).map(x => x.stageMap.id)[0] || '';
+      this.saveNotes(stageId, false, newCurrentStage);
+      this.router.navigate(['cuttingSheets']);
     });
+  }
+
+  private saveNotes(id: string, isActive: boolean, newCurrentStage: StageMap): void {
+    const newStages = this.getNewStages(id);
+    this.selectedSheet = <CuttingSheet>{
+      ...this.selectedSheet,
+      isActive: isActive,
+      stages: newStages,
+      currentStage: newCurrentStage
+    };
+    this.changeStage.emit(this.selectedSheet);
   }
 
   public isCurrentStage(stepStage: string): boolean {
