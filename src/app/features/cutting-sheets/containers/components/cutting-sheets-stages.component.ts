@@ -189,7 +189,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
       const lastStage = this.selectedSheetStages ? this.selectedSheetStages[lastStageIndex] : null;
       const newCurrentStage = <StageMap>{ id: lastStage?.stageMap.id, name: lastStage?.stageMap.name, index: lastStageIndex };
       const stageId = this.selectedSheetStages?.filter((s, i, a) => i === a.length -1).map(x => x.id)[0] || '';
-      this.saveNotes(stageId, false, newCurrentStage);
+      this.saveNotes(stageId, true, newCurrentStage);
       this.router.navigate(['cuttingSheets']);
     });
   }

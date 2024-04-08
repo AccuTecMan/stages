@@ -11,7 +11,7 @@ import { CuttingSheet } from "../../models";
   template: `
     <h2 mat-dialog-title>{{ data.jobName }}</h2>
     <mat-dialog-content>
-      <p>Once you close this Cutting Sheet, you won't be able to change it. <br>Do you really want to close this Cutting Sheet?</p>
+      <p>Do you really want to close this Cutting Sheet?</p>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxFlexFill fxLayoutAlign="end end" fxLayoutGap="20px grid">
       <button mat-button (click)="onNoClick()">No</button>
