@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
-import { last } from 'rxjs';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -43,7 +42,7 @@ import { last } from 'rxjs';
           <ng-template matStepContent>
             @if (selectedSheet?.isActive) {
               <mat-form-field>
-                <input matInput placeholder="Notes" [value]="stage.notes" (change)="onChangeNotes($event)"/>
+                <input matInput placeholder="Notes" [value]="stage.notes || ''" (change)="onChangeNotes($event)"/>
               </mat-form-field>
               <div class="buttons-section">
                 @if (!isFirstStep) {
