@@ -11,7 +11,7 @@ import * as fromCore from '@core/store';
   template: `
     <mat-nav-list>
       <a mat-list-item routerLink="/cuttingSheets" (click)="onClose()">
-        <mat-icon>account_balance</mat-icon>
+        <mat-icon>flip</mat-icon>
         <span class="list-title">Accutec Manufacturing</span>
       </a>
       <mat-divider></mat-divider>

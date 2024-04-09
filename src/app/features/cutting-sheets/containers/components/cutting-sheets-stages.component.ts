@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { CuttingSheet, Stage, TimeStamp } from '../../models';
+import { CuttingSheet, Stage } from '../../models';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { StageMap } from '@app/base/models';
 import { MatStepper } from '@angular/material/stepper';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
 import { Router } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-cutting-sheets-stages-component',
@@ -31,8 +32,8 @@ import { Timestamp } from '@angular/fire/firestore';
 
           <ng-template matStepLabel>
             <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
-            @if (isValidDate(stage.date)) {
-              <span class="step-date">{{ convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
+            @if (helperService.isValidDate(stage.date)) {
+              <span class="step-date">{{ helperService.convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
             }
             @if (!selectedSheet?.isActive || !isCurrentStage(stage.stageMap.id)) {
               <p class="step-notes">{{ stage.notes }}</p>
@@ -135,6 +136,7 @@ export class CuttingSheetsStagesComponent implements OnInit {
   private stageNotes: string;
 
   constructor(private router: Router,
+              public helperService: HelperService,
               public dialog: MatDialog) {}
 
   ngOnInit() {
@@ -151,11 +153,11 @@ export class CuttingSheetsStagesComponent implements OnInit {
     this.stageNotes = this.getStageNotes(stageData[0]);
   }
 
-  public convertToTimestamp(timestamp: TimeStamp): Date {
-    const { seconds, nanoseconds } = timestamp;
-    const milliseconds = seconds * 1000 + nanoseconds / 1e6;
-    return new Date(milliseconds);
-  }
+  // public convertToTimestamp(timestamp: TimeStamp): Date {
+  //   const { seconds, nanoseconds } = timestamp;
+  //   const milliseconds = seconds * 1000 + nanoseconds / 1e6;
+  //   return new Date(milliseconds);
+  // }
 
   public get isFirstStep(): boolean {
     return this.myStepper?.selectedIndex === 0;
@@ -165,10 +167,10 @@ export class CuttingSheetsStagesComponent implements OnInit {
     return this.myStepper?.selectedIndex+1 === this.selectedSheet?.stages.length;
   }
 
-  public isValidDate(timestamp: TimeStamp): boolean {
-    const date = this.convertToTimestamp(timestamp);
-    return date > new Date(2000, 1, 1);
-  }
+  // public isValidDate(timestamp: TimeStamp): boolean {
+  //   const date = this.convertToTimestamp(timestamp);
+  //   return date > new Date(2000, 1, 1);
+  // }
 
   getNewStages(id: string): Stage[] | undefined{
     const current_timestamp = Timestamp.now();
