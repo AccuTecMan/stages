@@ -12,7 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
-import { AppCommonModule } from './common/app-common.module';
+
 import { CoreModule } from '@core/core.module';
 
 @NgModule({
@@ -21,26 +21,22 @@ import { CoreModule } from '@core/core.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
     // Firebase
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-
     // Store
     StoreModule.forRoot(),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
-      maxAge: 30,
-      logOnly: environment.production,
+        maxAge: 30,
+        logOnly: environment.production,
     }),
-
     // Custom
     AppRoutingModule,
-    AppCommonModule,
     CoreModule,
-  ],
+],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

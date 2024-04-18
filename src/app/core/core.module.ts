@@ -6,9 +6,9 @@ import { StoreModule } from '@ngrx/store';
 
 import { LoginComponent } from './authentication/components';
 import * as coreStore from './store';
-import { MaterialModule } from '../material.module';
+
 
 @NgModule({
-    imports: [CommonModule, StoreModule.forFeature('core', coreStore.reducer), ReactiveFormsModule, MaterialModule, LoginComponent],
+    imports: [CommonModule, StoreModule.forFeature('core', coreStore.reducer), ReactiveFormsModule, LoginComponent],
 })
 export class CoreModule {}

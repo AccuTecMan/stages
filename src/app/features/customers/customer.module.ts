@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BaseModule } from '@base/base.module';
-import { AppCommonModule } from '@common/app-common.module';
+
 import { CustomerContainer } from './containers/customers.container';
 import { ListComponent } from './containers/components/list.component';
 import { CustomersGuard } from '@app/base/guards';
@@ -32,6 +32,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule, AppCommonModule, BaseModule, FormsModule, CustomerContainer, ListComponent, AddEditComponent],
+    imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule, BaseModule, FormsModule, CustomerContainer, ListComponent, AddEditComponent],
 })
 export class CustomersModule {}

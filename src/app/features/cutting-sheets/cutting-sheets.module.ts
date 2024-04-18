@@ -6,7 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { BaseModule } from '@base/base.module';
-import { AppCommonModule } from '@common/app-common.module';
+
 
 import { ListContainer } from './containers/list.container';
 import { ListComponent } from './containers/components/list.component';
@@ -46,16 +46,15 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        StoreModule.forFeature(featureName, reducer),
-        EffectsModule.forFeature([CuttingSheetsEffects]),
-        RouterModule.forChild(routes),
-        ReactiveFormsModule,
-        CommonModule,
-        ReactiveFormsModule,
-        AppCommonModule,
-        BaseModule,
-        FormsModule,
-        ListContainer, AddEditContainer, AddEditComponent, ListComponent, CuttingSheetsStagesComponent, StagesContainer,
-    ],
+    StoreModule.forFeature(featureName, reducer),
+    EffectsModule.forFeature([CuttingSheetsEffects]),
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    BaseModule,
+    FormsModule,
+    ListContainer, AddEditContainer, AddEditComponent, ListComponent, CuttingSheetsStagesComponent, StagesContainer,
+],
 })
 export class CuttingSheetsModule {}
