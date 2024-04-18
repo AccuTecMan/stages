@@ -9,7 +9,7 @@ const redirectLoggedInMainPage = () => redirectLoggedInTo(['customers']);
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 // const adminOnly = () => hasCustomClaim('admin');
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./features/cutting-sheets/cutting-sheets.module').then((m) => m.CuttingSheetsModule),

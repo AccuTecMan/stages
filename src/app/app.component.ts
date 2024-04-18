@@ -3,6 +3,7 @@ import { AuthService } from '@core/services';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { HeaderComponent } from './common/components/header.component';
 import { SidenavListComponent } from './common/components/sidenav-list.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ import { SidenavListComponent } from './common/components/sidenav-list.component
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    RouterModule,
     HeaderComponent,
     MatSidenav,
     MatSidenavContainer,
