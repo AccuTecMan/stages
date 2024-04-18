@@ -9,8 +9,7 @@ import { HeaderComponent } from './components/header.component';
 import { SidenavListComponent } from './components/sidenav-list.component';
 
 @NgModule({
-  declarations: [HeaderComponent, SidenavListComponent],
-  imports: [CommonModule, MaterialModule, RouterModule, FlexLayoutModule],
-  exports: [HeaderComponent, FlexLayoutModule, MaterialModule, SidenavListComponent],
+    imports: [CommonModule, MaterialModule, RouterModule, FlexLayoutModule, HeaderComponent, SidenavListComponent],
+    exports: [HeaderComponent, FlexLayoutModule, MaterialModule, SidenavListComponent],
 })
 export class AppCommonModule {}

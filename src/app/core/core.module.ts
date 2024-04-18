@@ -9,7 +9,6 @@ import * as coreStore from './store';
 import { MaterialModule } from '../material.module';
 
 @NgModule({
-  declarations: [LoginComponent],
-  imports: [CommonModule, StoreModule.forFeature('core', coreStore.reducer), ReactiveFormsModule, MaterialModule],
+    imports: [CommonModule, StoreModule.forFeature('core', coreStore.reducer), ReactiveFormsModule, MaterialModule, LoginComponent],
 })
 export class CoreModule {}

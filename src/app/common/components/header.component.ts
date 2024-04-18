@@ -5,10 +5,16 @@ import { Observable } from 'rxjs';
 import { AuthService } from '@core/services';
 import * as fromCore from '@core/store';
 import { environment } from 'src/environments/environment';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-header',
-  template: `
+    selector: 'app-header',
+    template: `
     <mat-toolbar [ngClass]="{ 'dev-background': isDev }" color="primary" fxLayout="row" fxLayoutAlign="space-between center">
       @if (isAuth$ | async) {
         <span>
@@ -30,8 +36,8 @@ import { environment } from 'src/environments/environment';
       }
     </mat-toolbar>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .dev-background {
         background-color: #d2691e;
       }
@@ -54,8 +60,18 @@ import { environment } from 'src/environments/environment';
         margin-right: 0.5rem;
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatToolbar,
+        FlexModule,
+        NgClass,
+        ExtendedModule,
+        MatButton,
+        MatIcon,
+        AsyncPipe,
+    ],
 })
 export class HeaderComponent {
   @Output() sidenavToggle = new EventEmitter<void>();

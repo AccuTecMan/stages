@@ -4,10 +4,12 @@ import { Store } from '@ngrx/store';
 import * as fromBase from '@app/base/store';
 import { Observable, map } from 'rxjs';
 import { Customer } from '@app/base/models';
+import { AsyncPipe } from '@angular/common';
+import { ListComponent } from './components/list.component';
 
 @Component({
-  selector: 'app-customer-container',
-  template: `
+    selector: 'app-customer-container',
+    template: `
     <app-customer-component
       [IsLoading]="isLoading$ | async"
       [customers]="filteredCustomers$ | async"
@@ -15,7 +17,9 @@ import { Customer } from '@app/base/models';
       (showInactive)="onShowInactive($event)"
     />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ListComponent, AsyncPipe],
 })
 export class CustomerContainer {
   public customers$ = this.store.select(fromBase.selectAllCustomers);

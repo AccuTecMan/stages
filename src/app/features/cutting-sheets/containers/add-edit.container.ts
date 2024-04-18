@@ -7,10 +7,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { CuttingSheetsService } from '../services';
 import { CuttingSheet } from '../models';
+import { AsyncPipe } from '@angular/common';
+import { AddEditComponent } from './components/add-edit.component';
 
 @Component({
-  selector: 'app-cutting-sheets-add-edit-container',
-  template: `
+    selector: 'app-cutting-sheets-add-edit-container',
+    template: `
     <app-cutting-sheets-add-edit
       [selectedSheet]="selectedSheet$ | async"
       [customers]="customers$ | async"
@@ -20,7 +22,9 @@ import { CuttingSheet } from '../models';
       (Save)="onSave($event)"
     />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [AddEditComponent, AsyncPipe],
 })
 export class AddEditContainer {
   public selectedSheet$ = this.store.select(fromStore.selectSelectedSheet);

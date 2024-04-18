@@ -1,13 +1,17 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '@core/services';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatCard } from '@angular/material/card';
 
 @Component({
-  selector: 'app-login-component',
-  template: `
+    selector: 'app-login-component',
+    template: `
     <main>
       <mat-card>
         <form [formGroup]="form">
@@ -36,8 +40,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
       </mat-card>
     </main>
   `,
-  styles: [
-    `
+    styles: [
+        `
       mat-card {
         max-width: 400px;
         margin: 2em auto;
@@ -49,8 +53,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         display: block;
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatCard,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatButton,
+    ],
 })
 export class LoginComponent implements OnInit {
   form: UntypedFormGroup;

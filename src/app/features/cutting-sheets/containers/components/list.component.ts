@@ -2,11 +2,25 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { CuttingSheet, SearchCriteria, TimeStamp } from '../../models';
 import { Customer, StageMap } from '@app/base/models';
 import { Observable, map, startWith } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatFabButton, MatButton } from '@angular/material/button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
-  selector: 'app-cutting-sheets-list-component',
-  template: `
+    selector: 'app-cutting-sheets-list-component',
+    template: `
     <header class="content-header">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Cutting Sheets</h1>
@@ -110,8 +124,8 @@ import { FormControl } from '@angular/forms';
       </section>
     }
   `,
-  styles: [
-    `
+    styles: [
+        `
       h1 {
         font-size: 2rem;
         padding: 0px;
@@ -223,8 +237,36 @@ import { FormControl } from '@angular/forms';
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FlexModule,
+        MatFabButton,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        ReactiveFormsModule,
+        FormsModule,
+        MatButton,
+        NgClass,
+        ExtendedModule,
+        MatSelect,
+        MatOption,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        MatProgressSpinner,
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardSubtitle,
+        MatCardContent,
+        AsyncPipe,
+        DatePipe,
+    ],
 })
 export class ListComponent implements OnInit {
   @Input() cuttingSheets!: CuttingSheet[] | null | undefined;

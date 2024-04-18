@@ -45,18 +45,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ListContainer, AddEditContainer, AddEditComponent, ListComponent, CuttingSheetsStagesComponent, StagesContainer],
-  imports: [
-    StoreModule.forFeature(featureName, reducer),
-    EffectsModule.forFeature([CuttingSheetsEffects]),
-    RouterModule.forChild(routes),
-
-    ReactiveFormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-    AppCommonModule,
-    BaseModule,
-    FormsModule,
-  ],
+    imports: [
+        StoreModule.forFeature(featureName, reducer),
+        EffectsModule.forFeature([CuttingSheetsEffects]),
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        AppCommonModule,
+        BaseModule,
+        FormsModule,
+        ListContainer, AddEditContainer, AddEditComponent, ListComponent, CuttingSheetsStagesComponent, StagesContainer,
+    ],
 })
 export class CuttingSheetsModule {}
