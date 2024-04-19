@@ -1,14 +1,18 @@
 import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '@core/services';
 import * as fromCore from '@core/store';
+import { AsyncPipe } from '@angular/common';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatNavList, MatListItem } from '@angular/material/list';
 
 @Component({
-  selector: 'app-sidenav-list',
-  template: `
+    selector: 'app-sidenav-list',
+    template: `
     <mat-nav-list>
       <a mat-list-item routerLink="/cuttingSheets" (click)="onClose()">
         <mat-icon>flip</mat-icon>
@@ -32,8 +36,8 @@ import * as fromCore from '@core/store';
       </a>
     </mat-nav-list>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .list-title {
         font-size: 1.1rem;
         font-weight: bold !important;
@@ -49,8 +53,17 @@ import * as fromCore from '@core/store';
         border-top-style: dashed;
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatNavList,
+        MatListItem,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        AsyncPipe,
+    ],
 })
 export class SidenavListComponent {
   @Output() closeSidenav = new EventEmitter<void>();

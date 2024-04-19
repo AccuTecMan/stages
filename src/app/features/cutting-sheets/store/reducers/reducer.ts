@@ -1,5 +1,5 @@
 import { EntityLoadStatus, LoadStatus } from '@core/models';
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 import { CuttingSheetsGuardActions, CuttingSheetsApiActions } from '..';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
@@ -7,7 +7,7 @@ import { CuttingSheet, Stage } from '../../models';
 import { SearchCriteria } from '../../models/search-criteria';
 import { SearchCriteriaActions } from '../actions/cutting-sheets.actions';
 
-export const featureName = 'cuttingSheets';
+export const cuttingSheetsFeatureName = 'cuttingSheets';
 
 export interface SummaryState extends EntityState<CuttingSheet> {}
 export const cuttingSheetsAdapter = createEntityAdapter<CuttingSheet>({
@@ -33,7 +33,7 @@ const initialState: CuttingSheetsState = {
   loadStatus: EntityLoadStatus.INITIAL,
 };
 
-export const internalReducer = createReducer(
+export const cuttingSheetsReducer = createReducer(
   initialState,
   on(
     CuttingSheetsGuardActions.loadAll,
@@ -107,8 +107,3 @@ export const internalReducer = createReducer(
     })
   )
 );
-
-export function reducer(state: CuttingSheetsState | undefined, action: Action) {
-  // required that we export this in a higher order named function to support aot ... done separately to reduce nesting
-  return internalReducer(state, action);
-}

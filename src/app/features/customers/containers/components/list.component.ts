@@ -1,9 +1,22 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Customer } from '@app/base/models';
+import { MatChip } from '@angular/material/chips';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgClass } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatFabButton, MatButton } from '@angular/material/button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-customer-component',
-  template: `
+    selector: 'app-customer-component',
+    template: `
     @if (IsLoading) {
       <mat-spinner fxLayoutAlign="center top" diameter="80" strokeWidth="5"></mat-spinner>
     } @else {
@@ -56,8 +69,8 @@ import { Customer } from '@app/base/models';
       </section>
     }
   `,
-  styles: [
-    `
+    styles: [
+        `
       h1 {
         font-size: 2rem;
         padding: 0px;
@@ -139,8 +152,30 @@ import { Customer } from '@app/base/models';
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatProgressSpinner,
+        FlexModule,
+        MatFabButton,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        ReactiveFormsModule,
+        FormsModule,
+        NgClass,
+        ExtendedModule,
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardActions,
+        MatButton,
+        MatChip,
+    ],
 })
 export class ListComponent {
   @Input() IsLoading!: boolean | null;

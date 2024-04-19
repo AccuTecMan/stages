@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { featureName, CuttingSheetsState, cuttingSheetsAdapter } from '../reducers';
+import { cuttingSheetsFeatureName, CuttingSheetsState, cuttingSheetsAdapter } from '../reducers';
 import { EntityLoadStatus } from '@core/models';
 
-export const selectCuttingSheetsState = createFeatureSelector<CuttingSheetsState>(featureName);
+export const selectCuttingSheetsState = createFeatureSelector<CuttingSheetsState>(cuttingSheetsFeatureName);
 
 export const selectCuttingSheetsLoadStatus = createSelector(selectCuttingSheetsState, (state) => state.loadStatus);
 

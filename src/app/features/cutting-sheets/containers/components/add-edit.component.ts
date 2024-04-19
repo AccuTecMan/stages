@@ -1,11 +1,20 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CuttingSheet } from '../../models';
 import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
+import { MatInput } from '@angular/material/input';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-cutting-sheets-add-edit',
-  template: `
+    selector: 'app-cutting-sheets-add-edit',
+    template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/cuttingSheets">
         <mat-icon>arrow_back_ios</mat-icon>
@@ -73,8 +82,8 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
       </div>
     </form>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .breadcrumb {
         width: 100%;
         background-color: #a9a9a9;
@@ -127,8 +136,23 @@ import { Customer, JobType, StageMap, StageTemplate } from '@app/base/models';
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatButton,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        ReactiveFormsModule,
+        FlexModule,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
+        MatError,
+        MatInput,
+    ],
 })
 export class AddEditComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;

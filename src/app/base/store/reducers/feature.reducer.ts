@@ -4,7 +4,7 @@ import { StageTemplatesState, stageTemplatesInitialState, stageTemplatesReducer 
 import { CustomerState, customersInitialState, customersReducer } from './customer.reducer';
 import { StageMapState, stageMapInitialState, stageMapReducer } from './stage-map.reducer';
 
-export const featureName = 'base';
+export const baseFeatureName = 'base';
 
 export interface CuttingSheetsState {
   jobTypes: TypeState;
@@ -20,7 +20,7 @@ export const initialState: CuttingSheetsState = {
   stagesMap: stageMapInitialState,
 };
 
-export const reducer: ActionReducerMap<CuttingSheetsState> = {
+export const baseReducer: ActionReducerMap<CuttingSheetsState> = {
   jobTypes: typesReducer,
   stageTemplates: stageTemplatesReducer,
   customers: customersReducer,

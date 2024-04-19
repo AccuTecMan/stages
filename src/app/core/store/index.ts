@@ -1,3 +1,3 @@
-export * from './actions';
-export * from './reducer';
-export * from './selectors';
+export { AuthenticationActions } from './actions';
+export { CoreState, coreFeatureName, coreReducer } from './reducer';
+export { selectCoreState, selectDisplayName, selectIsAdmin, selectIsAuth } from './selectors';

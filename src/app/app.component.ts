@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/services';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { HeaderComponent } from './common/components/header.component';
+import { SidenavListComponent } from './common/components/sidenav-list.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +35,15 @@ import { AuthService } from '@core/services';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    RouterModule,
+    HeaderComponent,
+    MatSidenav,
+    MatSidenavContainer,
+    MatSidenavContent,
+    SidenavListComponent
+  ]
 })
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}

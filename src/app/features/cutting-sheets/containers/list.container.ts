@@ -5,10 +5,12 @@ import * as fromStore from '../store';
 import * as fromBase from '@app/base/store';
 import { CuttingSheet, SearchCriteria } from '../models';
 import { Observable, map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { ListComponent } from './components/list.component';
 
 @Component({
-  selector: 'app-cutting-sheets-list-container',
-  template: `
+    selector: 'app-cutting-sheets-list-container',
+    template: `
     <app-cutting-sheets-list-component
       [cuttingSheets]="filteredCuttingSheets$ | async"
       [isLoading]="isLoading$ | async"
@@ -19,7 +21,9 @@ import { Observable, map } from 'rxjs';
       (changeSearchCriteria)="onChangeSearchCriteria($event)"
     />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ListComponent, AsyncPipe],
 })
 export class ListContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);

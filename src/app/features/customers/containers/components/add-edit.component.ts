@@ -1,12 +1,19 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CustomerService } from '@app/base/services';
 import { Customer } from '@app/base/models';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-customer-add-edit',
-  template: `
+    selector: 'app-customer-add-edit',
+    template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/customers">
         <mat-icon>arrow_back_ios</mat-icon>
@@ -36,8 +43,8 @@ import { Customer } from '@app/base/models';
       </div>
     </form>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .breadcrumb {
         width: 100%;
         background-color: #a9a9a9;
@@ -90,8 +97,22 @@ import { Customer } from '@app/base/models';
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatButton,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        ReactiveFormsModule,
+        FlexModule,
+        MatCheckbox,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+    ],
 })
 export class AddEditComponent implements OnInit {
   public customerId: string;

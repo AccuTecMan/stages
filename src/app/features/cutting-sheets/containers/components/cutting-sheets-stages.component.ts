@@ -2,16 +2,23 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit
 import { CuttingSheet, Stage } from '../../models';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { StageMap } from '@app/base/models';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStep, MatStepLabel, MatStepContent, MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { CloseDialogComponent } from './close-dialog.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
 import { HelperService } from '../../services/helper.service';
+import { DatePipe } from '@angular/common';
+import { MatInput } from '@angular/material/input';
+import { MatFormField } from '@angular/material/form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-cutting-sheets-stages-component',
-  template: `
+    selector: 'app-cutting-sheets-stages-component',
+    template: `
     <section class="breadcrumb">
       <button mat-button routerLink="/cuttingSheets">
         <mat-icon>arrow_back_ios</mat-icon>
@@ -62,8 +69,8 @@ import { HelperService } from '../../services/helper.service';
       }
     </mat-stepper>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .breadcrumb {
         width: 100%;
         background-color: #a9a9a9;
@@ -123,8 +130,25 @@ import { HelperService } from '../../services/helper.service';
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatButton,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        MatStepper,
+        MatStep,
+        FlexModule,
+        MatStepLabel,
+        MatStepContent,
+        MatFormField,
+        MatInput,
+        MatStepperPrevious,
+        MatStepperNext,
+        DatePipe,
+    ],
 })
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;

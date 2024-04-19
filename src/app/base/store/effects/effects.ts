@@ -16,7 +16,7 @@ import { StageTemplatesService, JobTypesService } from '../../services';
 import { CustomerService } from '@app/base/services/customer.service';
 
 @Injectable()
-export class CuttingSheetsEffects {
+export class BaseEffects {
   constructor(
     private actions$: Actions,
     private jobTypeService: JobTypesService,
