@@ -1,7 +1,6 @@
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { provideRouterStore } from '@ngrx/router-store';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
@@ -17,18 +16,12 @@ import { ErrorContainer } from '@app/error.container';
 import { LoginComponent, coreFeatureName, coreReducer } from '@app/core';
 import { baseFeatureName, baseReducer } from '@app/base/store/reducers/feature.reducer';
 import { BaseEffects } from '@app/base/store/effects/effects';
-import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 
-const redirectLoggedInMainPage = () => redirectLoggedInTo(['customers']);
+const redirectLoggedInMainPage = () => redirectLoggedInTo(['cuttingSheets']);
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 // const adminOnly = () => hasCustomClaim('admin');
 
-export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./app/features/cutting-sheets/cutting-sheets.routes'),
-    ...canActivate(redirectUnauthorizedToLogin),
-  },
+export const appRoutes: Routes = [
   {
     path: 'customers',
     loadChildren: () => import('./app/features/customers/customers.routes'),
@@ -50,6 +43,11 @@ export const routes: Routes = [
     data: { allowAnonymous: true },
   },
   {
+    path: '',
+    redirectTo: 'cuttingSheets',
+    pathMatch: 'full'
+  },
+  {
     path: '**',
     redirectTo: '',
   },
@@ -62,21 +60,16 @@ bootstrapApplication(AppComponent, {
           provideFirebaseApp(() =>initializeApp(environment.firebase)),
           provideAuth(() => getAuth()),
           provideFirestore(() => getFirestore()),
-
-          FlexLayoutModule
         ),
         provideStore(reducers),
         provideState(baseFeatureName, baseReducer),
         provideState(coreFeatureName, coreReducer),
         provideEffects(BaseEffects),
-        provideRouterStore({
-          stateKey: 'router',
-        }),
         provideStoreDevtools({
           maxAge: 30,
           logOnly: environment.production,
         }),
-        provideRouter(routes),
+        provideRouter(appRoutes),
         provideAnimations()
     ]
 })
