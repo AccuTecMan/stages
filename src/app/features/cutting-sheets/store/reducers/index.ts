@@ -1,1 +1,1 @@
-export { CuttingSheetsState, SummaryState, cuttingSheetsAdapter, featureName, internalReducer, reducer } from './reducer';
+export { CuttingSheetsState, SummaryState, cuttingSheetsAdapter, cuttingSheetsFeatureName, cuttingSheetsReducer } from './reducer';

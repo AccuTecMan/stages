@@ -1,7 +1,9 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 import { AuthenticationActions } from './';
 import { EntityLoadStatus } from '../models';
+
+export const coreFeatureName = 'core';
 
 export interface CoreState {
   isAuthenticated: boolean;
@@ -17,7 +19,7 @@ const initialState: CoreState = {
   status: EntityLoadStatus.INITIAL,
 };
 
-const internalReducer = createReducer(
+export const coreReducer = createReducer(
   initialState,
   on(
     AuthenticationActions.setAuthenticated,
@@ -41,7 +43,3 @@ const internalReducer = createReducer(
     })
   )
 );
-
-export function reducer(state: CoreState | undefined, action: Action): CoreState {
-  return internalReducer(state, action);
-}
