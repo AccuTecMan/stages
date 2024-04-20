@@ -218,7 +218,7 @@ export class AddEditComponent implements OnInit {
       customer: this.customerSelected,
       color: this.form.value.color,
       currentStage: this.selectedStage,
-      isActive: true,
+      isDone: false,
       notes: this.form.value.notes
 
     };
