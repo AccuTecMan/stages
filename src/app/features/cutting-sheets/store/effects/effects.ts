@@ -21,7 +21,9 @@ export class CuttingSheetsEffects {
       withLatestFrom(this.store.select(fromStore.selectSearchCriteria)),
       switchMap(([, criteria]) =>
         this.service.getWithCriteria(criteria).pipe(
-          map((cuttingSheets) => CuttingSheetsApiActions.loadAllSuccess({ cuttingSheets: cuttingSheets })),
+          map((cuttingSheets) => CuttingSheetsApiActions.loadAllSuccess({ cuttingSheets: cuttingSheets.map(c => {
+            return { ...c, isDone: (c.isDone === undefined) ? true : c.isDone }
+          }) })),
           catchError(() => of(CuttingSheetsApiActions.loadAllFailure()))
         )
       )

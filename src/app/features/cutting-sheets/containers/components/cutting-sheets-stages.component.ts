@@ -35,20 +35,20 @@ import { MatButton } from '@angular/material/button';
 
     <mat-stepper orientation="vertical" linear="false" #stepper (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of selectedSheetStages; track stage.id) {
-        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between" [editable]="selectedSheet?.isActive">
+        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between" [editable]="!selectedSheet?.isDone">
 
           <ng-template matStepLabel>
             <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
             @if (helperService.isValidDate(stage.date)) {
               <span class="step-date">{{ helperService.convertToTimestamp(stage.date) | date: 'MMM d, y, h:mm a' }}</span>
             }
-            @if (!selectedSheet?.isActive || !isCurrentStage(stage.stageMap.id)) {
+            @if (selectedSheet?.isDone || !isCurrentStage(stage.stageMap.id)) {
               <p class="step-notes">{{ stage.notes }}</p>
             }
           </ng-template>
 
           <ng-template matStepContent>
-            @if (selectedSheet?.isActive) {
+            @if (!selectedSheet?.isDone) {
               <mat-form-field>
                 <input matInput placeholder="Notes" [value]="stage.notes || ''" (change)="onChangeNotes($event)"/>
               </mat-form-field>
@@ -220,11 +220,11 @@ export class CuttingSheetsStagesComponent implements OnInit {
     });
   }
 
-  private saveNotes(id: string, isActive: boolean, newCurrentStage: StageMap): void {
+  private saveNotes(id: string, isDone: boolean, newCurrentStage: StageMap): void {
     const newStages = this.getNewStages(id);
     this.selectedSheet = <CuttingSheet>{
       ...this.selectedSheet,
-      isActive: isActive,
+      isDone: isDone,
       stages: newStages,
       currentStage: newCurrentStage
     };

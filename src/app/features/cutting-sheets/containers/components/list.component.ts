@@ -35,13 +35,13 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
           <mat-label>PO# or Job Name</mat-label>
           <input matInput [(ngModel)]="term" />
         </mat-form-field>
-        <button mat-raised-button extended color="normal" [ngClass]="{ 'inactive-background': isInactiveDisplayed }" (click)="displayInactive()">
-              @if (isInactiveDisplayed) {
+        <button mat-raised-button extended color="normal" [ngClass]="{ 'inactive-background': isDoneDisplayed }" (click)="displayInactive()">
+              @if (isDoneDisplayed) {
                 <mat-icon>close</mat-icon>
               } @else {
                 <mat-icon>filter_list</mat-icon>
               }
-              @if (isInactiveDisplayed) {
+              @if (isDoneDisplayed) {
                 <span>Hide Done</span>
               } @else {
                 <span>Show Done</span>
@@ -82,11 +82,12 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
         @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
           <div fxFlex="50%" fxFlex.lt-sm="100%">
-            <mat-card class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]" [ngClass]="{ 'done-background': !sheet.isActive }">
+            <mat-card class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]"
+                  [ngClass]="{ 'mat-card-done-background': sheet.isDone, 'mat-card-done-background:hover': sheet.isDone }">
               <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
                 <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-                @if (sheet.isActive) {
+                @if (sheet.isDone) {
                   <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
                 }
               </mat-card-header>
@@ -159,6 +160,14 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
         background-color: #e7edf6;
       }
 
+      .mat-card-done-background {
+        background-color: #facfd2;
+      }
+
+      .mat-card-done-background:hover {
+        background-color: #ffabaf;
+      }
+
       .mat-mdc-fab.mat-primary {
         margin-right: 0px;
       }
@@ -215,10 +224,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
       .inactive-background {
         background-color: #607ec9;
         color: white;
-      }
-
-      .done-background {
-        background-color: #ffe8e7;
       }
 
       @media (max-width: 600px) {
@@ -278,7 +283,7 @@ export class ListComponent implements OnInit {
   @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
 
   myControl = new FormControl();
-  public isInactiveDisplayed: boolean = false;
+  public isDoneDisplayed: boolean = false;
   public filteredCustomers$: Observable<Customer[]> = this.myControl.valueChanges.pipe(
     startWith(''),
     map((value) => this._filter(value || ''))
@@ -294,7 +299,7 @@ export class ListComponent implements OnInit {
     this.selectedCustomer = this.searchCriteria?.customerId || '';
     this.stagesMapSelected = this.searchCriteria?.stageMapId || '';
     this.readyBySelected = this.searchCriteria?.readyByOption || 0;
-    this.isInactiveDisplayed = this.searchCriteria?.showInactive || false;
+    this.isDoneDisplayed = this.searchCriteria?.showDone || false;
     this.changeCriteria();
 
     if (this.selectedCustomer.length > 0) {
@@ -317,13 +322,13 @@ export class ListComponent implements OnInit {
   }
 
   public readyByOptions = [
-    { value: 0, view: 'Today' },
-    { value: 1, view: 'Yesterday' },
-    { value: 2, view: 'This week (Mon-Today)' },
-    { value: 3, view: 'Last 7 days' },
-    { value: 4, view: 'Last 15 days' },
-    { value: 5, view: 'Last 30 days' },
-    { value: 6, view: 'All' },
+    { value: 0, view: 'All' },
+    { value: 1, view: 'Today' },
+    { value: 2, view: 'Yesterday' },
+    { value: 3, view: 'This week (Mon-Today)' },
+    { value: 4, view: 'Last 7 days' },
+    { value: 5, view: 'Last 15 days' },
+    { value: 6, view: 'Last 30 days' },
   ];
   public readyBySelected = 0;
   public selectedCustomer = '';
@@ -352,7 +357,7 @@ export class ListComponent implements OnInit {
       customerId: this.selectedCustomer,
       stageMapId: this.stagesMapSelected,
       readyByOption: this.readyBySelected,
-      showInactive: this.isInactiveDisplayed
+      showDone: this.isDoneDisplayed
     };
     this.changeSearchCriteria.emit(criteria);
   }
@@ -377,8 +382,7 @@ export class ListComponent implements OnInit {
   }
 
   public displayInactive(): void {
-    this.isInactiveDisplayed = !this.isInactiveDisplayed;
+    this.isDoneDisplayed = !this.isDoneDisplayed;
     this.changeCriteria();
-    // this.showInactive.emit(this.isInactiveDisplayed);
   }
 }

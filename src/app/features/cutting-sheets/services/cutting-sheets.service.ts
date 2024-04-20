@@ -31,8 +31,8 @@ export class CuttingSheetsService {
   public getWithCriteria(criteria: SearchCriteria | undefined) {
     const wheres: QueryConstraint[] = [];
 
-    if (!criteria?.showInactive) {
-      wheres.push(where('isActive', '==', true));
+    if (!criteria?.showDone) {
+      wheres.push(where('isDone', '==', false));
     }
 
     if (!!criteria?.customerId && criteria?.customerId.length > 1) {
@@ -46,33 +46,33 @@ export class CuttingSheetsService {
     let start;
     let end = new Date(this.getTomorrow().setHours(0, 0, 0, 0));
 
-    if (!!criteria && criteria?.readyByOption == 0) {
+    if (!!criteria && criteria?.readyByOption == 1) {
       start = new Date(new Date().setHours(0, 0, 0, 0));
       end = new Date(new Date().setHours(23, 59, 59, 999));
     }
 
-    if (!!criteria && criteria?.readyByOption == 1) {
+    if (!!criteria && criteria?.readyByOption == 2) {
       start = new Date(this.getDaysBefore(1).setHours(0, 0, 0, 0));
       end = new Date(this.getDaysBefore(1).setHours(23, 59, 59, 999));
     }
 
-    if (!!criteria && criteria?.readyByOption == 2) {
+    if (!!criteria && criteria?.readyByOption == 3) {
       start = new Date(this.getPreviousMonday().setHours(0, 0, 0, 0));
     }
 
-    if (!!criteria && criteria?.readyByOption == 3) {
+    if (!!criteria && criteria?.readyByOption == 4) {
       start = new Date(this.getDaysBefore(7).setHours(0, 0, 0, 0));
     }
 
-    if (!!criteria && criteria?.readyByOption == 4) {
+    if (!!criteria && criteria?.readyByOption == 5) {
       start = new Date(this.getDaysBefore(15).setHours(0, 0, 0, 0));
     }
 
-    if (!!criteria && criteria?.readyByOption == 5) {
+    if (!!criteria && criteria?.readyByOption == 6) {
       start = new Date(this.getDaysBefore(30).setHours(0, 0, 0, 0));
     }
 
-    if (!!criteria && criteria?.readyByOption < 6) {
+    if (!!criteria && criteria?.readyByOption < 0) {
       wheres.push(where('createdAt', '>=', start));
       wheres.push(where('createdAt', '<=', end));
     }
@@ -131,6 +131,6 @@ export class CuttingSheetsService {
 
   closeSheet(id?: string) {
       const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
-      return updateDoc(cuttingSheetsReference, { isActive: false });
+      return updateDoc(cuttingSheetsReference, { isDone: false });
   }
 }
