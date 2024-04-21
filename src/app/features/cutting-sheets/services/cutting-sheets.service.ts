@@ -13,6 +13,7 @@ import {
   updateDoc,
   where,
   serverTimestamp,
+  orderBy,
 } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { CuttingSheet, SearchCriteria, Stage } from '../models';
@@ -31,19 +32,19 @@ export class CuttingSheetsService {
   public getWithCriteria(criteria: SearchCriteria | undefined) {
     const wheres: QueryConstraint[] = [];
 
-    if (!criteria?.showDone) {
-      wheres.push(where('isDone', '==', false));
-    }
-
     if (!!criteria?.customerId && criteria?.customerId.length > 1) {
       wheres.push(where('customer.id', '==', criteria.customerId));
+    }
+
+    if (!criteria?.showDone) {
+      wheres.push(where('isDone', '==', false));
     }
 
     if (!!criteria?.stageMapId && criteria?.stageMapId.length > 1) {
       wheres.push(where('currentStage.id', '==', criteria.stageMapId));
     }
 
-    let start;
+    let start: Date = new Date(new Date().setHours(0, 0, 0, 0));
     let end = new Date(this.getTomorrow().setHours(0, 0, 0, 0));
 
     if (!!criteria && criteria?.readyByOption == 1) {
@@ -72,10 +73,14 @@ export class CuttingSheetsService {
       start = new Date(this.getDaysBefore(30).setHours(0, 0, 0, 0));
     }
 
-    if (!!criteria && criteria?.readyByOption < 0) {
-      wheres.push(where('createdAt', '>=', start));
-      wheres.push(where('createdAt', '<=', end));
+    if (!!criteria && criteria?.readyByOption > 0) {
+      wheres.push(where('createdAt', '>', start));
+      wheres.push(where('createdAt', '<', end));
     }
+
+    wheres.push(orderBy('createdAt', 'desc'));
+
+    console.log('wheres', wheres);
 
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
