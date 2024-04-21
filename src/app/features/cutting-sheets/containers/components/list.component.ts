@@ -87,9 +87,9 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
               <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
                 <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-                @if (sheet.isDone) {
+                <!-- @if (!sheet.isDone) { -->
                   <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-                }
+                <!-- } -->
               </mat-card-header>
               <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
                 <dl>
@@ -147,25 +147,28 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
         margin-top: auto;
       }
 
-      mat-card {
-        min-width: 340px;
-        cursor: pointer;
-      }
-
       .mat-mdc-card-content:last-child {
         padding-bottom: 0.5rem;
       }
 
+      mat-card {
+        min-width: 340px;
+        cursor: pointer;
+        background-color: #DEDEF0;
+        // background-color: #BFEFFF;
+      }
+
       mat-card:hover {
-        background-color: #e7edf6;
+        background-color: #BFEFFF;
       }
 
       .mat-card-done-background {
-        background-color: #facfd2;
+        background-color: #FCD8D4;
+        // background-color: #FFADAD;
       }
 
       .mat-card-done-background:hover {
-        background-color: #ffabaf;
+        background-color: #FFADAD;
       }
 
       .mat-mdc-fab.mat-primary {

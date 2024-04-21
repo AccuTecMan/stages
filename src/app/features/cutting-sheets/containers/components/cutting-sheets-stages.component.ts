@@ -35,7 +35,7 @@ import { MatButton } from '@angular/material/button';
 
     <mat-stepper orientation="vertical" linear="false" #stepper (selectionChange)="onStepChange($event)" [selectedIndex]="stepperIndex">
       @for (stage of selectedSheetStages; track stage.id) {
-        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between" [editable]="!selectedSheet?.isDone">
+        <mat-step [label]="stage.stageMap.id + '|' + stage.stageMap.name + '|' + stage.id" fxLayoutAlign="start space-between">
 
           <ng-template matStepLabel>
             <div style="font-size: 1.2rem;">{{ stage.stageMap.name }}</div>
@@ -48,22 +48,20 @@ import { MatButton } from '@angular/material/button';
           </ng-template>
 
           <ng-template matStepContent>
-            @if (!selectedSheet?.isDone) {
-              <mat-form-field>
-                <input matInput placeholder="Notes" [value]="stage.notes || ''" (change)="onChangeNotes($event)"/>
-              </mat-form-field>
-              <div class="buttons-section">
-                @if (!isFirstStep) {
-                  <button mat-raised-button matStepperPrevious>Previous</button>
-                }
+            <mat-form-field>
+              <input matInput placeholder="Notes" [value]="stage.notes || ''" (change)="onChangeNotes($event)"/>
+            </mat-form-field>
+            <div class="buttons-section">
+              @if (!isFirstStep) {
+                <button mat-raised-button matStepperPrevious>Previous</button>
+              }
 
-                @if (isLastStep) {
-                  <button mat-raised-button matStepperNext color="primary" (click)="openDialog()">Done</button>
-                } @else {
-                  <button mat-raised-button matStepperNext color="primary">Next</button>
-                }
-              </div>
-            }
+              @if (isLastStep) {
+                <button mat-raised-button matStepperNext color="primary" (click)="openDialog()">Done</button>
+              } @else {
+                <button mat-raised-button matStepperNext color="primary">Next</button>
+              }
+            </div>
           </ng-template>
         </mat-step>
       }
@@ -173,15 +171,9 @@ export class CuttingSheetsStagesComponent implements OnInit {
     const newCurrentStage = <StageMap>{ id: stageData[0], name: stageData[1], index: event.selectedIndex };
     const previousStageData = event.previouslySelectedStep.label.split('|');
 
-    this.saveNotes(previousStageData[2], true, newCurrentStage)
+    this.saveNotes(previousStageData[2], false, newCurrentStage)
     this.stageNotes = this.getStageNotes(stageData[0]);
   }
-
-  // public convertToTimestamp(timestamp: TimeStamp): Date {
-  //   const { seconds, nanoseconds } = timestamp;
-  //   const milliseconds = seconds * 1000 + nanoseconds / 1e6;
-  //   return new Date(milliseconds);
-  // }
 
   public get isFirstStep(): boolean {
     return this.myStepper?.selectedIndex === 0;
@@ -190,11 +182,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
   public get isLastStep(): boolean {
     return this.myStepper?.selectedIndex+1 === this.selectedSheet?.stages.length;
   }
-
-  // public isValidDate(timestamp: TimeStamp): boolean {
-  //   const date = this.convertToTimestamp(timestamp);
-  //   return date > new Date(2000, 1, 1);
-  // }
 
   getNewStages(id: string): Stage[] | undefined{
     const current_timestamp = Timestamp.now();
