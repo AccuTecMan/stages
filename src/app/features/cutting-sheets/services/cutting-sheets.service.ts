@@ -80,8 +80,6 @@ export class CuttingSheetsService {
 
     wheres.push(orderBy('createdAt', 'desc'));
 
-    console.log('wheres', wheres);
-
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
 
     return collectionData(sheetsQuery, {
