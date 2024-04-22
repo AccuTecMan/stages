@@ -154,21 +154,19 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
       mat-card {
         min-width: 340px;
         cursor: pointer;
-        background-color: #DEDEF0;
-        // background-color: #BFEFFF;
+        background-color: hsl(231, 90%, 95%);
       }
 
       mat-card:hover {
-        background-color: #BFEFFF;
+        background-color: hsl(231, 60%, 85%);
       }
 
       .mat-card-done-background {
-        background-color: #FCD8D4;
-        // background-color: #FFADAD;
+        background-color: hsl(351, 90%, 95%);
       }
 
       .mat-card-done-background:hover {
-        background-color: #FFADAD;
+        background-color: hsl(351, 60%, 85%);
       }
 
       .mat-mdc-fab.mat-primary {
@@ -181,14 +179,14 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
       mat-card-title {
         font-size: 1.1rem;
-        color: #607ec9;
+        color: hsl(231, 30%, 55%);
         margin: -0.5rem 0rem 0 0rem;
         padding: 0px;
         line-height: 90%;
       }
 
       mat-card-subtitle {
-        color: #5f8bc3;
+        color: hsl(231, 30%, 55%);
       }
 
       dl {
@@ -215,17 +213,17 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
       }
 
       .mat-mdc-button {
-        color: #607ec9;
+        color: hsl(231, 48%, 48%);
       }
 
       .button-update {
-        background-color: #607ec9;
+        background-color: hsl(231, 48%, 48%);
         color: white;
         margin-top: -0.5rem;
       }
 
       .inactive-background {
-        background-color: #607ec9;
+        background-color: hsl(231, 48%, 48%);
         color: white;
       }
 
