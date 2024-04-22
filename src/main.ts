@@ -11,7 +11,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Routes, provideRouter } from '@angular/router';
 import { redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angular/fire/auth-guard';
-import { reducers } from '@app/store';
 import { ErrorContainer } from '@app/error.container';
 import { LoginComponent, coreFeatureName, coreReducer } from '@app/core';
 import { baseFeatureName, baseReducer } from '@app/base/store/reducers/feature.reducer';
@@ -61,7 +60,7 @@ bootstrapApplication(AppComponent, {
           provideAuth(() => getAuth()),
           provideFirestore(() => getFirestore()),
         ),
-        provideStore(reducers),
+        provideStore(),
         provideState(baseFeatureName, baseReducer),
         provideState(coreFeatureName, coreReducer),
         provideEffects(BaseEffects),
