@@ -38,7 +38,7 @@ import { MatButton } from '@angular/material/button';
         }
       </mat-form-field>
       <div fxLayout="row" fxLayoutAlign="start start" class="buttons-section">
-        <button mat-raised-button routerLink="customers">Cancel</button>
+        <button mat-raised-button routerLink="/customers">Cancel</button>
         <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Save</button>
       </div>
     </form>
@@ -157,6 +157,6 @@ export class AddEditComponent implements OnInit {
     } else {
       this.service.create(customer);
     }
-    this.router.navigate(['/', 'customers']);
+    this.router.navigate(['/customers']);
   }
 }

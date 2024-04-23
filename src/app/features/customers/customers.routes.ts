@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { CustomersGuard } from '@app/base/guards';
-import { CustomerContainer } from './containers/customers.container';
-import { AddEditComponent } from '../cutting-sheets/containers';
+import { CustomerContainer, AddEditComponent } from './containers';
+// import { AddEditComponent } from './containers';
+// import { AddEditComponent } from '../cutting-sheets/containers';
 
 const customerRoutes: Routes = [
   {
