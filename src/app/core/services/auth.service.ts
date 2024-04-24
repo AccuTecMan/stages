@@ -24,7 +24,6 @@ export class AuthService {
             displayName: user.displayName,
           })
         );
-        // this.router.navigate(['/cuttingSheets']);
       } else {
         this.store.dispatch(fromRoot.AuthenticationActions.setUnauthenticated());
         this.router.navigate(['/login']);

@@ -4,7 +4,6 @@ import { StageMap } from "./";
 export interface StageTemplate {
   id: string;
   jobType: string;
-  // stage: string;
   stageMap: StageMap;
   order: number;
   date: Timestamp;
