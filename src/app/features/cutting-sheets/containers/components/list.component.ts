@@ -154,7 +154,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
       mat-card {
         min-width: 340px;
         cursor: pointer;
-        background-color: hsl(231, 90%, 95%);
+        background-color: hsl(231, 88%, 96%);
       }
 
       mat-card:hover {
