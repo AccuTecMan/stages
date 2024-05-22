@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, input, output } from '@angular/core';
 import { CuttingSheet, SearchCriteria, TimeStamp } from '../../models';
 import { Customer, StageMap } from '@app/base/models';
 import { Observable, map, startWith } from 'rxjs';
@@ -60,7 +60,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
         <mat-form-field fxFlex="30" fxFlex.lt-sm="45%">
           <mat-label>Stage</mat-label>
           <mat-select [(value)]="stagesMapSelected" (selectionChange)="changeCriteria()">
-            @for (stageMap of stagesMap; track stageMap.id) {
+            @for (stageMap of stagesMap(); track stageMap.id) {
               <mat-option [value]="stageMap.id">{{ stageMap.name }}</mat-option>
             }
           </mat-select>
@@ -76,20 +76,18 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
         </mat-form-field>
       </div>
     </header>
-    @if (isLoading) {
+    @if (isLoading()) {
       <mat-spinner fxLayoutAlign="center start" diameter="80" strokeWidth="5"></mat-spinner>
     } @else {
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-        @for (sheet of cuttingSheets; track trackByCuttingSheetGuid($index, sheet)) {
+        @for (sheet of cuttingSheets(); track sheet.id) {
           <div fxFlex="50%" fxFlex.lt-sm="100%">
             <mat-card class="mat-elevation-z26" [routerLink]="['/cuttingSheets/stages', sheet.id]"
                   [ngClass]="{ 'mat-card-done-background': sheet.isDone, 'mat-card-done-background:hover': sheet.isDone }">
               <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
                 <mat-card-title>{{ sheet.jobName }}</mat-card-title>
                 <mat-card-subtitle>PO#: {{ sheet.poNumber }}</mat-card-subtitle>
-                <!-- @if (!sheet.isDone) { -->
-                  <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
-                <!-- } -->
+                <button mat-button class="button-update" [routerLink]="['/cuttingSheets/edit', sheet.id]">UPDATE</button>
               </mat-card-header>
               <mat-card-content fxLayout="row wrap" fxLayoutGap="15px">
                 <dl>
@@ -275,13 +273,13 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     ],
 })
 export class ListComponent implements OnInit {
-  @Input() cuttingSheets!: CuttingSheet[] | null | undefined;
-  @Input() isLoading: boolean | null;
-  @Input() customers: Customer[] | null | undefined;
-  @Input() stagesMap: StageMap[] | null | undefined;
-  @Input() searchCriteria: SearchCriteria | null | undefined;
-  @Output() public changeSearchTerm = new EventEmitter<string>();
-  @Output() public changeSearchCriteria = new EventEmitter<SearchCriteria>();
+  public cuttingSheets = input<CuttingSheet[] | null>();
+  public isLoading = input<boolean | null>();
+  public customers = input<Customer[] | null>();
+  public stagesMap = input<StageMap[] | null>();
+  public searchCriteria = input<SearchCriteria | null>();
+  public changeSearchTerm = output<string>();
+  public changeSearchCriteria = output<SearchCriteria>();
 
   myControl = new FormControl();
   public isDoneDisplayed: boolean = false;
@@ -293,18 +291,18 @@ export class ListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (!!this.customers && this.customers[0].id != '') {
-      this.customers?.unshift({ id: '', name: 'All', active: true });
+    if (this.customers()) {
+      this.customers()?.unshift({ id: '', name: 'All', active: true });
     }
 
-    this.selectedCustomer = this.searchCriteria?.customerId || '';
-    this.stagesMapSelected = this.searchCriteria?.stageMapId || '';
-    this.readyBySelected = this.searchCriteria?.readyByOption || 0;
-    this.isDoneDisplayed = this.searchCriteria?.showDone || false;
+    this.selectedCustomer = this.searchCriteria()?.customerId || '';
+    this.stagesMapSelected = this.searchCriteria()?.stageMapId || '';
+    this.readyBySelected = this.searchCriteria()?.readyByOption || 0;
+    this.isDoneDisplayed = this.searchCriteria()?.showDone || false;
     this.changeCriteria();
 
     if (this.selectedCustomer.length > 0) {
-      const previousSelectedCustomer = this.customers?.find((x) => x.id === this.selectedCustomer);
+      const previousSelectedCustomer = this.customers()?.find((x) => x.id === this.selectedCustomer);
       this.myControl.setValue(previousSelectedCustomer);
     }
   }
@@ -312,7 +310,7 @@ export class ListComponent implements OnInit {
   private _filter(value: string): Customer[] {
     const filterValue = value.toString().toLowerCase();
     return (
-      this.customers?.filter(
+      this.customers()?.filter(
         (option) => option.name.toLowerCase().includes(filterValue) || option.id.toLowerCase().includes(filterValue)
       ) || []
     );
@@ -347,10 +345,6 @@ export class ListComponent implements OnInit {
   set term(value: string) {
     this._term = value;
     this.onSearchTermChange(this._term);
-  }
-
-  public trackByCuttingSheetGuid(index: number, cuttingSheet: CuttingSheet) {
-    return cuttingSheet.id;
   }
 
   public changeCriteria() {
