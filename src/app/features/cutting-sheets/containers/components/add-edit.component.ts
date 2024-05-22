@@ -34,7 +34,7 @@ import { MatButton } from '@angular/material/button';
         <mat-form-field>
           <mat-label>Job Type</mat-label>
           <mat-select formControlName="jobType" [(value)]="jobTypeSelected.id" (valueChange)="onSelectJobType($event)">
-            @for (job of jobTypes; track trackByjobTypeGuid($index, job)) {
+            @for (job of jobTypes; track job.id) {
               <mat-option [value]="job.id">{{ job.name }}</mat-option>
             }
             @if (form.get('name')!.hasError('required')) {
@@ -45,7 +45,7 @@ import { MatButton } from '@angular/material/button';
         <mat-form-field>
           <mat-label>Customer</mat-label>
           <mat-select formControlName="customer" [(value)]="customerSelected.id" (valueChange)="onSelectCustomer($event)">
-            @for (customer of customers; track trackByCustomerGuid($index, customer)) {
+            @for (customer of customers; track customer.id) {
               <mat-option [value]="customer.id">{{ customer.name }}</mat-option>
             }
           </mat-select>
@@ -231,14 +231,6 @@ export class AddEditComponent implements OnInit {
       cuttingSheet.currentStage = this.selectedStage;
     }
     this.Save.emit(cuttingSheet);
-  }
-
-  public trackByCustomerGuid(index: number, customer: Customer) {
-    return customer.id;
-  }
-
-  public trackByjobTypeGuid(index: number, jobType: JobType) {
-    return jobType.id;
   }
 
   public onSelectCustomer(id: string) {

@@ -49,7 +49,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
         </div>
       </header>
       <section class="content-records" fxLayout="row wrap" fxLayoutGap="8px grid">
-        @for (customer of customers; track trackByCustomerGuid($index, customer)) {
+        @for (customer of customers; track customer.id) {
           <div fxFlex="50%" fxFlex.lt-sm="100%">
             <mat-card class="mat-elevation-z16">
               <mat-card-header>
@@ -197,10 +197,6 @@ export class ListComponent {
   set term(value: string) {
     this._term = value;
     this.onSearchTermChange(this._term);
-  }
-
-  public trackByCustomerGuid(index: number, customer: Customer) {
-    return customer.id;
   }
 
   public displayInactive(): void {

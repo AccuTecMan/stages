@@ -196,7 +196,6 @@ export class CuttingSheetsStagesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('result', result)
       if (!result) return;
       const lastStageIndex = (this.selectedSheetStages?.length || 0) - 1;
       const lastStage = this.selectedSheetStages ? this.selectedSheetStages[lastStageIndex] : null;
