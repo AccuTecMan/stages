@@ -69,7 +69,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
           <mat-label>Customer</mat-label>
           <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl" (change)="changeCustomer($event)" />
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="changeCustomerAuto($event.option.value)">
-            @for (customer of filteredCustomers$ | async; track customer.id) {
+            @for (customer of filteredCustomers$ | async; track $index) {
               <mat-option [value]="customer">{{ customer.name }}</mat-option>
             }
           </mat-autocomplete>
