@@ -1,4 +1,3 @@
-import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
@@ -53,23 +52,19 @@ export const appRoutes: Routes = [
 ];
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        importProvidersFrom(
-          // Firebase
-          provideFirebaseApp(() =>initializeApp(environment.firebase)),
-          provideAuth(() => getAuth()),
-          provideFirestore(() => getFirestore()),
-        ),
-        provideStore(),
-        provideState(baseFeatureName, baseReducer),
-        provideState(coreFeatureName, coreReducer),
-        provideEffects(BaseEffects),
-        provideStoreDevtools({
-          maxAge: 30,
-          logOnly: environment.production,
-        }),
-        provideRouter(appRoutes),
-        provideAnimations()
-    ]
-})
-  .catch(err => console.error(err));
+  providers: [
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    provideStore(),
+    provideState(baseFeatureName, baseReducer),
+    provideState(coreFeatureName, coreReducer),
+    provideEffects(BaseEffects),
+    provideStoreDevtools({
+      maxAge: 30,
+      logOnly: environment.production,
+    }),
+    provideRouter(appRoutes),
+    provideAnimations(),
+  ],
+}).catch((err) => console.error(err));
