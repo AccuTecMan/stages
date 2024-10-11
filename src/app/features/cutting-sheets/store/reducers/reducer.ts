@@ -25,7 +25,7 @@ const initialState: CuttingSheetsState = {
   summary: { ...cuttingSheetsAdapter.getInitialState() },
   searchCriteria: {
     customerId: undefined,
-    readyByOption: 0,
+    readyByOption: 1,
     showDone: false
   },
   stages: undefined,
