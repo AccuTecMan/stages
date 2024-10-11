@@ -325,15 +325,15 @@ export class ListComponent implements OnInit {
   }
 
   public readyByOptions = [
-    { value: 0, view: 'All' },
     { value: 1, view: 'Today' },
     { value: 2, view: 'Yesterday' },
     { value: 3, view: 'This week (Mon-Today)' },
     { value: 4, view: 'Last 7 days' },
     { value: 5, view: 'Last 15 days' },
     { value: 6, view: 'Last 30 days' },
+    { value: 0, view: 'All' },
   ];
-  public readyBySelected = 0;
+  public readyBySelected = 1;
   public selectedCustomer = '';
   public stagesMapSelected = '';
   private _term: string;
