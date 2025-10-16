@@ -62,7 +62,6 @@ import { MatToolbar } from '@angular/material/toolbar';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatToolbar,
         FlexModule,
@@ -71,7 +70,7 @@ import { MatToolbar } from '@angular/material/toolbar';
         MatButton,
         MatIcon,
         AsyncPipe,
-    ],
+    ]
 })
 export class HeaderComponent {
   @Output() sidenavToggle = new EventEmitter<void>();

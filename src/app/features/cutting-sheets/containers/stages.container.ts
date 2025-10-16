@@ -17,8 +17,7 @@ import { CuttingSheetsStagesComponent } from './components/cutting-sheets-stages
     />
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [CuttingSheetsStagesComponent, AsyncPipe],
+    imports: [CuttingSheetsStagesComponent, AsyncPipe]
 })
 export class StagesContainer {
   public selectedCuttingSheet$ = this.store.select(fromStore.selectSelectedSheet);

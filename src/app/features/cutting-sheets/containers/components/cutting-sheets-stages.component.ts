@@ -130,7 +130,6 @@ import { MatButton } from '@angular/material/button';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButton,
         RouterLink,
@@ -146,7 +145,7 @@ import { MatButton } from '@angular/material/button';
         MatStepperPrevious,
         MatStepperNext,
         DatePipe,
-    ],
+    ]
 })
 export class CuttingSheetsStagesComponent implements OnInit {
   @Input() selectedSheet: CuttingSheet | null | undefined;

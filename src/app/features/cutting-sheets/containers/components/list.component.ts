@@ -243,7 +243,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FlexModule,
         MatFabButton,
@@ -270,7 +269,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
         MatCardContent,
         AsyncPipe,
         DatePipe,
-    ],
+    ]
 })
 export class ListComponent implements OnInit {
   public cuttingSheets = input<CuttingSheet[] | null>();

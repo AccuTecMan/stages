@@ -6,8 +6,8 @@ import { SidenavListComponent } from './common/components/sidenav-list.component
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  template: `
+    selector: 'app-root',
+    template: `
     <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
     <mat-sidenav-container>
       <mat-sidenav #sidenav role="navigation" [class.mat-elevation-z4]="true">
@@ -20,8 +20,8 @@ import { RouterModule } from '@angular/router';
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
-  styles: [
-    `
+    styles: [
+        `
       mat-sidenav-container,
       mat-sidenav-content,
       mat-sidenav {
@@ -33,17 +33,16 @@ import { RouterModule } from '@angular/router';
         width: 250px;
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    RouterModule,
-    HeaderComponent,
-    MatSidenav,
-    MatSidenavContainer,
-    MatSidenavContent,
-    SidenavListComponent
-  ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        RouterModule,
+        HeaderComponent,
+        MatSidenav,
+        MatSidenavContainer,
+        MatSidenavContent,
+        SidenavListComponent
+    ]
 })
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}

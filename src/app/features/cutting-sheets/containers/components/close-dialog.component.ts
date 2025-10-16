@@ -7,8 +7,8 @@ import { MatInputModule } from "@angular/material/input";
 import { CuttingSheet } from "../../models";
 
 @Component({
-  selector: 'app-close-dialog',
-  template: `
+    selector: 'app-close-dialog',
+    template: `
     <h2 mat-dialog-title>{{ data.jobName }}</h2>
     <mat-dialog-content>
       <p>Do you really want to close this Cutting Sheet?</p>
@@ -18,18 +18,17 @@ import { CuttingSheet } from "../../models";
       <button mat-button mat-raised-button color="primary" [mat-dialog-close]="data.id" cdkFocusInitial>Yes</button>
     </mat-dialog-actions>
   `,
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-  ],
-  styles: [`
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+    ],
+    styles: [`
     h2 {
       background-color: #D3D3D3;
     }

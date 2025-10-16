@@ -55,7 +55,6 @@ import { MatCard } from '@angular/material/card';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatCard,
         ReactiveFormsModule,
@@ -64,7 +63,7 @@ import { MatCard } from '@angular/material/card';
         MatInput,
         MatError,
         MatButton,
-    ],
+    ]
 })
 export class LoginComponent implements OnInit {
   form: UntypedFormGroup;
