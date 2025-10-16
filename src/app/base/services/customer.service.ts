@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, addDoc, collection, collectionData, doc, docData, updateDoc } from '@angular/fire/firestore';
@@ -9,6 +9,7 @@ import { Customer } from '../models';
   providedIn: 'root',
 })
 export class CustomerService {
+  private readonly injector = inject(EnvironmentInjector);
   private customerCollection: CollectionReference<DocumentData>;
 
   constructor(private readonly firestore: Firestore) {
@@ -16,14 +17,18 @@ export class CustomerService {
   }
 
   public getAll(): Observable<Customer[]> {
-    return collectionData(this.customerCollection, {
-      idField: 'id',
-    }) as Observable<Customer[]>;
+    return runInInjectionContext(this.injector, () => {
+      return collectionData(this.customerCollection, {
+        idField: 'id',
+      }) as Observable<Customer[]>;
+    });
   }
 
   get(id: string): Observable<Customer> {
-    const customerReference = doc(this.firestore, `customers/${id}`);
-    return docData(customerReference, { idField: 'id' }) as Observable<Customer>;
+    return runInInjectionContext(this.injector, () => {
+      const customerReference = doc(this.firestore, `customers/${id}`);
+      return docData(customerReference, { idField: 'id' }) as Observable<Customer>;
+    });
   }
 
   create(customer: Customer) {
