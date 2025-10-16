@@ -55,7 +55,6 @@ import { MatNavList, MatListItem } from '@angular/material/list';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatNavList,
         MatListItem,
@@ -63,7 +62,7 @@ import { MatNavList, MatListItem } from '@angular/material/list';
         MatIcon,
         MatDivider,
         AsyncPipe,
-    ],
+    ]
 })
 export class SidenavListComponent {
   @Output() closeSidenav = new EventEmitter<void>();

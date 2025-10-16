@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import {
@@ -24,6 +24,7 @@ import { CuttingSheet, SearchCriteria, Stage } from '../models';
 export class CuttingSheetsService {
   private cuttingSheetsRef: CollectionReference<DocumentData>;
   private stagesCollection: CollectionReference<DocumentData>;
+  private readonly injector = inject(EnvironmentInjector);
 
   constructor(private readonly firestore: Firestore) {
     this.cuttingSheetsRef = collection(this.firestore, 'cuttingSheets');
@@ -81,10 +82,11 @@ export class CuttingSheetsService {
     wheres.push(orderBy('createdAt', 'desc'));
 
     const sheetsQuery = query(this.cuttingSheetsRef, ...wheres);
-
-    return collectionData(sheetsQuery, {
-      idField: 'id',
-    }) as Observable<CuttingSheet[]>;
+    return runInInjectionContext(this.injector, () => {
+      return collectionData(sheetsQuery, {
+        idField: 'id',
+      }) as Observable<CuttingSheet[]>;
+    });
   }
 
   private getPreviousMonday() {
@@ -129,11 +131,11 @@ export class CuttingSheetsService {
       const cs = { ...cuttingSheet, createdAt: serverTimestamp() };
       addDoc(this.cuttingSheetsRef, cs);
     }
-    return of(cuttingSheet)
+    return of(cuttingSheet);
   }
 
   closeSheet(id?: string) {
-      const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
-      return updateDoc(cuttingSheetsReference, { isDone: false });
+    const cuttingSheetsReference = doc(this.firestore, `cuttingSheets/${id}`);
+    return updateDoc(cuttingSheetsReference, { isDone: false });
   }
 }

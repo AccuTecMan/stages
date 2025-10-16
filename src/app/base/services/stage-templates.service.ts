@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { CollectionReference, DocumentData } from '@firebase/firestore';
 
 import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
@@ -12,6 +12,7 @@ import { StageMap } from '../models';
 export class StageTemplatesService {
   private typesCollection: CollectionReference<DocumentData>;
   private stagesCollection: CollectionReference<DocumentData>;
+  private readonly injector = inject(EnvironmentInjector);
 
   constructor(private readonly firestore: Firestore) {
     this.typesCollection = collection(this.firestore, 'stageTemplates');
@@ -19,9 +20,11 @@ export class StageTemplatesService {
   }
 
   public getAll(): Observable<StageTemplate[]> {
-    return collectionData(this.typesCollection, {
-      idField: 'id',
-    }) as Observable<StageTemplate[]>;
+    return runInInjectionContext(this.injector, () => {
+      return collectionData(this.typesCollection, {
+        idField: 'id',
+      }) as Observable<StageTemplate[]>;
+    });
   }
 
   public get(id: string): Observable<StageTemplate[]> {
@@ -32,8 +35,10 @@ export class StageTemplatesService {
   }
 
   public getAllStages(): Observable<StageMap[]> {
-    return collectionData(this.stagesCollection, {
-      idField: 'id',
-    }) as Observable<StageMap[]>;
+    return runInInjectionContext(this.injector, () => {
+      return collectionData(this.stagesCollection, {
+        idField: 'id',
+      }) as Observable<StageMap[]>;
+    });
   }
 }

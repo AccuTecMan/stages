@@ -154,7 +154,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     `,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatProgressSpinner,
         FlexModule,
@@ -175,7 +174,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
         MatCardActions,
         MatButton,
         MatChip,
-    ],
+    ]
 })
 export class ListComponent {
   @Input() IsLoading!: boolean | null;

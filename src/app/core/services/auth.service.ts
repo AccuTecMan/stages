@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, authState, User, UserCredential } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,8 @@ import * as fromRoot from '@core/store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly injector = inject(EnvironmentInjector);
+
   constructor(
     private store: Store,
     private router: Router,
@@ -16,18 +18,20 @@ export class AuthService {
   ) {}
 
   initAuthListener() {
-    authState(this.afAuth).subscribe(async (user) => {
-      if (user) {
-        this.store.dispatch(
-          fromRoot.AuthenticationActions.setAuthenticated({
-            isAdmin: false,
-            displayName: user.displayName,
-          })
-        );
-      } else {
-        this.store.dispatch(fromRoot.AuthenticationActions.setUnauthenticated());
-        this.router.navigate(['/login']);
-      }
+    return runInInjectionContext(this.injector, () => {
+      authState(this.afAuth).subscribe(async (user) => {
+        if (user) {
+          this.store.dispatch(
+            fromRoot.AuthenticationActions.setAuthenticated({
+              isAdmin: false,
+              displayName: user.displayName,
+            })
+          );
+        } else {
+          this.store.dispatch(fromRoot.AuthenticationActions.setUnauthenticated());
+          this.router.navigate(['/login']);
+        }
+      });
     });
   }
 

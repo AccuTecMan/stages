@@ -23,8 +23,7 @@ import { AddEditComponent } from './components/add-edit.component';
     />
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [AddEditComponent, AsyncPipe],
+    imports: [AddEditComponent, AsyncPipe]
 })
 export class AddEditContainer {
   public selectedSheet$ = this.store.select(fromStore.selectSelectedSheet);

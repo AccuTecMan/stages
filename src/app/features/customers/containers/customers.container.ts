@@ -18,8 +18,7 @@ import { ListComponent } from './components/list.component';
     />
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [ListComponent, AsyncPipe],
+    imports: [ListComponent, AsyncPipe]
 })
 export class CustomerContainer {
   public customers$ = this.store.select(fromBase.selectAllCustomers);

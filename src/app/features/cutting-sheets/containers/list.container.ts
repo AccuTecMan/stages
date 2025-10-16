@@ -22,8 +22,7 @@ import { ListComponent } from './components/list.component';
     />
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [ListComponent, AsyncPipe],
+    imports: [ListComponent, AsyncPipe]
 })
 export class ListContainer {
   public cuttingSheets$ = this.store.select(fromStore.selectAllCuttingSheets);
