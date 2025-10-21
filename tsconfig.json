@@ -18,7 +18,7 @@
     "declaration": false,
     "experimentalDecorators": true,
     "preserveSymlinks": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
@@ -27,7 +27,9 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["src/app/*"],
+      "@app/*": [
+        "src/app/*"
+      ],
       "@core/*": [
         "src/app/core/*"
       ],
